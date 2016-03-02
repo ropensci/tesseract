@@ -1,0 +1,16 @@
+Package: tesseract
+Type: Package
+Title: Open Source OCR Engine
+Version: 0.1
+Author: Jeroen Ooms
+Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>
+Description: An OCR engine with unicode (UTF-8) support that can recognize
+  over 100 languages out of the box.
+License: MIT + file LICENSE
+URL: https://github.com/jeroenooms/tesseract
+BugReports: https://github.com/jeroenooms/tesseract/issues
+SystemRequirements: Tesseract library and headers
+Imports: Rcpp (>= 0.12.0)
+LinkingTo: Rcpp
+RoxygenNote: 5.0.1
+Suggests: pdftools, png, tiff, jpeg
