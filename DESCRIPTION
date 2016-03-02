@@ -9,7 +9,7 @@ Description: An OCR engine with unicode (UTF-8) support that can recognize
 License: MIT + file LICENSE
 URL: https://github.com/jeroenooms/tesseract
 BugReports: https://github.com/jeroenooms/tesseract/issues
-SystemRequirements: Tesseract library and headers
+SystemRequirements: Tesseract and Leptonica library and headers
 Imports: Rcpp (>= 0.12.0)
 LinkingTo: Rcpp
 RoxygenNote: 5.0.1
