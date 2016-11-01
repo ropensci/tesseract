@@ -1,0 +1,44 @@
+language: r
+cache: packages
+
+matrix:
+  include:
+    - os: linux
+      dist: precise
+      sudo: false
+    - os: linux
+      dist: trusty
+      sudo: required
+      env: R_CODECOV=true
+    - os: osx
+      osx_image: xcode8
+      brew_packages: tesseract
+      latex: false
+    - os: osx
+      osx_image: xcode8
+      disable_homebrew: true
+      latex: false
+    - os: osx
+      osx_image: beta-xcode6
+      disable_homebrew: true
+      latex: false
+
+addons:
+  apt:
+    packages:
+      - libtesseract-dev
+      - libleptonica-dev
+
+r_github_packages:
+  - jimhester/covr
+
+warnings_are_errors: true
+#r_check_revdep: true
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+
+after_success:
+  - if [[ "${R_CODECOV}" ]]; then R -e 'covr::codecov()'; fi

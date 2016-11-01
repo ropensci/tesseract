@@ -5,15 +5,14 @@
 \alias{tesseract}
 \title{Tesseract OCR}
 \usage{
-ocr(image, format)
+ocr(image)
 }
 \arguments{
 \item{image}{file path or raw vector to image}
-
-\item{format}{must be one of "png", "jpeg", "tiff", "gif"}
 }
 \description{
-Extract text from an image file.
+Extract text from an image file. Works best if the image has high contrast
+and horizontal text.
 }
 \examples{
 # Some packages
@@ -32,9 +31,7 @@ jpeg::writeJPEG(bitmap, "page.jpg")
 tiff::writeTIFF(bitmap, "page.tiff")
 
 # Extract text from images
-txt1 <- ocr("page.png")
-txt2 <- ocr("page.jpg")
-txt3 <- ocr("page.tiff")
-cat(txt1)
+txt <- ocr(c("page.png", "page.png", "page.tiff"))
+cat(txt)
 }
 

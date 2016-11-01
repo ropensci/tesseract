@@ -6,3 +6,5 @@
 \.png$
 \.webp$
 \.jpeg$
+^\.travis\.yml$
+^appveyor\.yml$

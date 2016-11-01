@@ -1,11 +1,11 @@
 #' Tesseract OCR
 #'
-#' Extract text from an image file.
+#' Extract text from an image file. Works best if the image has high contrast
+#' and horizontal text.
 #'
 #' @export
-#' @param image file path or raw vector to image
-#' @param format must be one of "png", "jpeg", "tiff", "gif"
 #' @useDynLib tesseract
+#' @param image file path or raw vector to image
 #' @rdname tesseract
 #' @aliases tesseract ocr
 #' @importFrom Rcpp sourceCpp
@@ -25,43 +25,29 @@
 #' tiff::writeTIFF(bitmap, "page.tiff")
 #'
 #' # Extract text from images
-#' txt1 <- ocr("page.png")
-#' txt2 <- ocr("page.jpg")
-#' txt3 <- ocr("page.tiff")
-#' cat(txt1)
-ocr <- function(image, format) {
-  if(missing(format) && is.character(image)){
-    pieces <- strsplit(basename(image), ".", fixed = TRUE)[[1]]
-    format <- tolower(pieces[length(pieces)])
-    if(format == "jpg")
-      format <- "jpeg"
+#' txt <- ocr(c("page.png", "page.png", "page.tiff"))
+#' cat(txt)
+ocr <- function(image) {
+  if(is.character(image)){
+    data <- lapply(image, loadfile)
+    vapply(data, ocr_raw, character(1))
+  } else if(is.raw(image)){
+    ocr_raw(image)
+  } else {
+    stop("Argument 'image' must be file-path, url or raw vector")
   }
-  format <- match.arg(format, c("png", "jpeg", "tiff", "gif"))
-  image <- loadfile(image)
-  R_ocr(image, format)
 }
 
-loadfile <- function(image){
-  if(is.character(image)){
-    if(grepl("^https?://", image[1])){
-      image <- url(image)
-    } else {
-      path <- normalizePath(image, mustWork = TRUE)
-      image <- readBin(path, raw(), file.info(path)$size)
-    }
+loadfile <- function(path){
+  path <- path[1]
+  stopifnot(is.character(path))
+  if(grepl("^https?://", path)){
+    req <- curl::curl_fetch_memory(path)
+    if(req$status != 200) stop("Failed to download file: ", path)
+    return(req$content)
+  } else {
+    path <- normalizePath(path)
+    stopifnot(file.exists(path))
+    readBin(path, raw(), file.info(path)$size)
   }
-  if(inherits(image, "connection")){
-    con <- image
-    image <- raw()
-    if(!isOpen(con)){
-      open(con, "rb")
-      on.exit(close(con))
-    }
-    while(length(buf <- readBin(con, raw(), 1e6))){
-      image <- c(image, buf)
-    }
-  }
-  if(!is.raw(image))
-    stop("Argument pdf must be a path or raw vector with PDF data")
-  image
 }
