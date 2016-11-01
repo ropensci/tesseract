@@ -12,7 +12,9 @@ matrix:
       env: R_CODECOV=true
     - os: osx
       osx_image: xcode8
-      brew_packages: tesseract
+      brew_packages:
+        - tesseract
+        - poppler
       latex: false
     - os: osx
       osx_image: xcode8
@@ -28,6 +30,7 @@ addons:
     packages:
       - libtesseract-dev
       - libleptonica-dev
+      - libpoppler-cpp-dev
 
 r_github_packages:
   - jimhester/covr
