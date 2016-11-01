@@ -51,6 +51,10 @@ else
     PKG_LIBS="-L$BREWDIR/lib $PKG_LIBS"
     rm -f $BREWDIR/lib/*.dylib
     rm -f $BREWDIR/Cellar/*/*/lib/*.dylib
+
+    # Include share directory
+    mkdir -p inst
+    cp -Rf  $BREWDIR/opt/tesseract/share/tessdata inst/
   fi
   ;;
   esac
