@@ -1,0 +1,22 @@
+COMPILED_BY ?= gcc-4.6.3
+CXX_STD=CXX11
+
+PKG_CPPFLAGS = \
+	-I../windows/tesseract-3.04.01/include/tesseract \
+	-I../windows/tesseract-3.04.01/include/leptonica
+
+PKG_LIBS = \
+	-L../windows/tesseract-3.04.01/lib${subst gcc,,${COMPILED_BY}}${R_ARCH} \
+	-L../windows/tesseract-3.04.01/lib${R_ARCH} \
+	-ltesseract -llept \
+	-ltiff -llzma -lopenjp2 -lwebp -ljpeg -lgif -lpng16 -lz \
+	-lws2_32
+
+all: clean winlibs
+
+winlibs:
+	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R"
+	mkdir -p ../inst
+
+clean:
+	rm -Rf $(OBJECTS) $(SHLIB)

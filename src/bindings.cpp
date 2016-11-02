@@ -1,6 +1,9 @@
 #include <baseapi.h>
 #include <allheaders.h>
 
+#define R_NO_REMAP
+#define STRICT_R_HEADERS
+
 #include <Rcpp.h>
 using namespace Rcpp;
 
