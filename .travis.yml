@@ -5,7 +5,7 @@ matrix:
   include:
     - os: linux
       dist: precise
-      sudo: false
+      sudo: required
     - os: linux
       dist: trusty
       sudo: required
