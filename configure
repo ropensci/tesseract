@@ -11,8 +11,8 @@ PKG_RPM_NAME="tesseract-devel leptonica-devel"
 PKG_CSW_NAME="libtesseract_dev"
 PKG_BREW_NAME="tesseract"
 PKG_TEST_HEADER="<baseapi.h>"
+PKG_CFLAGS="-I/usr/include/tesseract -I/usr/include/leptonica"
 PKG_LIBS="-ltesseract"
-PKG_CFLAGS="-I/usr/include/tesseract -I/usr/include/include/leptonica"
 
 # Use pkg-config if available
 pkg-config --version >/dev/null 2>&1
