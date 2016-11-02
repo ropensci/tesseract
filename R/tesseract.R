@@ -19,7 +19,7 @@
 #' @param image file path, url, or raw vector to image (png, tiff, jpeg, etc)
 #' @param engine a tesseract engine created with `tesseract()`
 #' @rdname tesseract
-#' @references [https://github.com/tesseract-ocr/tessdata]
+#' @references [Tesseract training data](https://github.com/tesseract-ocr/tessdata)
 #' @aliases tesseract ocr
 #' @importFrom Rcpp sourceCpp
 #' @examples # Some packages

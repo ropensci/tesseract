@@ -60,6 +60,6 @@ txt <- ocr(c("page.png", "page.png", "page.tiff"))
 cat(txt)
 }
 \references{
-\link{https://github.com/tesseract-ocr/tessdata}
+\href{https://github.com/tesseract-ocr/tessdata}{Tesseract training data}
 }
 
