@@ -11,9 +11,9 @@ ocr(image, engine = tesseract())
 tesseract(language = "eng", datapath = NULL, cache = TRUE)
 }
 \arguments{
-\item{image}{file path or raw vector to image}
+\item{image}{file path, url, or raw vector to image (png, tiff, jpeg, etc)}
 
-\item{engine}{a tesseract engine created with `tesseract()`}
+\item{engine}{a tesseract engine created with \code{tesseract()}}
 
 \item{language}{string with language for training data}
 
@@ -23,8 +23,21 @@ the system default library.}
 \item{cache}{use a cached version of this training data if available}
 }
 \description{
-Extract text from an image file. Works best if the image has high contrast
-and horizontal text.
+Extract text from an image. Requires that you have training data for the language you
+are reading. Works best for images with high contrast, little noise and horizontal text.
+}
+\details{
+Tesseract uses training data to perform OCR. Most systems default to English
+training data. To improve OCR performance for other langauges you can to install the
+training data from your distribution. For example to install the spanish training data:
+\itemize{
+\item \href{https://packages.debian.org/testing/tesseract-ocr-spa}{tesseract-ocr-spa} (Debian, Ubuntu)
+\item \href{https://apps.fedoraproject.org/packages/tesseract-langpack-spa}{tesseract-langpack-spa} (Fedora, EPEL)
+}
+
+On other platforms you can manually download training data from \href{https://github.com/tesseract-ocr/tessdata}{github}
+and store it in a path on disk that you pass in the \code{datapath} parameter. Alternatively
+you can set a default path via the \code{TESSDATA_PREFIX} environment variable.
 }
 \examples{
 # Some packages
@@ -45,5 +58,8 @@ tiff::writeTIFF(bitmap, "page.tiff")
 # Extract text from images
 txt <- ocr(c("page.png", "page.png", "page.tiff"))
 cat(txt)
+}
+\references{
+\link{https://github.com/tesseract-ocr/tessdata}
 }
 

@@ -1,13 +1,25 @@
 #' Tesseract OCR
 #'
-#' Extract text from an image file. Works best if the image has high contrast
-#' and horizontal text.
+#' Extract text from an image. Requires that you have training data for the language you
+#' are reading. Works best for images with high contrast, little noise and horizontal text.
+#'
+#' Tesseract uses training data to perform OCR. Most systems default to English
+#' training data. To improve OCR performance for other langauges you can to install the
+#' training data from your distribution. For example to install the spanish training data:
+#'
+#'  - [tesseract-ocr-spa](https://packages.debian.org/testing/tesseract-ocr-spa) (Debian, Ubuntu)
+#'  - [tesseract-langpack-spa](https://apps.fedoraproject.org/packages/tesseract-langpack-spa) (Fedora, EPEL)
+#'
+#' On other platforms you can manually download training data from [github](https://github.com/tesseract-ocr/tessdata)
+#' and store it in a path on disk that you pass in the `datapath` parameter. Alternatively
+#' you can set a default path via the `TESSDATA_PREFIX` environment variable.
 #'
 #' @export
 #' @useDynLib tesseract
-#' @param image file path or raw vector to image
+#' @param image file path, url, or raw vector to image (png, tiff, jpeg, etc)
 #' @param engine a tesseract engine created with `tesseract()`
 #' @rdname tesseract
+#' @references [https://github.com/tesseract-ocr/tessdata]
 #' @aliases tesseract ocr
 #' @importFrom Rcpp sourceCpp
 #' @examples # Some packages

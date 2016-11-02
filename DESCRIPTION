@@ -16,4 +16,5 @@ Imports:
     digest
 LinkingTo: Rcpp
 RoxygenNote: 5.0.1.9000
+Roxygen: list(markdown = TRUE)
 Suggests: pdftools, png, tiff, jpeg
