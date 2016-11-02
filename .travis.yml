@@ -30,6 +30,7 @@ addons:
     packages:
       - libtesseract-dev
       - libleptonica-dev
+      - tesseract-ocr-eng
       - libpoppler-cpp-dev
 
 r_github_packages:
