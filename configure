@@ -70,7 +70,7 @@ CXXFLAGS=`${R_HOME}/bin/R CMD config CXXFLAGS`
 CPPFLAGS=`${R_HOME}/bin/R CMD config CPPFLAGS`
 
 # Test configuration
-echo "#include $PKG_TEST_HEADER" | ${CXXCPP} ${CPPFLAGS} ${PKG_CFLAGS} ${CXXFLAGS} -xc++ - >/dev/null 2>&1
+${CXXCPP} ${CPPFLAGS} ${PKG_CFLAGS} ${CXXFLAGS} src/test.h >/dev/null 2>&1
 
 # Customize the error
 if [ $? -ne 0 ]; then
