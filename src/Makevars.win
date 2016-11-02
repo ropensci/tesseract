@@ -15,8 +15,9 @@ PKG_LIBS = \
 all: clean winlibs
 
 winlibs:
-	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R"
 	mkdir -p ../inst
+	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R"
+	cp -Rf ../windows/tessdata ../inst/
 
 clean:
 	rm -Rf $(OBJECTS) $(SHLIB)
