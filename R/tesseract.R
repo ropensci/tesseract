@@ -44,7 +44,7 @@ ocr <- function(image, engine = tesseract()) {
   stopifnot(inherits(engine, "tesseract"))
   if(is.character(image)){
     image <- download_files(image)
-    vapply(image, ocr_file, character(1), ptr = engine)
+    vapply(image, ocr_file, character(1), ptr = engine, USE.NAMES = FALSE)
   } else if(is.raw(image)){
     ocr_raw(image, engine)
   } else {
