@@ -40,24 +40,26 @@ and store it in a path on disk that you pass in the \code{datapath} parameter. A
 you can set a default path via the \code{TESSDATA_PREFIX} environment variable.
 }
 \examples{
-# Some packages
+# Simple example
+text <- ocr("http://jeroenooms.github.io/images/testocr.png")
+cat(text)
+
+# Roundtrip test: render PDF to image and OCR it back to text
 library(pdftools)
-library(tesseract)
-library(png)
-library(jpeg)
 library(tiff)
 
-# Render pdf to png
+# A PDF file with some text
 setwd(tempdir())
 news <- file.path(Sys.getenv("R_DOC_DIR"), "NEWS.pdf")
+orig <- pdf_text(news)[1]
+
+# Render pdf to jpeg/tiff image
 bitmap <- pdf_render_page(news, dpi = 300)
-png::writePNG(bitmap, "page.png")
-jpeg::writeJPEG(bitmap, "page.jpg")
 tiff::writeTIFF(bitmap, "page.tiff")
 
 # Extract text from images
-txt <- ocr(c("page.png", "page.png", "page.tiff"))
-cat(txt)
+out <- ocr("page.tiff")
+cat(out)
 }
 \references{
 \href{https://github.com/tesseract-ocr/tessdata}{Tesseract training data}

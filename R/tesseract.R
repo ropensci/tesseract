@@ -22,24 +22,26 @@
 #' @references [Tesseract training data](https://github.com/tesseract-ocr/tessdata)
 #' @aliases tesseract ocr
 #' @importFrom Rcpp sourceCpp
-#' @examples # Some packages
+#' @examples # Simple example
+#' text <- ocr("http://jeroenooms.github.io/images/testocr.png")
+#' cat(text)
+#'
+#' # Roundtrip test: render PDF to image and OCR it back to text
 #' library(pdftools)
-#' library(tesseract)
-#' library(png)
-#' library(jpeg)
 #' library(tiff)
 #'
-#' # Render pdf to png
+#' # A PDF file with some text
 #' setwd(tempdir())
 #' news <- file.path(Sys.getenv("R_DOC_DIR"), "NEWS.pdf")
+#' orig <- pdf_text(news)[1]
+#'
+#' # Render pdf to jpeg/tiff image
 #' bitmap <- pdf_render_page(news, dpi = 300)
-#' png::writePNG(bitmap, "page.png")
-#' jpeg::writeJPEG(bitmap, "page.jpg")
 #' tiff::writeTIFF(bitmap, "page.tiff")
 #'
 #' # Extract text from images
-#' txt <- ocr(c("page.png", "page.png", "page.tiff"))
-#' cat(txt)
+#' out <- ocr("page.tiff")
+#' cat(out)
 ocr <- function(image, engine = tesseract()) {
   stopifnot(inherits(engine, "tesseract"))
   if(is.character(image)){
@@ -78,7 +80,7 @@ tesseract <- local({
 download_files <- function(urls){
   vapply(urls, function(path){
     if(grepl("^https?://", path)){
-      tmp <- tempfile()
+      tmp <- tempfile(fileext =  basename(path))
       curl::curl_download(path, tmp)
       path <- tmp
     }
