@@ -57,3 +57,25 @@ Rcpp::String ocr_raw(Rcpp::RawVector input, TessPtr ptr){
     pixDestroy(&image);
     return y;
 }
+
+// [[Rcpp::export]]
+Rcpp::String ocr_file(std::string file, TessPtr ptr){
+  tesseract::TessBaseAPI *api = get_engine(ptr);
+
+  // Open input image with leptonica library
+  Pix *image =  pixRead(file.c_str());
+  if(!image)
+    throw std::runtime_error("Failed to read image");
+
+  api->SetImage(image);
+
+  // Get OCR result
+  char *outText = api->GetUTF8Text();
+
+  // Destroy used object and release memory
+  Rcpp::String y(outText);
+  y.set_encoding(CE_UTF8);
+  delete [] outText;
+  pixDestroy(&image);
+  return y;
+}

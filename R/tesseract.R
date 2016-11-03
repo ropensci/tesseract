@@ -43,8 +43,8 @@
 ocr <- function(image, engine = tesseract()) {
   stopifnot(inherits(engine, "tesseract"))
   if(is.character(image)){
-    data <- lapply(image, loadfile)
-    vapply(data, ocr_raw, character(1), ptr = engine)
+    image <- download_files(image)
+    vapply(image, ocr_file, character(1), ptr = engine)
   } else if(is.raw(image)){
     ocr_raw(image, engine)
   } else {
@@ -75,20 +75,16 @@ tesseract <- local({
   }
 })
 
-loadfile <- function(path){
-  path <- path[1]
-  stopifnot(is.character(path))
-  if(grepl("^https?://", path)){
-    req <- curl::curl_fetch_memory(path)
-    if(req$status != 200) stop("Failed to download file: ", path)
-    return(req$content)
-  } else {
-    path <- normalizePath(path)
-    stopifnot(file.exists(path))
-    readBin(path, raw(), file.info(path)$size)
-  }
+download_files <- function(urls){
+  vapply(urls, function(path){
+    if(grepl("^https?://", path)){
+      tmp <- tempfile()
+      curl::curl_download(path, tmp)
+      path <- tmp
+    }
+    normalizePath(path, mustWork = TRUE)
+  }, character(1))
 }
-
 
 #' @export
 "print.tesseract" <- function(x, ...){

@@ -17,3 +17,7 @@ ocr_raw <- function(input, ptr) {
     .Call('tesseract_ocr_raw', PACKAGE = 'tesseract', input, ptr)
 }
 
+ocr_file <- function(file, ptr) {
+    .Call('tesseract_ocr_file', PACKAGE = 'tesseract', file, ptr)
+}
+
