@@ -8,17 +8,17 @@
 \usage{
 ocr(image, engine = tesseract())
 
-tesseract(language = "eng", datapath = NULL, cache = TRUE)
+tesseract(language = NULL, datapath = NULL, cache = TRUE)
 }
 \arguments{
 \item{image}{file path, url, or raw vector to image (png, tiff, jpeg, etc)}
 
 \item{engine}{a tesseract engine created with \code{tesseract()}}
 
-\item{language}{string with language for training data}
+\item{language}{string with language for training data. Usually defaults to \code{eng}}
 
 \item{datapath}{path with the training data for this language. Default uses
-the system default library.}
+the system library.}
 
 \item{cache}{use a cached version of this training data if available}
 }
