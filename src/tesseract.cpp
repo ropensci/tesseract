@@ -55,38 +55,9 @@ Rcpp::List engine_info_internal(TessPtr ptr){
   );
 }
 
-// [[Rcpp::export]]
-Rcpp::String ocr_raw(Rcpp::RawVector input, TessPtr ptr){
-    tesseract::TessBaseAPI *api = get_engine(ptr);
-
-    // Open input image with leptonica library
-    Pix *image =  pixReadMem(input.begin(), input.length());
-    if(!image)
-      throw std::runtime_error("Failed to read image");
-
-    // Get OCR result
-    api->SetImage(image);
-    char *outText = api->GetUTF8Text();
-    pixDestroy(&image);
-    api->Clear();
-
-    // Destroy used object and release memory
-    Rcpp::String y(outText);
-    y.set_encoding(CE_UTF8);
-    delete [] outText;
-    return y;
-}
-
-// [[Rcpp::export]]
-Rcpp::String ocr_file(std::string file, TessPtr ptr){
-  tesseract::TessBaseAPI *api = get_engine(ptr);
-
-  // Open input image with leptonica library
-  Pix *image =  pixRead(file.c_str());
-  if(!image)
-    throw std::runtime_error("Failed to read image");
-
+Rcpp::String ocr_pix(tesseract::TessBaseAPI * api, Pix * image){
   // Get OCR result
+  api->ClearAdaptiveClassifier();
   api->SetImage(image);
   char *outText = api->GetUTF8Text();
   pixDestroy(&image);
@@ -97,4 +68,22 @@ Rcpp::String ocr_file(std::string file, TessPtr ptr){
   y.set_encoding(CE_UTF8);
   delete [] outText;
   return y;
+}
+
+// [[Rcpp::export]]
+Rcpp::String ocr_raw(Rcpp::RawVector input, TessPtr ptr){
+    tesseract::TessBaseAPI *api = get_engine(ptr);
+    Pix *image =  pixReadMem(input.begin(), input.length());
+    if(!image)
+      throw std::runtime_error("Failed to read image");
+    return ocr_pix(api, image);
+}
+
+// [[Rcpp::export]]
+Rcpp::String ocr_file(std::string file, TessPtr ptr){
+  tesseract::TessBaseAPI *api = get_engine(ptr);
+  Pix *image =  pixRead(file.c_str());
+  if(!image)
+    throw std::runtime_error("Failed to read image");
+  return ocr_pix(api, image);
 }
