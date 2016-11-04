@@ -48,7 +48,7 @@ else
     HOMEBREW_CACHE="/tmp" $BREW install --force-bottle libpng jpeg libtiff leptonica ${PKG_BREW_NAME}  2>&1 | perl -pe 's/Warning/Note/gi'
     PKG_CFLAGS=`$BREWDIR/opt/pkg-config/bin/pkg-config --cflags ${PKG_CONFIG_NAME}`
     PKG_LIBS=`$BREWDIR/opt/pkg-config/bin/pkg-config --libs --static ${PKG_CONFIG_NAME}`
-    PKG_LIBS="-L$BREWDIR/lib $PKG_LIBS"
+    PKG_LIBS="-Z -L$BREWDIR/lib -L/usr/include -F/Library/Frameworks -F/System/Library/Frameworks $PKG_LIBS"
     rm -f $BREWDIR/lib/*.dylib
     rm -f $BREWDIR/Cellar/*/*/lib/*.dylib
 
