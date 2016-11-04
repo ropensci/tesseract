@@ -56,14 +56,15 @@ ocr <- function(image, engine = tesseract()) {
 
 #' @export
 #' @rdname tesseract
-#' @param language string with language for training data
+#' @param language string with language for training data. Usually defaults to `eng`
 #' @param datapath path with the training data for this language. Default uses
-#' the system default library.
+#' the system library.
 #' @param cache use a cached version of this training data if available
 tesseract <- local({
   store <- new.env()
-  function(language = "eng", datapath = NULL, cache = TRUE){
+  function(language = NULL, datapath = NULL, cache = TRUE){
     datapath <- as.character(datapath)
+    language <- as.character(language)
     if(isTRUE(cache)){
       key <- digest::digest(list(language, datapath))
       if(is.null(store[[key]])){
@@ -92,6 +93,7 @@ download_files <- function(urls){
 "print.tesseract" <- function(x, ...){
   info <- engine_info_internal(x)
   cat("<tesseract engine>\n")
-  cat(" language:", info$language, "\n")
+  cat(" loaded:", info$loaded, "\n")
   cat(" datapath:", info$datapath, "\n")
+  cat(" available:", info$available, "\n")
 }
