@@ -40,7 +40,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // ocr_raw
-Rcpp::String ocr_raw(Rcpp::RawVector input, TessPtr ptr);
+Rcpp::CharacterVector ocr_raw(Rcpp::RawVector input, TessPtr ptr);
 RcppExport SEXP tesseract_ocr_raw(SEXP inputSEXP, SEXP ptrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -52,7 +52,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // ocr_file
-Rcpp::String ocr_file(std::string file, TessPtr ptr);
+Rcpp::CharacterVector ocr_file(std::string file, TessPtr ptr);
 RcppExport SEXP tesseract_ocr_file(SEXP fileSEXP, SEXP ptrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

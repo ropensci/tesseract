@@ -1,7 +1,6 @@
 #include "tesseract_types.h"
 #include <genericvector.h>
-
-typedef GenericVector<STRING> stringvec;
+#include <osdetect.h>
 
 // [[Rcpp::export]]
 Rcpp::List tesseract_config(){
@@ -55,11 +54,20 @@ Rcpp::List engine_info_internal(TessPtr ptr){
   );
 }
 
-Rcpp::String ocr_pix(tesseract::TessBaseAPI * api, Pix * image){
+Rcpp::CharacterVector ocr_pix(tesseract::TessBaseAPI * api, Pix * image){
   // Get OCR result
   api->ClearAdaptiveClassifier();
   api->SetImage(image);
   char *outText = api->GetUTF8Text();
+
+  //meta data
+  OSResults out;
+  api->DetectOS(&out);
+  OSBestResult best = out.best_result;
+  int orientation = best.orientation_id;
+  int script = best.script_id;
+
+  //cleanup
   pixDestroy(&image);
   api->Clear();
 
@@ -67,11 +75,17 @@ Rcpp::String ocr_pix(tesseract::TessBaseAPI * api, Pix * image){
   Rcpp::String y(outText);
   y.set_encoding(CE_UTF8);
   delete [] outText;
-  return y;
+
+  // Output object
+  Rcpp::CharacterVector res(0);
+  res.push_back(y);
+  res.attr("orientation") = orientation;
+  res.attr("script") = script;
+  return res;
 }
 
 // [[Rcpp::export]]
-Rcpp::String ocr_raw(Rcpp::RawVector input, TessPtr ptr){
+Rcpp::CharacterVector ocr_raw(Rcpp::RawVector input, TessPtr ptr){
     tesseract::TessBaseAPI *api = get_engine(ptr);
     Pix *image =  pixReadMem(input.begin(), input.length());
     if(!image)
@@ -80,7 +94,7 @@ Rcpp::String ocr_raw(Rcpp::RawVector input, TessPtr ptr){
 }
 
 // [[Rcpp::export]]
-Rcpp::String ocr_file(std::string file, TessPtr ptr){
+Rcpp::CharacterVector ocr_file(std::string file, TessPtr ptr){
   tesseract::TessBaseAPI *api = get_engine(ptr);
   Pix *image =  pixRead(file.c_str());
   if(!image)
