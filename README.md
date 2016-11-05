@@ -42,7 +42,7 @@ cat(out)
 ## Installation
 
 Installation from source on Linux or OSX requires the `tesseract-ocr` library. On __Debian__ or __Ubuntu__ install [libtesseract-dev](https://packages.debian.org/testing/libtesseract-dev) and
-[libleptonica-dev](https://packages.debian.org/testing/libleptonica-dev). Also install [tesseract-langpack-eng](https://packages.debian.org/testing/tesseract-langpack-eng) to run english examples.
+[libleptonica-dev](https://packages.debian.org/testing/libleptonica-dev). Also install [tesseract-ocr-eng](https://packages.debian.org/testing/tesseract-ocr-eng) to run english examples.
 
 ```
 sudo apt-get install -y libtesseract-dev libleptonica-dev tesseract-langpack-eng
