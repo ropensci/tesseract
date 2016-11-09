@@ -41,7 +41,17 @@ cat(out)
 
 ## Installation
 
-Installation from source on Linux or OSX requires the `tesseract-ocr` library. On __Debian__ or __Ubuntu__ install [libtesseract-dev](https://packages.debian.org/testing/libtesseract-dev) and
+On Windows and MacOS the package binary package can be installed from CRAN:
+
+```r
+install.packages("tesseract")
+```
+
+Installation from source on Linux or OSX requires the `Tesseract` library (see below).
+
+### Install from source
+
+ On __Debian__ or __Ubuntu__ install [libtesseract-dev](https://packages.debian.org/testing/libtesseract-dev) and
 [libleptonica-dev](https://packages.debian.org/testing/libleptonica-dev). Also install [tesseract-ocr-eng](https://packages.debian.org/testing/tesseract-ocr-eng) to run english examples.
 
 ```
