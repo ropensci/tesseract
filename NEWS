@@ -1,3 +1,6 @@
+1.2
+  - Try to fix build for CRAN OS-X, again.
+
 1.1
   - Try to fix build for CRAN OS-X build server
   - Show 'loaded' and 'available' languages in print.tesseract()
