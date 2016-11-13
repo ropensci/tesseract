@@ -55,7 +55,7 @@ Installation from source on Linux or OSX requires the `Tesseract` library (see b
 [libleptonica-dev](https://packages.debian.org/testing/libleptonica-dev). Also install [tesseract-ocr-eng](https://packages.debian.org/testing/tesseract-ocr-eng) to run english examples.
 
 ```
-sudo apt-get install -y libtesseract-dev libleptonica-dev tesseract-langpack-eng
+sudo apt-get install -y libtesseract-dev libleptonica-dev tesseract-ocr-eng
 ```
 
 On __Fedora__ we need [tesseract-devel](https://apps.fedoraproject.org/packages/tesseract-devel) and
