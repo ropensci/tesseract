@@ -58,12 +58,21 @@ Installation from source on Linux or OSX requires the `Tesseract` library (see b
 sudo apt-get install -y libtesseract-dev libleptonica-dev tesseract-langpack-eng
 ```
 
-On __Fedora__ and __CentOS__ we need [tesseract-devel](https://apps.fedoraproject.org/packages/tesseract-devel) and
+On __Fedora__ we need [tesseract-devel](https://apps.fedoraproject.org/packages/tesseract-devel) and
 [leptonica-devel](https://apps.fedoraproject.org/packages/leptonica-devel)
 
 ```
 sudo yum install tesseract-devel leptonica-devel
 ````
+
+On __RHEL__ and __CentOS__ we need [tesseract-devel](https://apps.fedoraproject.org/packages/tesseract-devel) and
+[leptonica-devel](https://apps.fedoraproject.org/packages/leptonica-devel) from EPEL
+
+```
+sudo yum install epel-release
+sudo yum install tesseract-devel leptonica-devel
+````
+
 
 On __OS-X__ use [tesseract](https://github.com/Homebrew/homebrew-core/blob/master/Formula/tesseract.rb) from Homebrew:
 
