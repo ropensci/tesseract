@@ -42,7 +42,7 @@
 #' # Extract text from images
 #' out <- ocr("page.tiff")
 #' cat(out)
-ocr <- function(image, engine = tesseract()) {
+ocr <- function(image, engine = tesseract("eng")) {
   stopifnot(inherits(engine, "tesseract"))
   if(is.character(image)){
     image <- download_files(image)

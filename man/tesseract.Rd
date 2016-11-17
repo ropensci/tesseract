@@ -6,7 +6,7 @@
 \alias{tesseract}
 \title{Tesseract OCR}
 \usage{
-ocr(image, engine = tesseract())
+ocr(image, engine = tesseract("eng"))
 
 tesseract(language = NULL, datapath = NULL, cache = TRUE)
 }
