@@ -19,6 +19,7 @@
 #' cat(text)
 #' }
 tessdata_download <- function(lang, dir = tessdata_info()$dir, progress = TRUE){
+  warn_on_linux()
   stopifnot(is.character(lang))
   stopifnot(is.character(dir))
   dir <- normalizePath(dir, mustWork = TRUE)
@@ -48,4 +49,10 @@ progress_fun <- function(down, up) {
   if(now > 10000)
     cat("\r Downloaded:", sprintf("%.2f", now / 2^20), "MB")
   TRUE
+}
+
+warn_on_linux <- function(){
+  if(identical(.Platform$OS.type, "unix") && !identical(Sys.info()[["sysname"]], "Darwin")){
+    warning("On Linux you should install training data via yum/apt. Please check the manual page.", call. = FALSE)
+  }
 }
