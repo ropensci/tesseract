@@ -9,6 +9,10 @@ tesseract_engine_internal <- function(datapath, language) {
     .Call('tesseract_tesseract_engine_internal', PACKAGE = 'tesseract', datapath, language)
 }
 
+tesseract_engine_set_variable <- function(ptr, name, value) {
+    .Call('tesseract_tesseract_engine_set_variable', PACKAGE = 'tesseract', ptr, name, value)
+}
+
 engine_info_internal <- function(ptr) {
     .Call('tesseract_engine_info_internal', PACKAGE = 'tesseract', ptr)
 }

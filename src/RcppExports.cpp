@@ -28,6 +28,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// tesseract_engine_set_variable
+TessPtr tesseract_engine_set_variable(TessPtr ptr, const char * name, const char * value);
+RcppExport SEXP tesseract_tesseract_engine_set_variable(SEXP ptrSEXP, SEXP nameSEXP, SEXP valueSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< TessPtr >::type ptr(ptrSEXP);
+    Rcpp::traits::input_parameter< const char * >::type name(nameSEXP);
+    Rcpp::traits::input_parameter< const char * >::type value(valueSEXP);
+    rcpp_result_gen = Rcpp::wrap(tesseract_engine_set_variable(ptr, name, value));
+    return rcpp_result_gen;
+END_RCPP
+}
 // engine_info_internal
 Rcpp::List engine_info_internal(TessPtr ptr);
 RcppExport SEXP tesseract_engine_info_internal(SEXP ptrSEXP) {

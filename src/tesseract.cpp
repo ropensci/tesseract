@@ -33,6 +33,14 @@ tesseract::TessBaseAPI * get_engine(TessPtr engine){
 }
 
 // [[Rcpp::export]]
+TessPtr tesseract_engine_set_variable(TessPtr ptr, const char * name, const char * value){
+  tesseract::TessBaseAPI * api = get_engine(ptr);
+  if(!api->SetVariable(name, value))
+    throw std::runtime_error(std::string("Failed to set variable ") + name);
+  return ptr;
+}
+
+// [[Rcpp::export]]
 Rcpp::List engine_info_internal(TessPtr ptr){
   tesseract::TessBaseAPI * api = get_engine(ptr);
   GenericVector<STRING> * langs = new GenericVector<STRING>;
