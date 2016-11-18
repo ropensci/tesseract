@@ -28,7 +28,8 @@ tessdata_download <- function(lang, dir = tessdata_info()$dir, progress = TRUE){
     noprogress = !isTRUE(progress),
     progressfunction = progress_fun
   ))
-  cat("\n")
+  if(progress)
+    cat("\n")
   if(req$status_code != 200)
     stop("Download failed: HTTP ", req$status_code, call. = FALSE)
   destfile <- file.path(dir, basename(url))
