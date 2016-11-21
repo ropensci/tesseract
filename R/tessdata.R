@@ -47,8 +47,13 @@ tessdata_info <- function(){
 progress_fun <- function(down, up) {
   total <- down[[1]]
   now <- down[[2]]
+  pct <- if(length(total) && total > 0){
+    paste0("(", round(now/total * 100), "%)")
+  } else {
+    ""
+  }
   if(now > 10000)
-    cat("\r Downloaded:", sprintf("%.2f", now / 2^20), "MB")
+    cat("\r Downloaded:", sprintf("%.2f", now / 2^20), "MB ", pct)
   TRUE
 }
 
