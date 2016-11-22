@@ -10,21 +10,22 @@
 #' @aliases tessdata
 #' @rdname tessdata
 #' @param lang three letter code for language, see [tessdata](https://github.com/tesseract-ocr/tessdata) repository.
-#' @param dir destination directory where to download store the file
-#' @param progress show progress while downloading
+#' @param datapath destination directory where to download store the file
+#' @param progress print progress while downloading
 #' @examples \dontrun{
 #' tesseract_download("fra")
 #' french <- tesseract("fra")
 #' text <- ocr("http://ocrapiservice.com/static/images/examples/french_text.png", engine = french)
 #' cat(text)
 #' }
-tesseract_download <- function(lang, dir = NULL, progress = TRUE){
-  warn_on_linux()
-  if(!length(dir))
-    dir <- tesseract_info()$datapath
+tesseract_download <- function(lang, datapath = NULL, progress = TRUE){
+  if(!length(datapath)){
+    warn_on_linux()
+    datapath <- tesseract_info()$datapath
+  }
   stopifnot(is.character(lang))
-  stopifnot(is.character(dir))
-  dir <- normalizePath(dir, mustWork = TRUE)
+  stopifnot(is.character(datapath))
+  datapath <- normalizePath(datapath, mustWork = TRUE)
   url <- sprintf('https://github.com/tesseract-ocr/tessdata/raw/master/%s.traineddata', lang)
   req <- curl::curl_fetch_memory(url, curl::new_handle(
     noprogress = !isTRUE(progress),
@@ -34,7 +35,7 @@ tesseract_download <- function(lang, dir = NULL, progress = TRUE){
     cat("\n")
   if(req$status_code != 200)
     stop("Download failed: HTTP ", req$status_code, call. = FALSE)
-  destfile <- file.path(dir, basename(url))
+  destfile <- file.path(datapath, basename(url))
   writeBin(req$content, destfile)
   return(destfile)
 }

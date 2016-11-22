@@ -6,16 +6,16 @@
 \alias{tesseract_info}
 \title{Tesseract Training Data}
 \usage{
-tesseract_download(lang, dir = NULL, progress = TRUE)
+tesseract_download(lang, datapath = NULL, progress = TRUE)
 
 tesseract_info()
 }
 \arguments{
 \item{lang}{three letter code for language, see \href{https://github.com/tesseract-ocr/tessdata}{tessdata} repository.}
 
-\item{dir}{destination directory where to download store the file}
+\item{datapath}{destination directory where to download store the file}
 
-\item{progress}{show progress while downloading}
+\item{progress}{print progress while downloading}
 }
 \description{
 Helper function to download training data from the official
