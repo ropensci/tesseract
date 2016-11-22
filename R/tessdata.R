@@ -13,13 +13,15 @@
 #' @param dir destination directory where to download store the file
 #' @param progress show progress while downloading
 #' @examples \dontrun{
-#' tessdata_download("fra")
+#' tesseract_download("fra")
 #' french <- tesseract("fra")
 #' text <- ocr("http://ocrapiservice.com/static/images/examples/french_text.png", engine = french)
 #' cat(text)
 #' }
-tessdata_download <- function(lang, dir = tessdata_info()$dir, progress = TRUE){
+tesseract_download <- function(lang, dir = NULL, progress = TRUE){
   warn_on_linux()
+  if(!length(dir))
+    dir <- tesseract_info()$datapath
   stopifnot(is.character(lang))
   stopifnot(is.character(dir))
   dir <- normalizePath(dir, mustWork = TRUE)
@@ -39,9 +41,10 @@ tessdata_download <- function(lang, dir = tessdata_info()$dir, progress = TRUE){
 
 #' @export
 #' @rdname tessdata
-tessdata_info <- function(){
+tesseract_info <- function(){
   info <- engine_info_internal(tesseract())
-  list(dir = info$datapath, lang = info$available)
+  config <- tesseract_config()
+  list(datapath = info$datapath, available = info$available, version = config$version)
 }
 
 progress_fun <- function(down, up) {

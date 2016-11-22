@@ -2,8 +2,8 @@
 
 S3method(print,tesseract)
 export(ocr)
-export(tessdata_download)
-export(tessdata_info)
 export(tesseract)
+export(tesseract_download)
+export(tesseract_info)
 importFrom(Rcpp,sourceCpp)
 useDynLib(tesseract)
