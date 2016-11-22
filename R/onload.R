@@ -4,6 +4,6 @@
     Sys.setenv(TESSDATA_PREFIX = tessdata)
   }
   tryCatch(tesseract(), error = function(e){
-    stop("Failed to load Tesseract. Install English training data, e.g: apt-get install tesseract-ocr-eng")
+    stop("Unable to find English training data, please install: apt-get install tesseract-ocr-eng", call. = FALSE)
   })
 }
