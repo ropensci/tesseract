@@ -4,6 +4,10 @@
     Sys.setenv(TESSDATA_PREFIX = tessdata)
   }
   tryCatch(tesseract(), error = function(e){
-    warning("Unable to find English training data, please install: apt-get install tesseract-ocr-eng", call. = FALSE)
+    warning("Unable to find English training data", call. = FALSE)
+    os <- sessionInfo()[[4]]
+    if(grepl("ubuntu|debian", os, TRUE)){
+      stop("Missing training data. Please run: apt-get install tesseract-ocr-eng", call. = FALSE)
+    }
   })
 }
