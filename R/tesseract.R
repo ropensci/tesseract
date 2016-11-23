@@ -46,7 +46,13 @@
 #' engine <- tesseract(options = list(tessedit_char_whitelist = "0123456789"))
 ocr <- function(image, engine = tesseract("eng")) {
   stopifnot(inherits(engine, "tesseract"))
-  if(is.character(image)){
+  if(inherits(image, "magick-image")){
+    image <- lapply(image, function(x){
+      tmp <- tempfile(fileext = ".tiff")
+      magick::image_write(x, tmp, format = "tiff")
+    })
+    vapply(image, ocr_file, character(1), ptr = engine, USE.NAMES = FALSE)
+  } else if(is.character(image)){
     image <- download_files(image)
     vapply(image, ocr_file, character(1), ptr = engine, USE.NAMES = FALSE)
   } else if(is.raw(image)){

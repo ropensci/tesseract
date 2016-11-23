@@ -1,6 +1,8 @@
 1.3
   - tesseract() gains an 'options' parameter for setting engine variables
-  - New tessdata_download() functions for installing training data on Win/Mac
+  - New tessseract_download() function for installing training data on Win/Mac
+  - Initiate default tesseract engine onAttach() to fail for missing training data
+  - Add support for ocr() on magick images
 
 1.2
   - Try to fix build for CRAN OS-X, again.
