@@ -58,7 +58,7 @@ news <- file.path(Sys.getenv("R_DOC_DIR"), "NEWS.pdf")
 orig <- pdf_text(news)[1]
 
 # Render pdf to jpeg/tiff image
-bitmap <- pdf_render_page(news, dpi = 300)
+bitmap <- pdf_render_page(news, dpi = 300, numeric = TRUE)
 tiff::writeTIFF(bitmap, "page.tiff")
 
 # Extract text from images
