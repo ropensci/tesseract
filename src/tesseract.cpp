@@ -4,8 +4,11 @@
 
 // [[Rcpp::export]]
 Rcpp::List tesseract_config(){
+  tesseract::TessBaseAPI api;
+  api.InitForAnalysePage();
   return Rcpp::List::create(
-    Rcpp::_["version"] = tesseract::TessBaseAPI::Version()
+    Rcpp::_["version"] = tesseract::TessBaseAPI::Version(),
+    Rcpp::_["path"] = api.GetDatapath()
   );
 }
 
