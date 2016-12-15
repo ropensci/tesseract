@@ -4,20 +4,17 @@ cache: packages
 matrix:
   include:
     - os: linux
-      dist: precise
-      sudo: required
-    - os: linux
       dist: trusty
       sudo: required
       env: R_CODECOV=true
     - os: osx
-      osx_image: xcode8
+      osx_image: xcode8.1
       brew_packages:
         - tesseract
         - poppler
       latex: false
     - os: osx
-      osx_image: xcode8
+      osx_image: xcode8.1
       disable_homebrew: true
       latex: false
     - os: osx
