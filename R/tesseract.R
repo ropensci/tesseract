@@ -23,7 +23,7 @@
 #' @aliases tesseract ocr
 #' @importFrom Rcpp sourceCpp
 #' @examples # Simple example
-#' text <- ocr("http://jeroenooms.github.io/images/testocr.png")
+#' text <- ocr("http://jeroen.github.io/images/testocr.png")
 #' cat(text)
 #'
 #' # Roundtrip test: render PDF to image and OCR it back to text

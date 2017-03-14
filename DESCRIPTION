@@ -3,7 +3,7 @@ Type: Package
 Title: Open Source OCR Engine
 Version: 1.3
 Author: Jeroen Ooms
-Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>
+Maintainer: Jeroen Ooms <jeroen@berkeley.edu>
 Description: An OCR engine with unicode (UTF-8) support that can recognize
     over 100 languages out of the box.
 License: MIT + file LICENSE
