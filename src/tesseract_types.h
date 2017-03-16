@@ -11,4 +11,4 @@ inline void tess_finalizer(tesseract::TessBaseAPI *engine) {
   delete engine;
 }
 
-typedef Rcpp::XPtr<tesseract::TessBaseAPI, Rcpp::PreserveStorage, tess_finalizer> TessPtr;
+typedef Rcpp::XPtr<tesseract::TessBaseAPI, Rcpp::PreserveStorage, tess_finalizer, true> TessPtr;
