@@ -38,7 +38,7 @@ else
     PKG_CFLAGS="-I$BREWDIR/opt/$PKG_BREW_NAME/include/tesseract -I$BREWDIR/opt/leptonica/include/leptonica"
     PKG_LIBS="-L$BREWDIR/opt/$PKG_BREW_NAME/lib $PKG_LIBS"
   else
-    BREWDIR="/tmp/homebrew"
+    BREWDIR="$TMPDIR/homebrew"
     BREW="$BREWDIR/bin/brew"
     rm -Rf $BREWDIR
     mkdir -p $BREWDIR
