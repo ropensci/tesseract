@@ -1,3 +1,7 @@
+1.4
+  - Run engine finalizer on R exit (requires Rcpp 0.12.10)
+  - Move autobrew script to separate repository
+
 1.3
   - tesseract() gains an 'options' parameter for setting engine variables
   - New tessseract_download() function for installing training data on Win/Mac
