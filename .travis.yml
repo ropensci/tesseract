@@ -33,6 +33,7 @@ addons:
 
 r_github_packages:
   - jimhester/covr
+  - RcppCore/Rcpp
 
 warnings_are_errors: true
 #r_check_revdep: true

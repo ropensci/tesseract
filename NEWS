@@ -1,6 +1,7 @@
 1.4
   - Run engine finalizer on R exit (requires Rcpp 0.12.10)
   - Move autobrew script to separate repository
+  - Add symbol registration
 
 1.3
   - tesseract() gains an 'options' parameter for setting engine variables

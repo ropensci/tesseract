@@ -70,4 +70,3 @@ engine <- tesseract(options = list(tessedit_char_whitelist = "0123456789"))
 \references{
 \href{https://github.com/tesseract-ocr/tessdata}{Tesseract training data}
 }
-

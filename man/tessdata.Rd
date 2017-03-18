@@ -32,4 +32,3 @@ text <- ocr("http://ocrapiservice.com/static/images/examples/french_text.png", e
 cat(text)
 }
 }
-

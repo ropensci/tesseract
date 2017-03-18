@@ -13,7 +13,7 @@ SystemRequirements: Tesseract >= 3.03 (libtesseract-dev / tesseract-devel) and
     Leptonica (libleptonica-dev / leptonica-devel). On Debian you need to install
     the English training data separately (tesseract-ocr-eng)
 Imports:
-    Rcpp (>= 0.12.9.5),
+    Rcpp (>= 0.12.10),
     curl,
     digest
 LinkingTo: Rcpp
@@ -23,4 +23,3 @@ Suggests:
     magick,
     pdftools,
     tiff
-Remotes: RcppCore/Rcpp
