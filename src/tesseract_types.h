@@ -11,4 +11,9 @@ inline void tess_finalizer(tesseract::TessBaseAPI *engine) {
   delete engine;
 }
 
+//double check C++ API version for Xptr finalizer
+#if RCPP_VERSION < Rcpp_Version(0,12,10)
+#error RCPP too old. Need at least 0.12.10.
+#endif
+
 typedef Rcpp::XPtr<tesseract::TessBaseAPI, Rcpp::PreserveStorage, tess_finalizer, true> TessPtr;
