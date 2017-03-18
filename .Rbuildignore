@@ -8,3 +8,4 @@
 \.jpeg$
 ^\.travis\.yml$
 ^appveyor\.yml$
+^README.md$
