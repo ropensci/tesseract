@@ -1,7 +1,7 @@
 Package: tesseract
 Type: Package
 Title: Open Source OCR Engine
-Version: 1.4
+Version: 1.4.9000
 Author: Jeroen Ooms
 Maintainer: Jeroen Ooms <jeroen@berkeley.edu>
 Description: An OCR engine with unicode (UTF-8) support that can recognize
@@ -13,7 +13,7 @@ SystemRequirements: Tesseract >= 3.03 (libtesseract-dev / tesseract-devel) and
     Leptonica (libleptonica-dev / leptonica-devel). On Debian you need to install
     the English training data separately (tesseract-ocr-eng)
 Imports:
-    Rcpp (>= 0.12.10),
+    Rcpp (>= 0.12.12),
     curl,
     digest
 LinkingTo: Rcpp
@@ -23,3 +23,5 @@ Suggests:
     magick,
     pdftools,
     tiff
+Remotes: ropensci/magick
+

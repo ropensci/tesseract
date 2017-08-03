@@ -2,26 +2,26 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 tesseract_config <- function() {
-    .Call('tesseract_tesseract_config', PACKAGE = 'tesseract')
+    .Call('_tesseract_tesseract_config', PACKAGE = 'tesseract')
 }
 
 tesseract_engine_internal <- function(datapath, language) {
-    .Call('tesseract_tesseract_engine_internal', PACKAGE = 'tesseract', datapath, language)
+    .Call('_tesseract_tesseract_engine_internal', PACKAGE = 'tesseract', datapath, language)
 }
 
 tesseract_engine_set_variable <- function(ptr, name, value) {
-    .Call('tesseract_tesseract_engine_set_variable', PACKAGE = 'tesseract', ptr, name, value)
+    .Call('_tesseract_tesseract_engine_set_variable', PACKAGE = 'tesseract', ptr, name, value)
 }
 
 engine_info_internal <- function(ptr) {
-    .Call('tesseract_engine_info_internal', PACKAGE = 'tesseract', ptr)
+    .Call('_tesseract_engine_info_internal', PACKAGE = 'tesseract', ptr)
 }
 
 ocr_raw <- function(input, ptr) {
-    .Call('tesseract_ocr_raw', PACKAGE = 'tesseract', input, ptr)
+    .Call('_tesseract_ocr_raw', PACKAGE = 'tesseract', input, ptr)
 }
 
 ocr_file <- function(file, ptr) {
-    .Call('tesseract_ocr_file', PACKAGE = 'tesseract', file, ptr)
+    .Call('_tesseract_ocr_file', PACKAGE = 'tesseract', file, ptr)
 }
 

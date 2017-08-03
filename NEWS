@@ -1,3 +1,8 @@
+1.5
+  - Use 'png' instead of 'tiff' to read magick images
+  - Compile with $(C_VISIBILITY) to hide internal symbols (requires Rcpp 0.12.12)
+  - Use Rcpp symbol registration
+
 1.4
   - Run engine finalizer on R exit (requires Rcpp 0.12.10)
   - Move autobrew script to separate repository

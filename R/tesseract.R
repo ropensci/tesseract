@@ -47,11 +47,10 @@
 ocr <- function(image, engine = tesseract("eng")) {
   stopifnot(inherits(engine, "tesseract"))
   if(inherits(image, "magick-image")){
-    image <- lapply(image, function(x){
-      tmp <- tempfile(fileext = ".tiff")
-      magick::image_write(x, tmp, format = "tiff")
-    })
-    vapply(image, ocr_file, character(1), ptr = engine, USE.NAMES = FALSE)
+    vapply(image, function(x){
+      buf <- magick::image_write(x, format = 'png', density = "72x72")
+      ocr_raw(buf, engine)
+    }, character(1))
   } else if(is.character(image)){
     image <- download_files(image)
     vapply(image, ocr_file, character(1), ptr = engine, USE.NAMES = FALSE)
