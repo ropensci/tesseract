@@ -48,8 +48,10 @@ ocr <- function(image, engine = tesseract("eng")) {
   stopifnot(inherits(engine, "tesseract"))
   if(inherits(image, "magick-image")){
     vapply(image, function(x){
-      buf <- magick::image_write(x, format = 'png', density = "72x72")
-      ocr_raw(buf, engine)
+      tmp <- tempfile(fileext = ".png")
+      on.exit(unlink(tmp))
+      magick::image_write(x, tmp, format = 'PNG', density = "72x72")
+      ocr(tmp, engine = engine)
     }, character(1))
   } else if(is.character(image)){
     image <- download_files(image)
