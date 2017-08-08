@@ -1,4 +1,5 @@
 1.5
+  - Windows: update libtesseract to 3.05.01
   - Use 'png' instead of 'tiff' to read magick images
   - Compile with $(C_VISIBILITY) to hide internal symbols (requires Rcpp 0.12.12)
   - Use Rcpp symbol registration

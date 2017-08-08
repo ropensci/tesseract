@@ -1,13 +1,21 @@
-COMPILED_BY ?= gcc-4.6.3
+# Tesseract Version
+VERSION=3.05.01
+
+# Support R < 3.3 with gcc-4.6.3
+R_COMPILED_BY ?= -4.6.3
+ifeq ($(R_COMPILED_BY),-4.9.3)
+VERSION3.04.01
+endif
+
 CXX_STD=CXX11
 
 PKG_CPPFLAGS = \
-	-I../windows/tesseract-3.04.01/include/tesseract \
-	-I../windows/tesseract-3.04.01/include/leptonica
+	-I../windows/tesseract-${VERSION}/include/tesseract \
+	-I../windows/tesseract-${VERSION}/include/leptonica
 
 PKG_LIBS = \
-	-L../windows/tesseract-3.04.01/lib${subst gcc,,${COMPILED_BY}}${R_ARCH} \
-	-L../windows/tesseract-3.04.01/lib${R_ARCH} \
+	-L../windows/tesseract-${VERSION}/lib${subst gcc,,${COMPILED_BY}}${R_ARCH} \
+	-L../windows/tesseract-${VERSION}/lib${R_ARCH} \
 	-ltesseract -llept \
 	-ltiff -llzma -lopenjp2 -lwebp -ljpeg -lgif -lpng16 -lz \
 	-lws2_32
@@ -16,7 +24,7 @@ all: clean winlibs
 
 winlibs:
 	mkdir -p ../inst
-	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R"
+	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R" ${VERSION}
 	cp -Rf ../windows/tessdata ../inst/
 
 clean:
