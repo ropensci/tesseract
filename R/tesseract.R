@@ -32,7 +32,7 @@
 #'
 #' # A PDF file with some text
 #' setwd(tempdir())
-#' news <- file.path(Sys.getenv("R_DOC_DIR"), "NEWS.pdf")
+#' news <- file.path(Sys.getenv("R_DOC_DIR", R.home('doc')), "NEWS.pdf")
 #' orig <- pdf_text(news)[1]
 #'
 #' # Render pdf to jpeg/tiff image
