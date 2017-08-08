@@ -6,13 +6,10 @@ matrix:
   include:
     - os: linux
       dist: trusty
-      sudo: required
       env: R_CODECOV=true
     - os: osx
       osx_image: xcode8.3
-      brew_packages:
-        - tesseract
-        - poppler
+      brew_packages: tesseract
     - os: osx
       osx_image: xcode8.3
       disable_homebrew: true
@@ -31,7 +28,6 @@ addons:
 
 r_github_packages:
   - jimhester/covr
-  - RcppCore/Rcpp
 
 warnings_are_errors: true
 #r_check_revdep: true
