@@ -1,8 +1,8 @@
 .onLoad <- function(lib, pkg){
   pkgdir <- file.path(lib, pkg)
   sysdir <- rappdirs::user_data_dir('tesseract')
-  pkgdata <- file.path(pkgdir, "tessdata")
-  sysdata <- file.path(sysdir, "tessdata")
+  pkgdata <- normalizePath(file.path(pkgdir, "tessdata"), mustWork = FALSE)
+  sysdata <- normalizePath(file.path(sysdir, "tessdata"), mustWork = FALSE)
   if(file.exists(pkgdata) && !file.exists(file.path(sysdata, "eng.traineddata"))){
     packageStartupMessage("First use of Tesseract: copying language data...")
     olddir <- getwd()
