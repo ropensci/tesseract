@@ -1,5 +1,7 @@
 1.5
   - Windows: update libtesseract to 3.05.01
+  - tesseract_download now uses 3.04 tree (instead of 4.00) as suggested in readme
+  - For static packags on Win/Mac, languages stored in: rappdirs::user_data_dir('tesseract')
   - Use 'png' instead of 'tiff' to read magick images
   - Compile with $(C_VISIBILITY) to hide internal symbols (requires Rcpp 0.12.12)
   - Use Rcpp symbol registration

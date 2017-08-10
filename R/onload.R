@@ -1,8 +1,26 @@
 .onLoad <- function(lib, pkg){
-  tessdata <- file.path(lib, pkg, "tessdata")
-  if(is.na(Sys.getenv("TESSDATA_PREFIX", NA)) && file.exists(tessdata)){
-    Sys.setenv(TESSDATA_PREFIX = tessdata)
+  pkgdir <- file.path(lib, pkg)
+  sysdir <- rappdirs::user_data_dir('tesseract')
+  pkgdata <- file.path(pkgdir, "tessdata")
+  sysdata <- file.path(sysdir, "tessdata")
+  if(file.exists(pkgdata) && !file.exists(sysdata)){
+    olddir <- getwd()
+    on.exit(setwd(olddir))
+    setwd(pkgdir)
+    dir.create(sysdir, showWarnings = FALSE, recursive = TRUE)
+    file.copy("tessdata", sysdir, recursive = TRUE)
   }
+  if(is.na(Sys.getenv("TESSDATA_PREFIX", NA))){
+    if(file.exists(file.path(sysdata, "eng.traineddata"))){
+      Sys.setenv(TESSDATA_PREFIX = sysdata)
+    } else if(file.exists(file.path(pkgdata, "eng.traineddata"))){
+      Sys.setenv(TESSDATA_PREFIX = pkgdata)
+    }
+  }
+}
+
+.onUnload <- function(lib){
+  Sys.unsetenv("TESSDATA_PREFIX")
 }
 
 .onAttach <- function(lib, pkg){
