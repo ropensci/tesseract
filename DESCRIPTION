@@ -23,5 +23,3 @@ Roxygen: list(markdown = TRUE)
 Suggests:
     magick (>= 1.0),
     pdftools
-Remotes: ropensci/magick
-
