@@ -10,12 +10,13 @@
 #'  - [tesseract-ocr-spa](https://packages.debian.org/testing/tesseract-ocr-spa) (Debian, Ubuntu)
 #'  - [tesseract-langpack-spa](https://apps.fedoraproject.org/packages/tesseract-langpack-spa) (Fedora, EPEL)
 #'
-#' On other platforms you can manually download training data from [github](https://github.com/tesseract-ocr/tessdata)
-#' and store it in a path on disk that you pass in the `datapath` parameter. Alternatively
-#' you can set a default path via the `TESSDATA_PREFIX` environment variable.
+#' On Windows and MacOS you can install languages using the [tesseract_download] function
+#' which downloads training data directly from [github](https://github.com/tesseract-ocr/tessdata)
+#' and stores it in a the path on disk given by the `TESSDATA_PREFIX` variable.
 #'
 #' @export
 #' @useDynLib tesseract
+#' @family tesseract
 #' @param image file path, url, or raw vector to image (png, tiff, jpeg, etc)
 #' @param engine a tesseract engine created with `tesseract()`
 #' @rdname tesseract

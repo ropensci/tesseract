@@ -28,7 +28,10 @@ Windows and OS-X. On Linux, training data can be installed directly with
 \dontrun{
 tesseract_download("fra")
 french <- tesseract("fra")
-text <- ocr("http://ocrapiservice.com/static/images/examples/french_text.png", engine = french)
+text <- ocr("https://jeroen.github.io/images/french_text.png", engine = french)
 cat(text)
 }
+}
+\seealso{
+Other tesseract: \code{\link{ocr}}
 }

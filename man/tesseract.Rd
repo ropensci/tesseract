@@ -39,9 +39,9 @@ training data from your distribution. For example to install the spanish trainin
 \item \href{https://apps.fedoraproject.org/packages/tesseract-langpack-spa}{tesseract-langpack-spa} (Fedora, EPEL)
 }
 
-On other platforms you can manually download training data from \href{https://github.com/tesseract-ocr/tessdata}{github}
-and store it in a path on disk that you pass in the \code{datapath} parameter. Alternatively
-you can set a default path via the \code{TESSDATA_PREFIX} environment variable.
+On Windows and MacOS you can install languages using the \link{tesseract_download} function
+which downloads training data directly from \href{https://github.com/tesseract-ocr/tessdata}{github}
+and stores it in a the path on disk given by the \code{TESSDATA_PREFIX} variable.
 }
 \examples{
 # Simple example
@@ -69,4 +69,7 @@ engine <- tesseract(options = list(tessedit_char_whitelist = "0123456789"))
 }
 \references{
 \href{https://github.com/tesseract-ocr/tessdata}{Tesseract training data}
+}
+\seealso{
+Other tesseract: \code{\link{tesseract_download}}
 }

@@ -9,13 +9,14 @@
 #' @export
 #' @aliases tessdata
 #' @rdname tessdata
+#' @family tesseract
 #' @param lang three letter code for language, see [tessdata](https://github.com/tesseract-ocr/tessdata) repository.
 #' @param datapath destination directory where to download store the file
 #' @param progress print progress while downloading
 #' @examples \dontrun{
 #' tesseract_download("fra")
 #' french <- tesseract("fra")
-#' text <- ocr("http://ocrapiservice.com/static/images/examples/french_text.png", engine = french)
+#' text <- ocr("https://jeroen.github.io/images/french_text.png", engine = french)
 #' cat(text)
 #' }
 tesseract_download <- function(lang, datapath = NULL, progress = TRUE){
