@@ -26,7 +26,7 @@ tesseract_download <- function(lang, datapath = NULL, progress = TRUE){
   stopifnot(is.character(lang))
   stopifnot(is.character(datapath))
   datapath <- normalizePath(datapath, mustWork = TRUE)
-  url <- sprintf('https://github.com/tesseract-ocr/tessdata/raw/master/%s.traineddata', lang)
+  url <- sprintf('https://github.com/tesseract-ocr/tessdata/raw/3.04.00/%s.traineddata', lang)
   req <- curl::curl_fetch_memory(url, curl::new_handle(
     noprogress = !isTRUE(progress),
     progressfunction = progress_fun
