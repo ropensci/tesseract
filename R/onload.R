@@ -3,7 +3,8 @@
   sysdir <- rappdirs::user_data_dir('tesseract')
   pkgdata <- file.path(pkgdir, "tessdata")
   sysdata <- file.path(sysdir, "tessdata")
-  if(file.exists(pkgdata) && !file.exists(sysdata)){
+  if(file.exists(pkgdata) && !file.exists(file.path(sysdata, "eng.traineddata"))){
+    message("First use of Tesseract: copying language data")
     olddir <- getwd()
     on.exit(setwd(olddir))
     setwd(pkgdir)
