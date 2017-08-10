@@ -32,10 +32,11 @@
 #' orig <- pdftools::pdf_text(pdf_file)[1]
 #'
 #' # Render pdf to png image
-#' png_file <- pdftools::pdf_convert(pdf_file, pages = 1, filenames = "page.png", dpi = 300)
+#' img_file <- pdftools::pdf_convert(pdf_file, format = 'tiff', pages = 1, dpi = 300)
 #'
 #' # Extract text from png image
-#' text <- ocr(png_file)
+#' text <- ocr(img_file)
+#' unlink(img_file)
 #' cat(text)
 #'
 #' engine <- tesseract(options = list(tessedit_char_whitelist = "0123456789"))
