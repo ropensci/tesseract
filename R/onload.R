@@ -3,7 +3,7 @@
   sysdir <- rappdirs::user_data_dir('tesseract')
   pkgdata <- normalizePath(file.path(pkgdir, "tessdata"), mustWork = FALSE)
   sysdata <- normalizePath(file.path(sysdir, "tessdata"), mustWork = FALSE)
-  if(file.exists(pkgdata) && !file.exists(file.path(sysdata, "eng.traineddata"))){
+  if(!is_testload() && file.exists(pkgdata) && !file.exists(file.path(sysdata, "eng.traineddata"))){
     packageStartupMessage("First use of Tesseract: copying language data...")
     olddir <- getwd()
     on.exit(setwd(olddir))
@@ -18,6 +18,10 @@
       Sys.setenv(TESSDATA_PREFIX = pkgdata)
     }
   }
+}
+
+is_testload <- function(){
+  as.logical(nchar(Sys.getenv("R_INSTALL_PKG")))
 }
 
 .onUnload <- function(lib){
