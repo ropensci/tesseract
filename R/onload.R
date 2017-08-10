@@ -4,12 +4,14 @@
   pkgdata <- normalizePath(file.path(pkgdir, "tessdata"), mustWork = FALSE)
   sysdata <- normalizePath(file.path(sysdir, "tessdata"), mustWork = FALSE)
   if(!is_testload() && file.exists(pkgdata) && !file.exists(file.path(sysdata, "eng.traineddata"))){
-    onload_notify()
-    olddir <- getwd()
-    on.exit(setwd(olddir))
-    setwd(pkgdir)
     dir.create(sysdir, showWarnings = FALSE, recursive = TRUE)
-    file.copy("tessdata", sysdir, recursive = TRUE)
+    if(file.exists(sysdir)){
+      onload_notify()
+      olddir <- getwd()
+      on.exit(setwd(olddir))
+      setwd(pkgdir)
+      file.copy("tessdata", sysdir, recursive = TRUE)
+    }
   }
   if(is.na(Sys.getenv("TESSDATA_PREFIX", NA))){
     if(file.exists(file.path(sysdata, "eng.traineddata"))){
