@@ -4,7 +4,7 @@
   pkgdata <- file.path(pkgdir, "tessdata")
   sysdata <- file.path(sysdir, "tessdata")
   if(file.exists(pkgdata) && !file.exists(file.path(sysdata, "eng.traineddata"))){
-    message("First use of Tesseract: copying language data")
+    packageStartupMessage("First use of Tesseract: copying language data...")
     olddir <- getwd()
     on.exit(setwd(olddir))
     setwd(pkgdir)
