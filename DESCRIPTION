@@ -4,7 +4,7 @@ Title: Open Source OCR Engine for R
 Version: 1.5
 Author: Jeroen Ooms
 Maintainer: Jeroen Ooms <jeroen@berkeley.edu>
-Description: Bindings to Tesseract: An OCR engine with unicode (UTF-8) support
+Description: Bindings to 'Tesseract': An OCR engine with unicode (UTF-8) support
     that can recognize over 100 languages out of the box.
 License: MIT + file LICENSE
 URL: https://github.com/ropensci/tesseract
