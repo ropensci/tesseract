@@ -22,7 +22,6 @@ RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
 Suggests:
     magick (>= 1.0),
-    pdftools,
-    tiff
+    pdftools
 Remotes: ropensci/magick
 

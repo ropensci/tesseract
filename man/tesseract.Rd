@@ -45,25 +45,19 @@ and stores it in a the path on disk given by the \code{TESSDATA_PREFIX} variable
 }
 \examples{
 # Simple example
-text <- ocr("http://jeroen.github.io/images/testocr.png")
+text <- ocr("https://jeroen.github.io/images/testocr.png")
 cat(text)
 
-# Roundtrip test: render PDF to image and OCR it back to text
-library(pdftools)
-library(tiff)
+# Full roundtrip test: render PDF to image and OCR it back to text
+pdf_file <- file.path(Sys.getenv("R_DOC_DIR", R.home('doc')), "NEWS.pdf")
+orig <- pdftools::pdf_text(pdf_file)[1]
 
-# A PDF file with some text
-setwd(tempdir())
-news <- file.path(Sys.getenv("R_DOC_DIR", R.home('doc')), "NEWS.pdf")
-orig <- pdf_text(news)[1]
+# Render pdf to png image
+png_file <- pdftools::pdf_convert(pdf_file, pages = 1, filenames = "page.png", dpi = 300)
 
-# Render pdf to jpeg/tiff image
-bitmap <- pdf_render_page(news, dpi = 300, numeric = TRUE)
-tiff::writeTIFF(bitmap, "page.tiff")
-
-# Extract text from images
-out <- ocr("page.tiff")
-cat(out)
+# Extract text from png image
+text <- ocr(png_file)
+cat(text)
 
 engine <- tesseract(options = list(tessedit_char_whitelist = "0123456789"))
 }

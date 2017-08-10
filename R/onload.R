@@ -4,7 +4,7 @@
   pkgdata <- normalizePath(file.path(pkgdir, "tessdata"), mustWork = FALSE)
   sysdata <- normalizePath(file.path(sysdir, "tessdata"), mustWork = FALSE)
   if(!is_testload() && file.exists(pkgdata) && !file.exists(file.path(sysdata, "eng.traineddata"))){
-    packageStartupMessage("First use of Tesseract: copying language data...")
+    onload_notify()
     olddir <- getwd()
     on.exit(setwd(olddir))
     setwd(pkgdir)
@@ -18,6 +18,10 @@
       Sys.setenv(TESSDATA_PREFIX = pkgdata)
     }
   }
+}
+
+onload_notify <- function(){
+  message("First use of Tesseract: copying language data...\n")
 }
 
 is_testload <- function(){
