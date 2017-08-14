@@ -50,11 +50,11 @@ cat(text)
 
 \dontrun{
 # Full roundtrip test: render PDF to image and OCR it back to text
-pdf_file <- file.path(Sys.getenv("R_DOC_DIR", R.home('doc')), "NEWS.pdf")
-orig <- pdftools::pdf_text(pdf_file)[1]
+curl::curl_download("https://cran.r-project.org/doc/manuals/r-release/R-intro.pdf", "R-intro.pdf")
+orig <- pdftools::pdf_text("R-intro.pdf")[1]
 
 # Render pdf to png image
-img_file <- pdftools::pdf_convert(pdf_file, format = 'tiff', pages = 1, dpi = 400)
+img_file <- pdftools::pdf_convert("R-intro.pdf", format = 'tiff', pages = 1, dpi = 400)
 
 # Extract text from png image
 text <- ocr(img_file)
