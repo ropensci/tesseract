@@ -2,3 +2,8 @@ PKG_CPPFLAGS=@cflags@
 PKG_LIBS=@libs@
 CXX_STD=CXX11
 PKG_CXXFLAGS=$(C_VISIBILITY)
+
+all: clean
+
+clean:
+	rm -f $(SHLIB) $(OBJECTS)

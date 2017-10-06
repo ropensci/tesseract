@@ -2,7 +2,8 @@
   pkgdir <- file.path(lib, pkg)
   sysdir <- rappdirs::user_data_dir('tesseract')
   pkgdata <- normalizePath(file.path(pkgdir, "tessdata"), mustWork = FALSE)
-  basename <- ifelse(as.numeric_version(tesseract_config()$version) < 4, "tessdata", "tessdata4")
+  version <- as.numeric(substring(tesseract_config()$version, 1, 4))
+  basename <- ifelse(version < 4, "tessdata", "tessdata4")
   sysdata <- normalizePath(file.path(sysdir, basename), mustWork = FALSE)
   if(!is_testload() && file.exists(pkgdata) && !file.exists(file.path(sysdata, "eng.traineddata"))){
     dir.create(sysdir, showWarnings = FALSE, recursive = TRUE)
