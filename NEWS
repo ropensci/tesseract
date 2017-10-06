@@ -1,3 +1,6 @@
+1.7
+  - Prepare for Tesseract 4: use different tessdata dir
+
 1.6
   - Windows: update libtesseract to 3.05.01
   - tesseract_download now uses 3.04 tree (instead of 4.00) as suggested in readme
