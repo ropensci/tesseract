@@ -1,3 +1,5 @@
+//Tesseract 4 requires USE_STD_NAMESPACE for std::string
+#define USE_STD_NAMESPACE
 #include <baseapi.h>
 #include <allheaders.h>
 
