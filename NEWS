@@ -1,5 +1,5 @@
 1.7
-  - Prepare for Tesseract 4: use different tessdata dir
+  - Add support upcoming Tesseract 4 (compiler fix + separate tessdata dir)
 
 1.6
   - Windows: update libtesseract to 3.05.01
