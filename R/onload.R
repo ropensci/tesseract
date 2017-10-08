@@ -1,10 +1,10 @@
 .onLoad <- function(lib, pkg){
   pkgdir <- file.path(lib, pkg)
-  sysdir <- rappdirs::user_data_dir('tesseract')
+  version <- as.numeric(substring(tesseract_config()$version, 1, 1))
+  appname <- ifelse(version < 4, "tesseract", paste0("tesseract", version))
+  sysdir <- rappdirs::user_data_dir(appname)
   pkgdata <- normalizePath(file.path(pkgdir, "tessdata"), mustWork = FALSE)
-  version <- as.numeric(substring(tesseract_config()$version, 1, 4))
-  basename <- ifelse(version < 4, "tessdata", "tessdata4")
-  sysdata <- normalizePath(file.path(sysdir, basename), mustWork = FALSE)
+  sysdata <- normalizePath(file.path(sysdir, "tessdata"), mustWork = FALSE)
   if(!is_testload() && file.exists(pkgdata) && !file.exists(file.path(sysdata, "eng.traineddata"))){
     dir.create(sysdir, showWarnings = FALSE, recursive = TRUE)
     if(file.exists(sysdir)){
