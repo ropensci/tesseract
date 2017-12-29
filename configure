@@ -51,11 +51,12 @@ echo "Using PKG_LIBS=$PKG_LIBS"
 
 # Find compiler
 CXXCPP=`${R_HOME}/bin/R CMD config CXXCPP`
+CXXSTD=`${R_HOME}/bin/R CMD config CXX11STD`
 CXXFLAGS=`${R_HOME}/bin/R CMD config CXXFLAGS`
 CPPFLAGS=`${R_HOME}/bin/R CMD config CPPFLAGS`
 
 # Test configuration
-${CXXCPP} ${CPPFLAGS} ${PKG_CFLAGS} ${CXXFLAGS} src/test.h >/dev/null 2>&1
+${CXXCPP} ${CXXSTD} ${CPPFLAGS} ${PKG_CFLAGS} ${CXXFLAGS} src/test.h >/dev/null 2>&1
 
 # Customize the error
 if [ $? -ne 0 ]; then
