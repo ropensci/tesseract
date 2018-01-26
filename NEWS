@@ -1,5 +1,6 @@
 1.8
   - Add support for HOCR output (#20)
+  - Remove 'script' and 'orientation' attributes in output (doesn't work in Tesseract 4)
 
 1.7 (internal)
   - Add support upcoming Tesseract 4 (compiler fix + separate tessdata dir)

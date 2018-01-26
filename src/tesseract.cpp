@@ -65,18 +65,11 @@ Rcpp::List engine_info_internal(TessPtr ptr){
   );
 }
 
-Rcpp::CharacterVector ocr_pix(tesseract::TessBaseAPI * api, Pix * image, bool HOCR){
+Rcpp::String ocr_pix(tesseract::TessBaseAPI * api, Pix * image, bool HOCR){
   // Get OCR result
   api->ClearAdaptiveClassifier();
   api->SetImage(image);
   char *outText = HOCR ? api->GetHOCRText(0) : api->GetUTF8Text();
-
-  //meta data
-  OSResults out;
-  api->DetectOS(&out);
-  OSBestResult best = out.best_result;
-  int orientation = best.orientation_id;
-  int script = best.script_id;
 
   //cleanup
   pixDestroy(&image);
@@ -86,17 +79,11 @@ Rcpp::CharacterVector ocr_pix(tesseract::TessBaseAPI * api, Pix * image, bool HO
   Rcpp::String y(outText);
   y.set_encoding(CE_UTF8);
   delete [] outText;
-
-  // Output object
-  Rcpp::CharacterVector res(0);
-  res.push_back(y);
-  res.attr("orientation") = orientation;
-  res.attr("script") = script;
-  return res;
+  return y;
 }
 
 // [[Rcpp::export]]
-Rcpp::CharacterVector ocr_raw(Rcpp::RawVector input, TessPtr ptr, bool HOCR = false){
+Rcpp::String ocr_raw(Rcpp::RawVector input, TessPtr ptr, bool HOCR = false){
     tesseract::TessBaseAPI *api = get_engine(ptr);
     Pix *image =  pixReadMem(input.begin(), input.length());
     if(!image)
@@ -105,7 +92,7 @@ Rcpp::CharacterVector ocr_raw(Rcpp::RawVector input, TessPtr ptr, bool HOCR = fa
 }
 
 // [[Rcpp::export]]
-Rcpp::CharacterVector ocr_file(std::string file, TessPtr ptr, bool HOCR = false){
+Rcpp::String ocr_file(std::string file, TessPtr ptr, bool HOCR = false){
   tesseract::TessBaseAPI *api = get_engine(ptr);
   Pix *image =  pixRead(file.c_str());
   if(!image)
