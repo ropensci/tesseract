@@ -65,11 +65,11 @@ Rcpp::List engine_info_internal(TessPtr ptr){
   );
 }
 
-Rcpp::CharacterVector ocr_pix(tesseract::TessBaseAPI * api, Pix * image){
+Rcpp::CharacterVector ocr_pix(tesseract::TessBaseAPI * api, Pix * image, bool HOCR){
   // Get OCR result
   api->ClearAdaptiveClassifier();
   api->SetImage(image);
-  char *outText = api->GetUTF8Text();
+  char *outText = HOCR ? api->GetHOCRText(0) : api->GetUTF8Text();
 
   //meta data
   OSResults out;
@@ -96,19 +96,19 @@ Rcpp::CharacterVector ocr_pix(tesseract::TessBaseAPI * api, Pix * image){
 }
 
 // [[Rcpp::export]]
-Rcpp::CharacterVector ocr_raw(Rcpp::RawVector input, TessPtr ptr){
+Rcpp::CharacterVector ocr_raw(Rcpp::RawVector input, TessPtr ptr, bool HOCR = false){
     tesseract::TessBaseAPI *api = get_engine(ptr);
     Pix *image =  pixReadMem(input.begin(), input.length());
     if(!image)
       throw std::runtime_error("Failed to read image");
-    return ocr_pix(api, image);
+    return ocr_pix(api, image, HOCR);
 }
 
 // [[Rcpp::export]]
-Rcpp::CharacterVector ocr_file(std::string file, TessPtr ptr){
+Rcpp::CharacterVector ocr_file(std::string file, TessPtr ptr, bool HOCR = false){
   tesseract::TessBaseAPI *api = get_engine(ptr);
   Pix *image =  pixRead(file.c_str());
   if(!image)
     throw std::runtime_error("Failed to read image");
-  return ocr_pix(api, image);
+  return ocr_pix(api, image, HOCR);
 }

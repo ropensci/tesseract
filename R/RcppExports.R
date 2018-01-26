@@ -17,11 +17,11 @@ engine_info_internal <- function(ptr) {
     .Call('_tesseract_engine_info_internal', PACKAGE = 'tesseract', ptr)
 }
 
-ocr_raw <- function(input, ptr) {
-    .Call('_tesseract_ocr_raw', PACKAGE = 'tesseract', input, ptr)
+ocr_raw <- function(input, ptr, HOCR = FALSE) {
+    .Call('_tesseract_ocr_raw', PACKAGE = 'tesseract', input, ptr, HOCR)
 }
 
-ocr_file <- function(file, ptr) {
-    .Call('_tesseract_ocr_file', PACKAGE = 'tesseract', file, ptr)
+ocr_file <- function(file, ptr, HOCR = FALSE) {
+    .Call('_tesseract_ocr_file', PACKAGE = 'tesseract', file, ptr, HOCR)
 }
 

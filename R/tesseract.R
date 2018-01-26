@@ -19,6 +19,7 @@
 #' @family tesseract
 #' @param image file path, url, or raw vector to image (png, tiff, jpeg, etc)
 #' @param engine a tesseract engine created with `tesseract()`
+#' @param HOCR if `TRUE` return results as HOCR xml instead of plain text
 #' @rdname tesseract
 #' @references [Tesseract training data](https://github.com/tesseract-ocr/tessdata)
 #' @aliases tesseract ocr
@@ -26,6 +27,9 @@
 #' @examples # Simple example
 #' text <- ocr("https://jeroen.github.io/images/testocr.png")
 #' cat(text)
+#'
+#' xml <- ocr("https://jeroen.github.io/images/testocr.png", HOCR = TRUE)
+#' cat(xml)
 #'
 #' \dontrun{
 #' # Full roundtrip test: render PDF to image and OCR it back to text
@@ -42,7 +46,7 @@
 #' }
 #'
 #' engine <- tesseract(options = list(tessedit_char_whitelist = "0123456789"))
-ocr <- function(image, engine = tesseract("eng")) {
+ocr <- function(image, engine = tesseract("eng"), HOCR = FALSE) {
   stopifnot(inherits(engine, "tesseract"))
   if(inherits(image, "magick-image")){
     vapply(image, function(x){
@@ -53,9 +57,9 @@ ocr <- function(image, engine = tesseract("eng")) {
     }, character(1))
   } else if(is.character(image)){
     image <- download_files(image)
-    vapply(image, ocr_file, character(1), ptr = engine, USE.NAMES = FALSE)
+    vapply(image, ocr_file, character(1), ptr = engine, HOCR = HOCR, USE.NAMES = FALSE)
   } else if(is.raw(image)){
-    ocr_raw(image, engine)
+    ocr_raw(image, engine, HOCR = HOCR)
   } else {
     stop("Argument 'image' must be file-path, url or raw vector")
   }

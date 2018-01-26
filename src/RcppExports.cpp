@@ -53,26 +53,28 @@ BEGIN_RCPP
 END_RCPP
 }
 // ocr_raw
-Rcpp::CharacterVector ocr_raw(Rcpp::RawVector input, TessPtr ptr);
-RcppExport SEXP _tesseract_ocr_raw(SEXP inputSEXP, SEXP ptrSEXP) {
+Rcpp::CharacterVector ocr_raw(Rcpp::RawVector input, TessPtr ptr, bool HOCR);
+RcppExport SEXP _tesseract_ocr_raw(SEXP inputSEXP, SEXP ptrSEXP, SEXP HOCRSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::RawVector >::type input(inputSEXP);
     Rcpp::traits::input_parameter< TessPtr >::type ptr(ptrSEXP);
-    rcpp_result_gen = Rcpp::wrap(ocr_raw(input, ptr));
+    Rcpp::traits::input_parameter< bool >::type HOCR(HOCRSEXP);
+    rcpp_result_gen = Rcpp::wrap(ocr_raw(input, ptr, HOCR));
     return rcpp_result_gen;
 END_RCPP
 }
 // ocr_file
-Rcpp::CharacterVector ocr_file(std::string file, TessPtr ptr);
-RcppExport SEXP _tesseract_ocr_file(SEXP fileSEXP, SEXP ptrSEXP) {
+Rcpp::CharacterVector ocr_file(std::string file, TessPtr ptr, bool HOCR);
+RcppExport SEXP _tesseract_ocr_file(SEXP fileSEXP, SEXP ptrSEXP, SEXP HOCRSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type file(fileSEXP);
     Rcpp::traits::input_parameter< TessPtr >::type ptr(ptrSEXP);
-    rcpp_result_gen = Rcpp::wrap(ocr_file(file, ptr));
+    Rcpp::traits::input_parameter< bool >::type HOCR(HOCRSEXP);
+    rcpp_result_gen = Rcpp::wrap(ocr_file(file, ptr, HOCR));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -82,8 +84,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_tesseract_tesseract_engine_internal", (DL_FUNC) &_tesseract_tesseract_engine_internal, 2},
     {"_tesseract_tesseract_engine_set_variable", (DL_FUNC) &_tesseract_tesseract_engine_set_variable, 3},
     {"_tesseract_engine_info_internal", (DL_FUNC) &_tesseract_engine_info_internal, 1},
-    {"_tesseract_ocr_raw", (DL_FUNC) &_tesseract_ocr_raw, 2},
-    {"_tesseract_ocr_file", (DL_FUNC) &_tesseract_ocr_file, 2},
+    {"_tesseract_ocr_raw", (DL_FUNC) &_tesseract_ocr_raw, 3},
+    {"_tesseract_ocr_file", (DL_FUNC) &_tesseract_ocr_file, 3},
     {NULL, NULL, 0}
 };
 

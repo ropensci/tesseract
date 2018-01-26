@@ -1,4 +1,7 @@
-1.7
+1.8
+  - Add support for HOCR output (#20)
+
+1.7 (internal)
   - Add support upcoming Tesseract 4 (compiler fix + separate tessdata dir)
   - Configure script now explicitly tests for CXX11 (required by Tesseract 4)
 
