@@ -14,29 +14,29 @@
 Simple example
 
 ```r
-text <- ocr("http://jeroen.github.io/images/testocr.png")
+# Simple example
+text <- ocr("https://jeroen.github.io/images/testocr.png")
 cat(text)
+
+# Get XML HOCR output
+xml <- ocr("https://jeroen.github.io/images/testocr.png", HOCR = TRUE)
+cat(xml)
 ```
 
 Roundtrip test: render PDF to image and OCR it back to text
 
 ```r
-library(pdftools)
-library(tiff)
+# Full roundtrip test: render PDF to image and OCR it back to text
+curl::curl_download("https://cran.r-project.org/doc/manuals/r-release/R-intro.pdf", "R-intro.pdf")
+orig <- pdftools::pdf_text("R-intro.pdf")[1]
 
-# A PDF file with some text
-setwd(tempdir())
-news <- file.path(Sys.getenv("R_DOC_DIR"), "NEWS.pdf")
-orig <- pdf_text(news)[1]
+# Render pdf to png image
+img_file <- pdftools::pdf_convert("R-intro.pdf", format = 'tiff', pages = 1, dpi = 400)
 
-# Render pdf to jpeg/tiff image
-bitmap <- pdf_render_page(news, dpi = 300)
-tiff::writeTIFF(bitmap, "page.tiff")
-
-# Extract text from images
-out <- ocr("page.tiff")
-cat(out)
-
+# Extract text from png image
+text <- ocr(img_file)
+unlink(img_file)
+cat(text)
 ```
 
 ## Installation
