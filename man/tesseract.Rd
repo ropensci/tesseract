@@ -33,7 +33,7 @@ are reading. Works best for images with high contrast, little noise and horizont
 }
 \details{
 Tesseract uses training data to perform OCR. Most systems default to English
-training data. To improve OCR performance for other langauges you can to install the
+training data. To improve OCR performance for other languages you can to install the
 training data from your distribution. For example to install the spanish training data:
 \itemize{
 \item \href{https://packages.debian.org/testing/tesseract-ocr-spa}{tesseract-ocr-spa} (Debian, Ubuntu)

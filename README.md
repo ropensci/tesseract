@@ -81,12 +81,23 @@ brew install tesseract
 ```
 
 Tesseract uses training data to perform OCR. Most systems default to English
-training data. To improve OCR performance for other langauges you can to install the
-training data from your distribution. For example to install the spanish training data:
+training data. To improve OCR results for other langauges you can to install the
+appropriate training data. On Windows and OSX you can do this in R using 
+`tesseract_download()`:
+
+
+```r
+tesseract_download('fra')
+```
+
+On Linux you need to install the appropriate training data from your distribution. 
+For example to install the spanish training data:
 
   - [tesseract-ocr-spa](https://packages.debian.org/testing/tesseract-ocr-spa) (Debian, Ubuntu)
   - [tesseract-langpack-spa](https://apps.fedoraproject.org/packages/tesseract-langpack-spa) (Fedora, EPEL)
 
-On other platforms you can manually download training data from [github](https://github.com/tesseract-ocr/tessdata)
-and store it in a path on disk that you pass in the `datapath` parameter. Alternatively
-you can set a default path via the `TESSDATA_PREFIX` environment variable.
+Alternatively you can manually download training data from [github](https://github.com/tesseract-ocr/tessdata)
+and store it in a path on disk that you pass in the `datapath` parameter or set a default path via the
+`TESSDATA_PREFIX` environment variable. Note that the Tesseract 4 and Tesseract 3 use different 
+training data format. Make sure to download training data from the branch that matches your libtesseract version.
+
