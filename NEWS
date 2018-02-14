@@ -1,3 +1,6 @@
+1.9
+  - Tesseract 4 now dowloads training data from the "tessdata_fast" repo
+
 1.8
   - Add support for HOCR output (#20)
   - Remove 'script' and 'orientation' attributes in output (doesn't work in Tesseract 4)

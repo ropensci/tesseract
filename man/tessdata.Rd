@@ -19,7 +19,7 @@ tesseract_info()
 }
 \description{
 Helper function to download training data from the official
-\href{https://github.com/tesseract-ocr/tessdata}{tessdata} repository. Only use this function on
+\href{https://github.com/tesseract-ocr/tesseract/wiki/Data-Files}{tessdata} repository. Only use this function on
 Windows and OS-X. On Linux, training data can be installed directly with
 \href{https://apps.fedoraproject.org/packages/tesseract}{yum} or
 \href{https://packages.debian.org/search?suite=stable&section=all&arch=any&searchon=names&keywords=tesseract-ocr-}{apt-get}.
@@ -31,6 +31,9 @@ french <- tesseract("fra")
 text <- ocr("https://jeroen.github.io/images/french_text.png", engine = french)
 cat(text)
 }
+}
+\references{
+\href{https://github.com/tesseract-ocr/tesseract/wiki/Data-Files}{tessdata wiki}
 }
 \seealso{
 Other tesseract: \code{\link{ocr}}

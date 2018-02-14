@@ -1,7 +1,7 @@
 #' Tesseract Training Data
 #'
 #' Helper function to download training data from the official
-#' [tessdata](https://github.com/tesseract-ocr/tessdata) repository. Only use this function on
+#' [tessdata](https://github.com/tesseract-ocr/tesseract/wiki/Data-Files) repository. Only use this function on
 #' Windows and OS-X. On Linux, training data can be installed directly with
 #' [yum](https://apps.fedoraproject.org/packages/tesseract) or
 #' [apt-get](https://packages.debian.org/search?suite=stable&section=all&arch=any&searchon=names&keywords=tesseract-ocr-).
@@ -13,6 +13,7 @@
 #' @param lang three letter code for language, see [tessdata](https://github.com/tesseract-ocr/tessdata) repository.
 #' @param datapath destination directory where to download store the file
 #' @param progress print progress while downloading
+#' @references [tessdata wiki](https://github.com/tesseract-ocr/tesseract/wiki/Data-Files)
 #' @examples \dontrun{
 #' tesseract_download("fra")
 #' french <- tesseract("fra")
@@ -27,8 +28,14 @@ tesseract_download <- function(lang, datapath = NULL, progress = TRUE){
   stopifnot(is.character(lang))
   stopifnot(is.character(datapath))
   version <- as.numeric(substring(tesseract_config()$version, 1, 4))
-  branch <- ifelse(version < 4, "3.04.00", "4.00")
-  url <- sprintf('https://github.com/tesseract-ocr/tessdata/raw/%s/%s.traineddata', branch, lang)
+  if(version < 4){
+    repo <- "tessdata"
+    release <- "3.04.00"
+  } else {
+    repo <- "tessdata_fast"
+    release <- "v1.0rc1"
+  }
+  url <- sprintf('https://github.com/tesseract-ocr/%s/raw/%s/%s.traineddata', repo, release, lang)
   req <- curl::curl_fetch_memory(url, curl::new_handle(
     noprogress = !isTRUE(progress),
     progressfunction = progress_fun
