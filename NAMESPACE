@@ -2,6 +2,7 @@
 
 S3method(print,tesseract)
 export(ocr)
+export(ocr_data)
 export(tesseract)
 export(tesseract_download)
 export(tesseract_info)

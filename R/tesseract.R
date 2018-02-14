@@ -3,6 +3,10 @@
 #' Extract text from an image. Requires that you have training data for the language you
 #' are reading. Works best for images with high contrast, little noise and horizontal text.
 #'
+#' The `ocr()` function returns plain text by default, or hOCR output if hOCR is set to `TRUE`.
+#' The `ocr_data()` function internally parses the hOCR output and returns a data frame with
+#' a confidence rate and bounding box for each word in the text.
+#'
 #' Tesseract uses training data to perform OCR. Most systems default to English
 #' training data. To improve OCR performance for other languages you can to install the
 #' training data from your distribution. For example to install the spanish training data:
@@ -30,6 +34,9 @@
 #'
 #' xml <- ocr("https://jeroen.github.io/images/testocr.png", HOCR = TRUE)
 #' cat(xml)
+#'
+#' df <- ocr_data("https://jeroen.github.io/images/testocr.png")
+#' print(df)
 #'
 #' \dontrun{
 #' # Full roundtrip test: render PDF to image and OCR it back to text
@@ -63,6 +70,19 @@ ocr <- function(image, engine = tesseract("eng"), HOCR = FALSE) {
   } else {
     stop("Argument 'image' must be file-path, url or raw vector")
   }
+}
+
+#' @rdname tesseract
+#' @export
+ocr_data <- function(image, engine = tesseract("eng")) {
+  xml <- ocr(image, engine = engine, HOCR = TRUE)
+  doc <- xml2::read_xml(xml)
+  nodes <- xml2::xml_find_all(doc, ".//span[@class='ocrx_word']")
+  words <- xml2::xml_text(nodes)
+  meta <- xml2::xml_attr(nodes, 'title')
+  bbox <- stringr::str_replace(stringr::str_extract(meta, "bbox [\\d ]+"), "bbox ", "")
+  conf <- as.numeric(stringr::str_replace(stringr::str_extract(meta, "x_wconf.*"), "x_wconf ", ""))
+  data.frame(word = words, confidence = conf, bbox = bbox, stringsAsFactors = FALSE)
 }
 
 #' @export

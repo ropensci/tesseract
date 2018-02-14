@@ -1,7 +1,7 @@
 Package: tesseract
 Type: Package
 Title: Open Source OCR Engine
-Version: 1.8
+Version: 1.8.9000
 Author: Jeroen Ooms
 Maintainer: Jeroen Ooms <jeroen@berkeley.edu>
 Description: Bindings to 'Tesseract': An OCR engine with unicode (UTF-8) support
@@ -14,6 +14,8 @@ SystemRequirements: Tesseract >= 3.03 (libtesseract-dev / tesseract-devel) and
     the English training data separately (tesseract-ocr-eng)
 Imports:
     Rcpp (>= 0.12.12),
+    xml2,
+    stringr,
     curl,
     rappdirs,
     digest

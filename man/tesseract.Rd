@@ -3,9 +3,12 @@
 \name{ocr}
 \alias{ocr}
 \alias{tesseract}
+\alias{ocr_data}
 \title{Tesseract OCR}
 \usage{
 ocr(image, engine = tesseract("eng"), HOCR = FALSE)
+
+ocr_data(image, engine = tesseract("eng"))
 
 tesseract(language = NULL, datapath = NULL, options = NULL,
   cache = TRUE)
@@ -32,6 +35,10 @@ Extract text from an image. Requires that you have training data for the languag
 are reading. Works best for images with high contrast, little noise and horizontal text.
 }
 \details{
+The \code{ocr()} function returns plain text by default, or hOCR output if hOCR is set to \code{TRUE}.
+The \code{ocr_data()} function internally parses the hOCR output and returns a data frame with
+a confidence rate and bounding box for each word in the text.
+
 Tesseract uses training data to perform OCR. Most systems default to English
 training data. To improve OCR performance for other languages you can to install the
 training data from your distribution. For example to install the spanish training data:
@@ -51,6 +58,9 @@ cat(text)
 
 xml <- ocr("https://jeroen.github.io/images/testocr.png", HOCR = TRUE)
 cat(xml)
+
+df <- ocr_data("https://jeroen.github.io/images/testocr.png")
+print(df)
 
 \dontrun{
 # Full roundtrip test: render PDF to image and OCR it back to text
