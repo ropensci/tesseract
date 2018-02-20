@@ -90,30 +90,35 @@ ocr_data <- function(image, engine = tesseract("eng")) {
 #' @param language string with language for training data. Usually defaults to `eng`
 #' @param datapath path with the training data for this language. Default uses
 #' the system library.
+#' @param config path to optional configuration files. Use with care, invalid paths
+#' or parameters may cause a crash.
 #' @param options a named list with tesseract
 #' [engine options](http://www.sk-spell.sk.cx/tesseract-ocr-parameters-in-302-version)
 #' @param cache use a cached version of this training data if available
 tesseract <- local({
   store <- new.env()
-  function(language = NULL, datapath = NULL, options = NULL, cache = TRUE){
+  function(language = NULL, datapath = NULL, config = NULL, options = NULL, cache = TRUE){
     datapath <- as.character(datapath)
     language <- as.character(language)
+    config <- if(length(config))
+      normalizePath(config, mustWork = TRUE)
+    confpath <- as.character(config)
     options <- as.list(options)
     if(isTRUE(cache)){
-      key <- digest::digest(list(language, datapath, options))
+      key <- digest::digest(list(language, datapath, confpath, options))
       if(is.null(store[[key]])){
-        ptr <- tesseract_engine(datapath, language, options)
+        ptr <- tesseract_engine(datapath, language, confpath, options)
         assign(key, ptr, store);
       }
       store[[key]]
     } else {
-      tesseract_engine(datapath, language, options)
+      tesseract_engine(datapath, language, confpath, options)
     }
   }
 })
 
-tesseract_engine <- function(datapath, language, options){
-  engine <- tesseract_engine_internal(datapath, language)
+tesseract_engine <- function(datapath, language, confpath, options){
+  engine <- tesseract_engine_internal(datapath, language, confpath)
   for(i in seq_along(options)){
     tesseract_engine_set_variable(engine, names(options[i]), options[[i]])
   }

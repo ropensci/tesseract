@@ -13,15 +13,18 @@ Rcpp::List tesseract_config(){
 }
 
 // [[Rcpp::export]]
-TessPtr tesseract_engine_internal(Rcpp::CharacterVector datapath, Rcpp::CharacterVector language){
+TessPtr tesseract_engine_internal(Rcpp::CharacterVector datapath, Rcpp::CharacterVector language, Rcpp::CharacterVector confpath){
   const char * path = NULL;
   const char * lang = NULL;
+  char * config = NULL;
   if(datapath.length())
-    path = CHAR(STRING_ELT(datapath, 0));
+    path = datapath.at(0);
   if(language.length())
-    lang = CHAR(STRING_ELT(language, 0));
+    lang = language.at(0);
+  if(confpath.length())
+    config = confpath.at(0);
   tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
-  if (api->Init(path, lang))
+  if (api->Init(path, lang, tesseract::OEM_DEFAULT, &config, !!config, NULL, NULL, false))
     throw std::runtime_error(std::string("Unable to find training data for: ") + (lang ? lang : "eng") + ". Please consult manual for: ?tesseract_download");
   TessPtr ptr(api);
   ptr.attr("class") = Rcpp::CharacterVector::create("tesseract");

@@ -10,8 +10,8 @@ ocr(image, engine = tesseract("eng"), HOCR = FALSE)
 
 ocr_data(image, engine = tesseract("eng"))
 
-tesseract(language = NULL, datapath = NULL, options = NULL,
-  cache = TRUE)
+tesseract(language = NULL, datapath = NULL, config = NULL,
+  options = NULL, cache = TRUE)
 }
 \arguments{
 \item{image}{file path, url, or raw vector to image (png, tiff, jpeg, etc)}
@@ -24,6 +24,9 @@ tesseract(language = NULL, datapath = NULL, options = NULL,
 
 \item{datapath}{path with the training data for this language. Default uses
 the system library.}
+
+\item{config}{path to optional configuration files. Use with care, invalid paths
+or parameters may cause a crash.}
 
 \item{options}{a named list with tesseract
 \href{http://www.sk-spell.sk.cx/tesseract-ocr-parameters-in-302-version}{engine options}}

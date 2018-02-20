@@ -17,14 +17,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // tesseract_engine_internal
-TessPtr tesseract_engine_internal(Rcpp::CharacterVector datapath, Rcpp::CharacterVector language);
-RcppExport SEXP _tesseract_tesseract_engine_internal(SEXP datapathSEXP, SEXP languageSEXP) {
+TessPtr tesseract_engine_internal(Rcpp::CharacterVector datapath, Rcpp::CharacterVector language, Rcpp::CharacterVector confpath);
+RcppExport SEXP _tesseract_tesseract_engine_internal(SEXP datapathSEXP, SEXP languageSEXP, SEXP confpathSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type datapath(datapathSEXP);
     Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type language(languageSEXP);
-    rcpp_result_gen = Rcpp::wrap(tesseract_engine_internal(datapath, language));
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type confpath(confpathSEXP);
+    rcpp_result_gen = Rcpp::wrap(tesseract_engine_internal(datapath, language, confpath));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -81,7 +82,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_tesseract_tesseract_config", (DL_FUNC) &_tesseract_tesseract_config, 0},
-    {"_tesseract_tesseract_engine_internal", (DL_FUNC) &_tesseract_tesseract_engine_internal, 2},
+    {"_tesseract_tesseract_engine_internal", (DL_FUNC) &_tesseract_tesseract_engine_internal, 3},
     {"_tesseract_tesseract_engine_set_variable", (DL_FUNC) &_tesseract_tesseract_engine_set_variable, 3},
     {"_tesseract_engine_info_internal", (DL_FUNC) &_tesseract_engine_info_internal, 1},
     {"_tesseract_ocr_raw", (DL_FUNC) &_tesseract_ocr_raw, 3},

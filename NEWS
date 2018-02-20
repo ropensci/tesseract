@@ -1,3 +1,6 @@
+2.0
+  - Added 'config' parameter to tesseract()
+
 1.9
   - Tesseract 4 now dowloads training data from the "tessdata_fast" repo
   - Add ocr_data() function that parses the hOCR output
