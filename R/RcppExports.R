@@ -17,6 +17,10 @@ engine_info_internal <- function(ptr) {
     .Call('_tesseract_engine_info_internal', PACKAGE = 'tesseract', ptr)
 }
 
+engine_get_params <- function(ptr) {
+    .Call('_tesseract_engine_get_params', PACKAGE = 'tesseract', ptr)
+}
+
 ocr_raw <- function(input, ptr, HOCR = FALSE) {
     .Call('_tesseract_ocr_raw', PACKAGE = 'tesseract', input, ptr, HOCR)
 }

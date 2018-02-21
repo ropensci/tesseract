@@ -68,6 +68,18 @@ Rcpp::List engine_info_internal(TessPtr ptr){
   );
 }
 
+// [[Rcpp::export]]
+Rcpp::String engine_get_params(TessPtr ptr){
+  tesseract::TessBaseAPI * api = get_engine(ptr);
+  char * buf; size_t len;
+  FILE *stream = open_memstream (&buf, &len);
+  api->PrintVariables(stream);
+  fclose(stream);
+  Rcpp::String params = Rf_mkCharLen(buf, len);
+  free(buf);
+  return params;
+}
+
 Rcpp::String ocr_pix(tesseract::TessBaseAPI * api, Pix * image, bool HOCR){
   // Get OCR result
   api->ClearAdaptiveClassifier();

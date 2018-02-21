@@ -57,6 +57,19 @@ tesseract_info <- function(){
   list(datapath = info$datapath, available = info$available, version = config$version)
 }
 
+#' @export
+#' @rdname tessdata
+#' @examples tesseract_params()
+tesseract_params <- function(){
+  text <- engine_get_params(tesseract())
+  out <- strsplit(text, "\n")[[1]]
+  params <- strsplit(out, "\t", fixed = TRUE)
+  name <- vapply(params, `[`, character(1), 1)
+  default <- vapply(params, `[`, character(1), 2)
+  desc <- vapply(params, `[`, character(1), 3)
+  tibble::tibble(param = name, default = default, desc = desc)
+}
+
 progress_fun <- function(down, up) {
   total <- down[[1]]
   now <- down[[2]]

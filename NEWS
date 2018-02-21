@@ -1,5 +1,6 @@
 2.0
   - Added 'config' parameter to tesseract()
+  - Added function tesseract_params()
 
 1.9
   - Tesseract 4 now dowloads training data from the "tessdata_fast" repo

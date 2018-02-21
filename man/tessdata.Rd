@@ -4,11 +4,14 @@
 \alias{tesseract_download}
 \alias{tessdata}
 \alias{tesseract_info}
+\alias{tesseract_params}
 \title{Tesseract Training Data}
 \usage{
 tesseract_download(lang, datapath = NULL, progress = TRUE)
 
 tesseract_info()
+
+tesseract_params()
 }
 \arguments{
 \item{lang}{three letter code for language, see \href{https://github.com/tesseract-ocr/tessdata}{tessdata} repository.}
@@ -31,6 +34,7 @@ french <- tesseract("fra")
 text <- ocr("https://jeroen.github.io/images/french_text.png", engine = french)
 cat(text)
 }
+tesseract_params()
 }
 \references{
 \href{https://github.com/tesseract-ocr/tesseract/wiki/Data-Files}{tessdata wiki}
