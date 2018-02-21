@@ -119,7 +119,7 @@ tesseract_engine <- function(datapath, language, confpath, options){
 
   # Tesseract::read_config_file first checks for local file, then in tessdata
   if(length(confpath) && file.exists(confpath)){
-    params <- tryCatch(read.table(confpath), error = function(e){
+    params <- tryCatch(utils::read.table(confpath), error = function(e){
       bail("Failed to parse config file '%s': %s", confpath, e$message)
     })
     ok <- validate_params(params$V1, params$V2)
