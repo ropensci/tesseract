@@ -69,15 +69,12 @@ Rcpp::List engine_info_internal(TessPtr ptr){
 }
 
 // [[Rcpp::export]]
-Rcpp::String engine_get_params(TessPtr ptr){
+Rcpp::String engine_get_params(TessPtr ptr, std::string filename){
   tesseract::TessBaseAPI * api = get_engine(ptr);
-  char * buf; size_t len;
-  FILE *stream = open_memstream (&buf, &len);
-  api->PrintVariables(stream);
-  fclose(stream);
-  Rcpp::String params = Rf_mkCharLen(buf, len);
-  free(buf);
-  return params;
+  FILE * fp = fopen(filename.c_str(), "w");
+  api->PrintVariables(fp);
+  fclose(fp);
+  return filename;
 }
 
 Rcpp::String ocr_pix(tesseract::TessBaseAPI * api, Pix * image, bool HOCR){

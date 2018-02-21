@@ -61,8 +61,9 @@ tesseract_info <- function(){
 #' @rdname tessdata
 #' @examples tesseract_params()
 tesseract_params <- function(){
-  text <- engine_get_params(tesseract())
-  out <- strsplit(text, "\n")[[1]]
+  tmp <- engine_get_params(tesseract(), tempfile())
+  out <- readLines(tmp)
+  unlink(tmp)
   params <- strsplit(out, "\t", fixed = TRUE)
   name <- vapply(params, `[`, character(1), 1)
   default <- vapply(params, `[`, character(1), 2)
