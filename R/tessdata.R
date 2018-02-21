@@ -59,8 +59,9 @@ tesseract_info <- function(){
 
 #' @export
 #' @rdname tessdata
-#' @examples tesseract_params()
-tesseract_params <- function(){
+#' @param filter only list parameters containing a particular string
+#' @examples tesseract_params('debug')
+tesseract_params <- function(filter = ""){
   tmp <- engine_get_params(tesseract(), tempfile())
   out <- readLines(tmp)
   unlink(tmp)
@@ -68,7 +69,9 @@ tesseract_params <- function(){
   name <- vapply(params, `[`, character(1), 1)
   default <- vapply(params, `[`, character(1), 2)
   desc <- vapply(params, `[`, character(1), 3)
-  tibble::tibble(param = name, default = default, desc = desc)
+  df <- tibble::tibble(param = name, default = default, desc = desc)
+  subset <- grepl(filter, name, fixed = TRUE)
+  df[subset,]
 }
 
 progress_fun <- function(down, up) {

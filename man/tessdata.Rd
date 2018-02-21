@@ -11,7 +11,7 @@ tesseract_download(lang, datapath = NULL, progress = TRUE)
 
 tesseract_info()
 
-tesseract_params()
+tesseract_params(filter = "")
 }
 \arguments{
 \item{lang}{three letter code for language, see \href{https://github.com/tesseract-ocr/tessdata}{tessdata} repository.}
@@ -19,6 +19,8 @@ tesseract_params()
 \item{datapath}{destination directory where to download store the file}
 
 \item{progress}{print progress while downloading}
+
+\item{filter}{only list parameters containing a particular string}
 }
 \description{
 Helper function to download training data from the official
@@ -34,7 +36,7 @@ french <- tesseract("fra")
 text <- ocr("https://jeroen.github.io/images/french_text.png", engine = french)
 cat(text)
 }
-tesseract_params()
+tesseract_params('debug')
 }
 \references{
 \href{https://github.com/tesseract-ocr/tesseract/wiki/Data-Files}{tessdata wiki}
