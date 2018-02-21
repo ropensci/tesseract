@@ -100,29 +100,40 @@ tesseract <- local({
   function(language = NULL, datapath = NULL, config = NULL, options = NULL, cache = TRUE){
     datapath <- as.character(datapath)
     language <- as.character(language)
-    config <- if(length(config))
-      normalizePath(config, mustWork = TRUE)
-    confpath <- as.character(config)
+    config <- as.character(config)
     options <- as.list(options)
     if(isTRUE(cache)){
-      key <- digest::digest(list(language, datapath, confpath, options))
+      key <- digest::digest(list(language, datapath, config, options))
       if(is.null(store[[key]])){
-        ptr <- tesseract_engine(datapath, language, confpath, options)
+        ptr <- tesseract_engine(datapath, language, config, options)
         assign(key, ptr, store);
       }
       store[[key]]
     } else {
-      tesseract_engine(datapath, language, confpath, options)
+      tesseract_engine(datapath, language, config, options)
     }
   }
 })
 
 tesseract_engine <- function(datapath, language, confpath, options){
-  engine <- tesseract_engine_internal(datapath, language, confpath)
-  for(i in seq_along(options)){
-    tesseract_engine_set_variable(engine, names(options[i]), options[[i]])
+
+  # Tesseract::read_config_file first checks for local file, then in tessdata
+  if(length(confpath) && file.exists(confpath)){
+    params <- tryCatch(read.table(confpath), error = function(e){
+      bail("Failed to parse config file '%s': %s", confpath, e$message)
+    })
+    ok <- validate_params(params$V1, params$V2)
+    if(any(!ok))
+      bail("Unsupported Tesseract parameter(s): [%s] in %s", paste(params$V1[!ok], collapse = ", "), confpath)
   }
-  engine
+
+  opt_names <- as.character(names(options))
+  opt_values <- as.character(options)
+  ok <- validate_params(opt_names, opt_values)
+  if(any(!ok))
+    bail("Unsupported Tesseract parameter(s): [%s]", paste(opt_names[!ok], collapse = ", "))
+
+  tesseract_engine_internal(datapath, language, confpath, opt_names, opt_values)
 }
 
 download_files <- function(urls){
@@ -143,4 +154,8 @@ download_files <- function(urls){
   cat(" loaded:", info$loaded, "\n")
   cat(" datapath:", info$datapath, "\n")
   cat(" available:", info$available, "\n")
+}
+
+bail <- function(...){
+  stop(sprintf(...), call. = FALSE)
 }

@@ -5,20 +5,24 @@ tesseract_config <- function() {
     .Call('_tesseract_tesseract_config', PACKAGE = 'tesseract')
 }
 
-tesseract_engine_internal <- function(datapath, language, confpath) {
-    .Call('_tesseract_tesseract_engine_internal', PACKAGE = 'tesseract', datapath, language, confpath)
+tesseract_engine_internal <- function(datapath, language, confpath, opt_names, opt_values) {
+    .Call('_tesseract_tesseract_engine_internal', PACKAGE = 'tesseract', datapath, language, confpath, opt_names, opt_values)
 }
 
 tesseract_engine_set_variable <- function(ptr, name, value) {
     .Call('_tesseract_tesseract_engine_set_variable', PACKAGE = 'tesseract', ptr, name, value)
 }
 
+validate_params <- function(names, values) {
+    .Call('_tesseract_validate_params', PACKAGE = 'tesseract', names, values)
+}
+
 engine_info_internal <- function(ptr) {
     .Call('_tesseract_engine_info_internal', PACKAGE = 'tesseract', ptr)
 }
 
-engine_get_params <- function(ptr, filename) {
-    .Call('_tesseract_engine_get_params', PACKAGE = 'tesseract', ptr, filename)
+print_params <- function(ptr, filename) {
+    .Call('_tesseract_print_params', PACKAGE = 'tesseract', ptr, filename)
 }
 
 ocr_raw <- function(input, ptr, HOCR = FALSE) {

@@ -17,15 +17,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // tesseract_engine_internal
-TessPtr tesseract_engine_internal(Rcpp::CharacterVector datapath, Rcpp::CharacterVector language, Rcpp::CharacterVector confpath);
-RcppExport SEXP _tesseract_tesseract_engine_internal(SEXP datapathSEXP, SEXP languageSEXP, SEXP confpathSEXP) {
+TessPtr tesseract_engine_internal(Rcpp::CharacterVector datapath, Rcpp::CharacterVector language, Rcpp::CharacterVector confpath, Rcpp::CharacterVector opt_names, Rcpp::CharacterVector opt_values);
+RcppExport SEXP _tesseract_tesseract_engine_internal(SEXP datapathSEXP, SEXP languageSEXP, SEXP confpathSEXP, SEXP opt_namesSEXP, SEXP opt_valuesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type datapath(datapathSEXP);
     Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type language(languageSEXP);
     Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type confpath(confpathSEXP);
-    rcpp_result_gen = Rcpp::wrap(tesseract_engine_internal(datapath, language, confpath));
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type opt_names(opt_namesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type opt_values(opt_valuesSEXP);
+    rcpp_result_gen = Rcpp::wrap(tesseract_engine_internal(datapath, language, confpath, opt_names, opt_values));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -42,6 +44,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// validate_params
+Rcpp::LogicalVector validate_params(Rcpp::CharacterVector names, Rcpp::CharacterVector values);
+RcppExport SEXP _tesseract_validate_params(SEXP namesSEXP, SEXP valuesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type names(namesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type values(valuesSEXP);
+    rcpp_result_gen = Rcpp::wrap(validate_params(names, values));
+    return rcpp_result_gen;
+END_RCPP
+}
 // engine_info_internal
 Rcpp::List engine_info_internal(TessPtr ptr);
 RcppExport SEXP _tesseract_engine_info_internal(SEXP ptrSEXP) {
@@ -53,15 +67,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// engine_get_params
-Rcpp::String engine_get_params(TessPtr ptr, std::string filename);
-RcppExport SEXP _tesseract_engine_get_params(SEXP ptrSEXP, SEXP filenameSEXP) {
+// print_params
+Rcpp::String print_params(TessPtr ptr, std::string filename);
+RcppExport SEXP _tesseract_print_params(SEXP ptrSEXP, SEXP filenameSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< TessPtr >::type ptr(ptrSEXP);
     Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
-    rcpp_result_gen = Rcpp::wrap(engine_get_params(ptr, filename));
+    rcpp_result_gen = Rcpp::wrap(print_params(ptr, filename));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -94,10 +108,11 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_tesseract_tesseract_config", (DL_FUNC) &_tesseract_tesseract_config, 0},
-    {"_tesseract_tesseract_engine_internal", (DL_FUNC) &_tesseract_tesseract_engine_internal, 3},
+    {"_tesseract_tesseract_engine_internal", (DL_FUNC) &_tesseract_tesseract_engine_internal, 5},
     {"_tesseract_tesseract_engine_set_variable", (DL_FUNC) &_tesseract_tesseract_engine_set_variable, 3},
+    {"_tesseract_validate_params", (DL_FUNC) &_tesseract_validate_params, 2},
     {"_tesseract_engine_info_internal", (DL_FUNC) &_tesseract_engine_info_internal, 1},
-    {"_tesseract_engine_get_params", (DL_FUNC) &_tesseract_engine_get_params, 2},
+    {"_tesseract_print_params", (DL_FUNC) &_tesseract_print_params, 2},
     {"_tesseract_ocr_raw", (DL_FUNC) &_tesseract_ocr_raw, 3},
     {"_tesseract_ocr_file", (DL_FUNC) &_tesseract_ocr_file, 3},
     {NULL, NULL, 0}

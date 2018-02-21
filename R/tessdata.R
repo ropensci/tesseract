@@ -62,16 +62,20 @@ tesseract_info <- function(){
 #' @param filter only list parameters containing a particular string
 #' @examples tesseract_params('debug')
 tesseract_params <- function(filter = ""){
-  tmp <- engine_get_params(tesseract(), tempfile())
-  out <- readLines(tmp)
-  unlink(tmp)
+  tmp <- print_params(tesseract(), tempfile())
+  on.exit(unlink(tmp))
+  df <- parse_params(tmp)
+  subset <- grepl(filter, df$param, fixed = TRUE)
+  tibble::as.tibble(df[subset,])
+}
+
+parse_params <- function(path){
+  out <- readLines(path)
   params <- strsplit(out, "\t", fixed = TRUE)
   name <- vapply(params, `[`, character(1), 1)
   default <- vapply(params, `[`, character(1), 2)
   desc <- vapply(params, `[`, character(1), 3)
-  df <- tibble::tibble(param = name, default = default, desc = desc)
-  subset <- grepl(filter, name, fixed = TRUE)
-  df[subset,]
+  data.frame(param = name, default = default, desc = desc, stringsAsFactors = FALSE)
 }
 
 progress_fun <- function(down, up) {
