@@ -63,20 +63,24 @@ Rcpp::LogicalVector validate_params(Rcpp::CharacterVector names, Rcpp::Character
 }
 
 // [[Rcpp::export]]
+void validate_paramfile(const char * path){
+  tesseract::ParamsVectors p;
+  tesseract::ParamUtils::ReadParamsFile(path, tesseract::SET_PARAM_CONSTRAINT_NONE, &p);
+}
+
+// [[Rcpp::export]]
 Rcpp::List engine_info_internal(TessPtr ptr){
   tesseract::TessBaseAPI * api = get_engine(ptr);
-  GenericVector<STRING> * langs = new GenericVector<STRING>;
-  api->GetAvailableLanguagesAsVector(langs);
+  GenericVector<STRING> langs;
+  api->GetAvailableLanguagesAsVector(&langs);
   Rcpp::CharacterVector available = Rcpp::CharacterVector::create();
-  for(int i = 0; i < langs->length(); i++)
-    available.push_back(langs->get(i).c_str());
-  delete langs;
-  langs = new GenericVector<STRING>;
-  api->GetLoadedLanguagesAsVector(langs);
+  for(int i = 0; i < langs.length(); i++)
+    available.push_back(langs.get(i).c_str());
+  langs.clear();
+  api->GetLoadedLanguagesAsVector(&langs);
   Rcpp::CharacterVector loaded = Rcpp::CharacterVector::create();
-  for(int i = 0; i < langs->length(); i++)
-    loaded.push_back(langs->get(i).c_str());
-  delete langs;
+  for(int i = 0; i < langs.length(); i++)
+    loaded.push_back(langs.get(i).c_str());
   return Rcpp::List::create(
     Rcpp::_["datapath"] = api->GetDatapath(),
     Rcpp::_["loaded"] = loaded,
