@@ -62,7 +62,7 @@ tesseract_info <- function(){
 #' @param filter only list parameters containing a particular string
 #' @examples tesseract_params('debug')
 tesseract_params <- function(filter = ""){
-  tmp <- print_params(tesseract(), tempfile())
+  tmp <- print_params(tempfile())
   on.exit(unlink(tmp))
   df <- parse_params(tmp)
   subset <- grepl(filter, df$param, fixed = TRUE)

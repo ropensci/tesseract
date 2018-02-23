@@ -13,8 +13,8 @@ tesseract_engine_set_variable <- function(ptr, name, value) {
     .Call('_tesseract_tesseract_engine_set_variable', PACKAGE = 'tesseract', ptr, name, value)
 }
 
-validate_params <- function(names, values) {
-    .Call('_tesseract_validate_params', PACKAGE = 'tesseract', names, values)
+validate_params <- function(params) {
+    .Call('_tesseract_validate_params', PACKAGE = 'tesseract', params)
 }
 
 validate_paramfile <- function(path) {
@@ -25,8 +25,8 @@ engine_info_internal <- function(ptr) {
     .Call('_tesseract_engine_info_internal', PACKAGE = 'tesseract', ptr)
 }
 
-print_params <- function(ptr, filename) {
-    .Call('_tesseract_print_params', PACKAGE = 'tesseract', ptr, filename)
+print_params <- function(filename) {
+    .Call('_tesseract_print_params', PACKAGE = 'tesseract', filename)
 }
 
 get_param_values <- function(ptr, params) {

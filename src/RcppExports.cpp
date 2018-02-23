@@ -45,14 +45,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // validate_params
-Rcpp::LogicalVector validate_params(Rcpp::CharacterVector names, Rcpp::CharacterVector values);
-RcppExport SEXP _tesseract_validate_params(SEXP namesSEXP, SEXP valuesSEXP) {
+Rcpp::LogicalVector validate_params(Rcpp::CharacterVector params);
+RcppExport SEXP _tesseract_validate_params(SEXP paramsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type names(namesSEXP);
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type values(valuesSEXP);
-    rcpp_result_gen = Rcpp::wrap(validate_params(names, values));
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type params(paramsSEXP);
+    rcpp_result_gen = Rcpp::wrap(validate_params(params));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -78,14 +77,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // print_params
-Rcpp::String print_params(TessPtr ptr, std::string filename);
-RcppExport SEXP _tesseract_print_params(SEXP ptrSEXP, SEXP filenameSEXP) {
+Rcpp::String print_params(std::string filename);
+RcppExport SEXP _tesseract_print_params(SEXP filenameSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< TessPtr >::type ptr(ptrSEXP);
     Rcpp::traits::input_parameter< std::string >::type filename(filenameSEXP);
-    rcpp_result_gen = Rcpp::wrap(print_params(ptr, filename));
+    rcpp_result_gen = Rcpp::wrap(print_params(filename));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -132,10 +130,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_tesseract_tesseract_config", (DL_FUNC) &_tesseract_tesseract_config, 0},
     {"_tesseract_tesseract_engine_internal", (DL_FUNC) &_tesseract_tesseract_engine_internal, 5},
     {"_tesseract_tesseract_engine_set_variable", (DL_FUNC) &_tesseract_tesseract_engine_set_variable, 3},
-    {"_tesseract_validate_params", (DL_FUNC) &_tesseract_validate_params, 2},
+    {"_tesseract_validate_params", (DL_FUNC) &_tesseract_validate_params, 1},
     {"_tesseract_validate_paramfile", (DL_FUNC) &_tesseract_validate_paramfile, 1},
     {"_tesseract_engine_info_internal", (DL_FUNC) &_tesseract_engine_info_internal, 1},
-    {"_tesseract_print_params", (DL_FUNC) &_tesseract_print_params, 2},
+    {"_tesseract_print_params", (DL_FUNC) &_tesseract_print_params, 1},
     {"_tesseract_get_param_values", (DL_FUNC) &_tesseract_get_param_values, 2},
     {"_tesseract_ocr_raw", (DL_FUNC) &_tesseract_ocr_raw, 3},
     {"_tesseract_ocr_file", (DL_FUNC) &_tesseract_ocr_file, 3},

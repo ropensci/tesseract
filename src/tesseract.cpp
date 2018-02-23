@@ -53,12 +53,13 @@ TessPtr tesseract_engine_set_variable(TessPtr ptr, const char * name, const char
 }
 
 // [[Rcpp::export]]
-Rcpp::LogicalVector validate_params(Rcpp::CharacterVector names, Rcpp::CharacterVector values){
-  tesseract::ParamsVectors p;
-  Rcpp::LogicalVector out(names.size());
-  for(size_t i = 0; i < names.size(); i++){
-    out[i] = tesseract::ParamUtils::SetParam(names.at(i), values.at(i), tesseract::SET_PARAM_CONSTRAINT_NONE, &p);
-  }
+Rcpp::LogicalVector validate_params(Rcpp::CharacterVector params){
+  STRING str;
+  tesseract::TessBaseAPI api;
+  api.InitForAnalysePage();
+  Rcpp::LogicalVector out(params.length());
+  for(int i = 0; i < params.length(); i++)
+    out[i] = api.GetVariableAsString(params.at(i), &str);
   return out;
 }
 
@@ -89,10 +90,11 @@ Rcpp::List engine_info_internal(TessPtr ptr){
 }
 
 // [[Rcpp::export]]
-Rcpp::String print_params(TessPtr ptr, std::string filename){
-  tesseract::TessBaseAPI * api = get_engine(ptr);
+Rcpp::String print_params(std::string filename){
+  tesseract::TessBaseAPI api;
+  api.InitForAnalysePage();
   FILE * fp = fopen(filename.c_str(), "w");
-  api->PrintVariables(fp);
+  api.PrintVariables(fp);
   fclose(fp);
   return filename;
 }

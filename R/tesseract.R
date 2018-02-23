@@ -122,14 +122,14 @@ tesseract_engine <- function(datapath, language, confpath, options){
     params <- tryCatch(utils::read.table(confpath), error = function(e){
       bail("Failed to parse config file '%s': %s", confpath, e$message)
     })
-    ok <- validate_params(params$V1, params$V2)
+    ok <- validate_params(params$V1)
     if(any(!ok))
       bail("Unsupported Tesseract parameter(s): [%s] in %s", paste(params$V1[!ok], collapse = ", "), confpath)
   }
 
   opt_names <- as.character(names(options))
   opt_values <- as.character(options)
-  ok <- validate_params(opt_names, opt_values)
+  ok <- validate_params(opt_names)
   if(any(!ok))
     bail("Unsupported Tesseract parameter(s): [%s]", paste(opt_names[!ok], collapse = ", "))
 
