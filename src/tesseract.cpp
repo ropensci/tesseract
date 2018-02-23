@@ -147,3 +147,65 @@ Rcpp::String ocr_file(std::string file, TessPtr ptr, bool HOCR = false){
     throw std::runtime_error("Failed to read image");
   return ocr_pix(api, image, HOCR);
 }
+
+Rcpp::DataFrame ocr_data_internal(tesseract::TessBaseAPI * api, Pix * image){
+  api->ClearAdaptiveClassifier();
+  api->SetImage(image);
+
+  if(api->GetSourceYResolution() < 70)
+    api->SetSourceResolution(300);
+  api->Recognize(0);
+  tesseract::ResultIterator* ri = api->GetIterator();
+  tesseract::PageIteratorLevel level = tesseract::RIL_WORD;
+  size_t n = 0;
+  std::list<std::string> words;
+  std::list<std::string> bbox;
+  std::list<float> conf;
+  char buf[100];
+  if (ri != 0) {
+    do {
+      const char * word = ri->GetUTF8Text(level);
+      words.push_back(word);
+      conf.push_back(ri->Confidence(level));
+      int x1, y1, x2, y2;
+      ri->BoundingBox(level, &x1, &y1, &x2, &y2);
+      snprintf(buf, 100, "%d,%d,%d,%d", x1, y1, x2, y2);
+      bbox.push_back(buf);
+      delete[] word;
+      n++;
+    } while (ri->Next(level));
+  }
+
+  Rcpp::CharacterVector rwords(n);
+  Rcpp::CharacterVector rbbox(n);
+  Rcpp::NumericVector rconf(n);
+  for(int i = 0; i < n; i++) {
+    rwords[i] = words.front(); words.pop_front();
+    rbbox[i] = bbox.front(); bbox.pop_front();
+    rconf[i] = conf.front(); conf.pop_front();
+  }
+  return Rcpp::DataFrame::create(
+    Rcpp::_["word"] = rwords,
+    Rcpp::_["confidence"] = rconf,
+    Rcpp::_["bbox"] = rbbox,
+    Rcpp::_["stringsAsFactors"] = false
+  );
+}
+
+// [[Rcpp::export]]
+Rcpp::DataFrame ocr_raw_data(Rcpp::RawVector input, TessPtr ptr){
+  tesseract::TessBaseAPI *api = get_engine(ptr);
+  Pix *image =  pixReadMem(input.begin(), input.length());
+  if(!image)
+    throw std::runtime_error("Failed to read image");
+  return ocr_data_internal(api, image);
+}
+
+// [[Rcpp::export]]
+Rcpp::DataFrame ocr_file_data(std::string file, TessPtr ptr){
+  tesseract::TessBaseAPI *api = get_engine(ptr);
+  Pix *image =  pixRead(file.c_str());
+  if(!image)
+    throw std::runtime_error("Failed to read image");
+  return ocr_data_internal(api, image);
+}

@@ -41,3 +41,11 @@ ocr_file <- function(file, ptr, HOCR = FALSE) {
     .Call('_tesseract_ocr_file', PACKAGE = 'tesseract', file, ptr, HOCR)
 }
 
+ocr_raw_data <- function(input, ptr) {
+    .Call('_tesseract_ocr_raw_data', PACKAGE = 'tesseract', input, ptr)
+}
+
+ocr_file_data <- function(file, ptr) {
+    .Call('_tesseract_ocr_file_data', PACKAGE = 'tesseract', file, ptr)
+}
+

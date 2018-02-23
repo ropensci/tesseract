@@ -15,8 +15,6 @@ SystemRequirements: Tesseract >= 3.03 (libtesseract-dev / tesseract-devel) and
     the English training data separately (tesseract-ocr-eng)
 Imports:
     Rcpp (>= 0.12.12),
-    xml2,
-    stringr,
     curl,
     rappdirs,
     tibble,

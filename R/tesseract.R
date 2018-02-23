@@ -75,14 +75,25 @@ ocr <- function(image, engine = tesseract("eng"), HOCR = FALSE) {
 #' @rdname tesseract
 #' @export
 ocr_data <- function(image, engine = tesseract("eng")) {
-  xml <- ocr(image, engine = engine, HOCR = TRUE)
-  doc <- xml2::read_xml(xml)
-  nodes <- xml2::xml_find_all(doc, ".//span[@class='ocrx_word']")
-  words <- xml2::xml_text(nodes)
-  meta <- xml2::xml_attr(nodes, 'title')
-  bbox <- stringr::str_replace(stringr::str_extract(meta, "bbox [\\d ]+"), "bbox ", "")
-  conf <- as.numeric(stringr::str_replace(stringr::str_extract(meta, "x_wconf.*"), "x_wconf ", ""))
-  data.frame(word = words, confidence = conf, bbox = bbox, stringsAsFactors = FALSE)
+  stopifnot(inherits(engine, "tesseract"))
+  if(inherits(image, "magick-image")){
+    vapply(image, function(x){
+      tmp <- tempfile(fileext = ".png")
+      on.exit(unlink(tmp))
+      magick::image_write(x, tmp, format = 'PNG', density = "72x72")
+      ocr_data(tmp, engine = engine)
+    }, character(1))
+  } else if(is.character(image)){
+    image <- download_files(image)
+    df_list <- lapply(image, function(im){
+      ocr_file_data(im, ptr = engine)
+    })
+    do.call(rbind.data.frame, unname(df_list))
+  } else if(is.raw(image)){
+    ocr_raw_data(image, engine)
+  } else {
+    stop("Argument 'image' must be file-path, url or raw vector")
+  }
 }
 
 #' @export
