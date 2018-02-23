@@ -65,7 +65,7 @@ tesseract_params <- function(filter = ""){
   tmp <- print_params(tempfile())
   on.exit(unlink(tmp))
   df <- parse_params(tmp)
-  subset <- grepl(filter, df$param, fixed = TRUE)
+  subset <- grepl(filter, df$param, ignore.case = TRUE)
   tibble::as.tibble(df[subset,])
 }
 
