@@ -154,6 +154,7 @@ Rcpp::DataFrame ocr_data_internal(tesseract::TessBaseAPI * api, Pix * image){
 
   if(api->GetSourceYResolution() < 70)
     api->SetSourceResolution(300);
+
   api->Recognize(0);
   tesseract::ResultIterator* ri = api->GetIterator();
   tesseract::PageIteratorLevel level = tesseract::RIL_WORD;
@@ -162,9 +163,11 @@ Rcpp::DataFrame ocr_data_internal(tesseract::TessBaseAPI * api, Pix * image){
   std::list<std::string> bbox;
   std::list<float> conf;
   char buf[100];
-  if (ri != 0) {
+  if (ri) {
     do {
       const char * word = ri->GetUTF8Text(level);
+      if(!word)
+        continue;
       words.push_back(word);
       conf.push_back(ri->Confidence(level));
       int x1, y1, x2, y2;
@@ -175,7 +178,6 @@ Rcpp::DataFrame ocr_data_internal(tesseract::TessBaseAPI * api, Pix * image){
       n++;
     } while (ri->Next(level));
   }
-
   Rcpp::CharacterVector rwords(n);
   Rcpp::CharacterVector rbbox(n);
   Rcpp::NumericVector rconf(n);
