@@ -113,6 +113,10 @@ Rcpp::String ocr_pix(tesseract::TessBaseAPI * api, Pix * image, bool HOCR){
   // Get OCR result
   api->ClearAdaptiveClassifier();
   api->SetImage(image);
+
+  // Workaround for annoying warning, see https://github.com/tesseract-ocr/tesseract/issues/756
+  if(api->GetSourceYResolution() < 70)
+    api->SetSourceResolution(300);
   char *outText = HOCR ? api->GetHOCRText(0) : api->GetUTF8Text();
 
   //cleanup
