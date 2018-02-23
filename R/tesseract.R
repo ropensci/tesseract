@@ -92,8 +92,8 @@ ocr_data <- function(image, engine = tesseract("eng")) {
 #' the system library.
 #' @param config path to optional configuration files. Use with care, invalid paths
 #' or parameters may cause a crash.
-#' @param options a named list with tesseract
-#' [engine options](http://www.sk-spell.sk.cx/tesseract-ocr-parameters-in-302-version)
+#' @param options a named list with tesseract parameters. See [tesseract_params()]
+#' for a list of supported options with description.
 #' @param cache use a cached version of this training data if available
 tesseract <- local({
   store <- new.env()

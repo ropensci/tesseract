@@ -28,8 +28,8 @@ the system library.}
 \item{config}{path to optional configuration files. Use with care, invalid paths
 or parameters may cause a crash.}
 
-\item{options}{a named list with tesseract
-\href{http://www.sk-spell.sk.cx/tesseract-ocr-parameters-in-302-version}{engine options}}
+\item{options}{a named list with tesseract parameters. See \code{\link[=tesseract_params]{tesseract_params()}}
+for a list of supported options with description.}
 
 \item{cache}{use a cached version of this training data if available}
 }
