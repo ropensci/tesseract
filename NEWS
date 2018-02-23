@@ -2,7 +2,10 @@
   - Set tesseract parameters at init so that all parameters types now actually work!
   - New function tesseract_params() lists all supported parameters and their default
   - Added 'config' argument to tesseract() which specifies a file with parameter values
+  - Internally validate paremeter names before init to revent tesseract crashes
+  - Rewrite the ocr_data() function in C++ to make it much faster
   - Tesseract 4 now gets data from the tessdata_fast repo as recommended upstream
+  - Use default resolution of 300dpi when image does not contain resolution info
 
 1.9
   - Tesseract 4 now dowloads training data from the "tessdata_fast" repo

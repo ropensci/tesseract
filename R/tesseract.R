@@ -59,7 +59,7 @@ ocr <- function(image, engine = tesseract("eng"), HOCR = FALSE) {
     vapply(image, function(x){
       tmp <- tempfile(fileext = ".png")
       on.exit(unlink(tmp))
-      magick::image_write(x, tmp, format = 'PNG', density = "72x72")
+      magick::image_write(x, tmp, format = 'PNG', density = '300x300')
       ocr(tmp, engine = engine)
     }, character(1))
   } else if(is.character(image)){
