@@ -1,5 +1,6 @@
 # Tesseract Version
-VERSION=3.05.01
+VERSION = 3.05.01
+RWINLIB = ../windows/tesseract-${VERSION}
 
 # Support R < 3.3 with gcc-4.6.3
 R_COMPILED_BY ?= -4.6.3
@@ -10,12 +11,12 @@ endif
 CXX_STD=CXX11
 
 PKG_CPPFLAGS = \
-	-I../windows/tesseract-${VERSION}/include/tesseract \
-	-I../windows/tesseract-${VERSION}/include/leptonica
+	-I${RWINLIB}/include/tesseract \
+	-I${RWINLIB}/include/leptonica
 
 PKG_LIBS = \
-	-L../windows/tesseract-${VERSION}/lib${subst gcc,,${COMPILED_BY}}${R_ARCH} \
-	-L../windows/tesseract-${VERSION}/lib${R_ARCH} \
+	-L${RWINLIB}/lib${subst gcc,,${COMPILED_BY}}${R_ARCH} \
+	-L${RWINLIB}/lib${R_ARCH} \
 	-ltesseract -llept \
 	-ltiff -llzma -lopenjp2 -lwebp -ljpeg -lgif -lpng16 -lz \
 	-lws2_32
@@ -26,6 +27,7 @@ winlibs:
 	mkdir -p ../inst
 	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R" ${VERSION}
 	cp -Rf ../windows/tessdata ../inst/
+	cp -Rf ${RWINLIB}/share/tessdata ../inst/
 
 clean:
 	rm -Rf $(OBJECTS) $(SHLIB)
