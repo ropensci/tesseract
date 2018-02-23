@@ -89,6 +89,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_param_values
+Rcpp::CharacterVector get_param_values(TessPtr ptr, Rcpp::CharacterVector params);
+RcppExport SEXP _tesseract_get_param_values(SEXP ptrSEXP, SEXP paramsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< TessPtr >::type ptr(ptrSEXP);
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type params(paramsSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_param_values(ptr, params));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ocr_raw
 Rcpp::String ocr_raw(Rcpp::RawVector input, TessPtr ptr, bool HOCR);
 RcppExport SEXP _tesseract_ocr_raw(SEXP inputSEXP, SEXP ptrSEXP, SEXP HOCRSEXP) {
@@ -124,6 +136,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_tesseract_validate_paramfile", (DL_FUNC) &_tesseract_validate_paramfile, 1},
     {"_tesseract_engine_info_internal", (DL_FUNC) &_tesseract_engine_info_internal, 1},
     {"_tesseract_print_params", (DL_FUNC) &_tesseract_print_params, 2},
+    {"_tesseract_get_param_values", (DL_FUNC) &_tesseract_get_param_values, 2},
     {"_tesseract_ocr_raw", (DL_FUNC) &_tesseract_ocr_raw, 3},
     {"_tesseract_ocr_file", (DL_FUNC) &_tesseract_ocr_file, 3},
     {NULL, NULL, 0}

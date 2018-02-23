@@ -97,6 +97,16 @@ Rcpp::String print_params(TessPtr ptr, std::string filename){
   return filename;
 }
 
+// [[Rcpp::export]]
+Rcpp::CharacterVector get_param_values(TessPtr ptr, Rcpp::CharacterVector params){
+  STRING str;
+  tesseract::TessBaseAPI * api = get_engine(ptr);
+  Rcpp::CharacterVector out(params.length());
+  for(int i = 0; i < params.length(); i++)
+    out[i] = api->GetVariableAsString(params.at(i), &str) ? Rcpp::String(str.c_str()) : NA_STRING;
+  return out;
+}
+
 Rcpp::String ocr_pix(tesseract::TessBaseAPI * api, Pix * image, bool HOCR){
   // Get OCR result
   api->ClearAdaptiveClassifier();
