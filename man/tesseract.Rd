@@ -25,9 +25,9 @@ tesseract(language = NULL, datapath = NULL, config = NULL,
 \item{datapath}{path with the training data for this language. Default uses
 the system library.}
 
-\item{config}{a config file which contains one or more parameter values. The file may
-either exist in the current directory, but tesseract also ships with several standard
-config files in the tessdata directory.}
+\item{config}{a config file which contains one or more parameter values. The can be
+a file in the current directory or one of the standard tesseract config files that
+live in the tessdata directory.}
 
 \item{options}{a named list with tesseract parameters. See \code{\link[=tesseract_params]{tesseract_params()}}
 for a list of supported options with description.}

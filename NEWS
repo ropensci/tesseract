@@ -1,6 +1,8 @@
 2.0
-  - Added 'config' parameter to tesseract()
-  - Added function tesseract_params()
+  - Set tesseract parameters at init so that all parameters types now actually work!
+  - New function tesseract_params() lists all supported parameters and their default
+  - Added 'config' argument to tesseract() which specifies a file with parameter values
+  - Tesseract 4 now gets data from the tessdata_fast repo as recommended upstream
 
 1.9
   - Tesseract 4 now dowloads training data from the "tessdata_fast" repo

@@ -90,9 +90,9 @@ ocr_data <- function(image, engine = tesseract("eng")) {
 #' @param language string with language for training data. Usually defaults to `eng`
 #' @param datapath path with the training data for this language. Default uses
 #' the system library.
-#' @param config a config file which contains one or more parameter values. The file may
-#' either exist in the current directory, but tesseract also ships with several standard
-#' config files in the tessdata directory.
+#' @param config a config file which contains one or more parameter values. The can be
+#' a file in the current directory or one of the standard tesseract config files that
+#' live in the tessdata directory.
 #' @param options a named list with tesseract parameters. See [tesseract_params()]
 #' for a list of supported options with description.
 #' @param cache use a cached version of this training data if available
