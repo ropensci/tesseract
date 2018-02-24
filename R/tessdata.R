@@ -54,7 +54,10 @@ tesseract_download <- function(lang, datapath = NULL, progress = TRUE){
 tesseract_info <- function(){
   info <- engine_info_internal(tesseract())
   config <- tesseract_config()
-  list(datapath = info$datapath, available = info$available, version = config$version)
+  list(datapath = info$datapath,
+       available = info$available,
+       version = config$version,
+       configs = list.files(file.path(info$datapath, "configs")))
 }
 
 #' @export
