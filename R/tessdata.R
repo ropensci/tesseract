@@ -37,8 +37,8 @@ tesseract_download <- function(lang, datapath = NULL, progress = TRUE){
   }
   url <- sprintf('https://github.com/tesseract-ocr/%s/raw/%s/%s.traineddata', repo, release, lang)
   req <- curl::curl_fetch_memory(url, curl::new_handle(
-    noprogress = !isTRUE(progress),
-    progressfunction = progress_fun
+    progressfunction = progress_fun,
+    noprogress = !isTRUE(progress)
   ))
   if(progress)
     cat("\n")
@@ -65,17 +65,13 @@ tesseract_params <- function(filter = ""){
   tmp <- print_params(tempfile())
   on.exit(unlink(tmp))
   df <- parse_params(tmp)
-  subset <- grepl(filter, df$param, ignore.case = TRUE)
+  subset <- grepl(filter, paste(df$param, df$desc), ignore.case = TRUE)
   tibble::as.tibble(df[subset,])
 }
 
 parse_params <- function(path){
-  out <- readLines(path)
-  params <- strsplit(out, "\t", fixed = TRUE)
-  name <- vapply(params, `[`, character(1), 1)
-  default <- vapply(params, `[`, character(1), 2)
-  desc <- vapply(params, `[`, character(1), 3)
-  data.frame(param = name, default = default, desc = desc, stringsAsFactors = FALSE)
+  utils::read.delim(path, header = FALSE, quote = "",
+             col.names = c("param", "default", "desc"), stringsAsFactors = FALSE)
 }
 
 progress_fun <- function(down, up) {

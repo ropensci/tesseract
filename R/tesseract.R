@@ -93,7 +93,7 @@ ocr_data <- function(image, engine = tesseract("eng")) {
   } else {
     stop("Argument 'image' must be file-path, url or raw vector")
   }
-  do.call(rbind.data.frame, unname(df_list))
+  tibble::as.tibble(do.call(rbind.data.frame, unname(df_list)))
 }
 
 #' @export
