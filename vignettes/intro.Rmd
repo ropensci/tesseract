@@ -15,7 +15,7 @@ vignette: >
 
 ```{r, echo = FALSE, message = FALSE}
 knitr::opts_chunk$set(comment = "")
-options(width = 120, max.print = 100)
+options(width = 100, max.print = 100)
 has_nld <- "nld" %in% tesseract::tesseract_info()$available
 ```
 
@@ -104,6 +104,12 @@ Notice how this forces tesseract to detect a number (3 or 8 or 5) if we rule out
 ### Config files
 
 A config file is simply a text file with one or more parameters, seperated by linebreaks. You can load config files from your current working directory, or load one of the standard tesseract config files from the tessdata directory.
+
+```{r}
+(info <- tesseract_info())
+readLines(file.path(info$datapath, "configs/digits"))
+```
+
 
 ```{r}
 digits <- tesseract(config = 'digits')
