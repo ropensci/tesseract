@@ -56,7 +56,7 @@ Use `tesseract_info()` to list the languages that you currently have installed.
 tesseract_info()
 ```
 
-By default the R package only includes english training data. Windows and Mac users can install additional training data using `tesseract_download()`. Let's OCR a screenshot from wikipedia in Dutch (Nederlands) 
+By default the R package only includes English training data. Windows and Mac users can install additional training data using `tesseract_download()`. Let's OCR a screenshot from Wikipedia in Dutch (Nederlands) 
 
 ```{r, eval=FALSE}
 tesseract_download("nld", progress = FALSE)
@@ -79,7 +79,7 @@ Tesseract supports hundreds of [control parameters](https://github.com/tesseract
 tesseract_params('colour')
 ```
 
-One powerful parameter is `tessedit_char_whitelist` which restricts the output to a limited set of characters. This may be useful for reading for exaple numbers such as a bank account, zip code, or gas meter.
+One powerful parameter is `tessedit_char_whitelist` which restricts the output to a limited set of characters. This may be useful for reading for example numbers such as a bank account, zip code, or gas meter.
 
 ```{r echo=FALSE}
 magick::image_read('https://jeroen.github.io/images/receipt.png', strip = TRUE)
@@ -101,7 +101,7 @@ cat(ocr("https://jeroen.github.io/images/receipt.png", engine = numbers2))
 
 Notice how this forces tesseract to detect a number (3 or 8 or 5) if we rule out the dollar sign.
 
-A config file is simply a text file with one or more parameters, seperated by linebreaks. You can load config files from your current working directory, or load one of the standard tesseract config files from the tessdata directory.
+A config file is simply a text file parameters, one name and value per line. You can load config files from your current working directory, or load one of the standard tesseract config files from the tessdata directory.
 
 ## Read from PDF files
 

@@ -8,7 +8,7 @@ if(!file.exists(sprintf("../windows/tesseract-%s/include/tesseract/baseapi.h", V
   unlink("lib.zip")
 }
 
-# Also download the english training data
+# Also download the English training data
 dir.create("../windows/tessdata", showWarnings = FALSE)
 if(!file.exists("../windows/tessdata/eng.traineddata")){
   message("Downloading eng.traineddata...")
