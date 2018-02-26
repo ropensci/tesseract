@@ -2,7 +2,7 @@
 VERSION <- commandArgs(TRUE)
 if(!file.exists(sprintf("../windows/tesseract-%s/include/tesseract/baseapi.h", VERSION))){
   if(getRversion() < "3.3.0") setInternet2()
-  download.file(sprintf("https://github.com/rwinlib/tesseract/archive/v%s.zip", VERSION), "lib.zip", quiet = TRUE)
+  curl::curl_download(sprintf("https://github.com/rwinlib/tesseract/archive/v%s.zip", VERSION), "lib.zip")
   dir.create("../windows", showWarnings = FALSE)
   unzip("lib.zip", exdir = "../windows")
   unlink("lib.zip")
@@ -12,8 +12,8 @@ if(!file.exists(sprintf("../windows/tesseract-%s/include/tesseract/baseapi.h", V
 dir.create("../windows/tessdata", showWarnings = FALSE)
 if(!file.exists("../windows/tessdata/eng.traineddata")){
   message("Downloading eng.traineddata...")
-  download.file("https://github.com/tesseract-ocr/tessdata/raw/3.04.00/eng.traineddata",
-                "../windows/tessdata/eng.traineddata", mode = "wb", quiet = TRUE)
+  curl::curl_download("https://github.com/tesseract-ocr/tessdata/raw/3.04.00/eng.traineddata",
+                "../windows/tessdata/eng.traineddata")
 }
 
 # This is diasabled now because CRAN wants to reduce the size of the binary
