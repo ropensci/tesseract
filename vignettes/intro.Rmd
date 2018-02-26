@@ -113,6 +113,21 @@ text <- tesseract::ocr(pngfile)
 cat(text)
 ```
 
+## Preprocessing with Magick
+
+The accuracy of the OCR process depends on the quality of the input image. You can often improve results by properly scaling the image, removing noise and artifacts or cropping the area where the text it.
 
 
-## Image Preprocessing
+```{r}
+library(magick)
+(input <- image_read("https://jeroen.github.io/images/bowers.jpg"))
+
+text <- input %>%
+  image_resize("2000") %>%
+  image_convert(colorspace = 'gray') %>%
+  image_trim(fuzz = 10) %>%
+  image_ocr()
+
+cat(text)
+```
+
