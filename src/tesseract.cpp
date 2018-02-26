@@ -13,24 +13,24 @@ Rcpp::List tesseract_config(){
 }
 
 // [[Rcpp::export]]
-TessPtr tesseract_engine_internal(Rcpp::CharacterVector datapath, Rcpp::CharacterVector language, Rcpp::CharacterVector confpath,
+TessPtr tesseract_engine_internal(Rcpp::CharacterVector datapath, Rcpp::CharacterVector language, Rcpp::CharacterVector confpaths,
                                   Rcpp::CharacterVector opt_names, Rcpp::CharacterVector opt_values){
   GenericVector<STRING> params, values;
   const char * path = NULL;
   const char * lang = NULL;
-  char * config = NULL;
+  char * configs[1000] = {0};
   if(datapath.length())
     path = datapath.at(0);
   if(language.length())
     lang = language.at(0);
-  if(confpath.length())
-    config = confpath.at(0);
+  for(size_t i = 0; i < confpaths.length(); i++)
+    configs[i] = confpaths.at(i);
   for(size_t i = 0; i < opt_names.length(); i++){
     params.push_back(std::string(opt_names.at(i)).c_str());
     values.push_back(std::string(opt_values.at(i)).c_str());
   }
   tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
-  if (api->Init(path, lang, tesseract::OEM_DEFAULT, &config, !!config, &params, &values, false))
+  if (api->Init(path, lang, tesseract::OEM_DEFAULT, configs, confpaths.length(), &params, &values, false))
     throw std::runtime_error(std::string("Unable to find training data for: ") + (lang ? lang : "eng") + ". Please consult manual for: ?tesseract_download");
   TessPtr ptr(api);
   ptr.attr("class") = Rcpp::CharacterVector::create("tesseract");

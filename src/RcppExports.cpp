@@ -17,17 +17,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // tesseract_engine_internal
-TessPtr tesseract_engine_internal(Rcpp::CharacterVector datapath, Rcpp::CharacterVector language, Rcpp::CharacterVector confpath, Rcpp::CharacterVector opt_names, Rcpp::CharacterVector opt_values);
-RcppExport SEXP _tesseract_tesseract_engine_internal(SEXP datapathSEXP, SEXP languageSEXP, SEXP confpathSEXP, SEXP opt_namesSEXP, SEXP opt_valuesSEXP) {
+TessPtr tesseract_engine_internal(Rcpp::CharacterVector datapath, Rcpp::CharacterVector language, Rcpp::CharacterVector confpaths, Rcpp::CharacterVector opt_names, Rcpp::CharacterVector opt_values);
+RcppExport SEXP _tesseract_tesseract_engine_internal(SEXP datapathSEXP, SEXP languageSEXP, SEXP confpathsSEXP, SEXP opt_namesSEXP, SEXP opt_valuesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type datapath(datapathSEXP);
     Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type language(languageSEXP);
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type confpath(confpathSEXP);
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type confpaths(confpathsSEXP);
     Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type opt_names(opt_namesSEXP);
     Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type opt_values(opt_valuesSEXP);
-    rcpp_result_gen = Rcpp::wrap(tesseract_engine_internal(datapath, language, confpath, opt_names, opt_values));
+    rcpp_result_gen = Rcpp::wrap(tesseract_engine_internal(datapath, language, confpaths, opt_names, opt_values));
     return rcpp_result_gen;
 END_RCPP
 }

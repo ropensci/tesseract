@@ -4,19 +4,13 @@
 #' are reading. Works best for images with high contrast, little noise and horizontal text.
 #'
 #' The `ocr()` function returns plain text by default, or hOCR output if hOCR is set to `TRUE`.
-#' The `ocr_data()` function internally parses the hOCR output and returns a data frame with
-#' a confidence rate and bounding box for each word in the text.
+#' The `ocr_data()` function returns a data frame with a confidence rate and bounding box for
+#' each word in the text.
 #'
-#' Tesseract uses training data to perform OCR. Most systems default to English
-#' training data. To improve OCR performance for other languages you can to install the
-#' training data from your distribution. For example to install the spanish training data:
-#'
-#'  - [tesseract-ocr-spa](https://packages.debian.org/testing/tesseract-ocr-spa) (Debian, Ubuntu)
-#'  - [tesseract-langpack-spa](https://apps.fedoraproject.org/packages/tesseract-langpack-spa) (Fedora, EPEL)
-#'
-#' On Windows and MacOS you can install languages using the [tesseract_download] function
-#' which downloads training data directly from [github](https://github.com/tesseract-ocr/tessdata)
-#' and stores it in a the path on disk given by the `TESSDATA_PREFIX` variable.
+#' Tesseract [control parameters][tesseract_params] can be set either via a named list in the
+#' `options` parameter, or in a `config` file text file which contains the parameter name
+#' followed by a space and then the value, one per line. Use[tesseract_params()] to list
+#' supported parameters. Note that invalid parameters can sometimes cause a crash.
 #'
 #' @export
 #' @useDynLib tesseract
@@ -25,7 +19,7 @@
 #' @param engine a tesseract engine created with `tesseract()`
 #' @param HOCR if `TRUE` return results as HOCR xml instead of plain text
 #' @rdname tesseract
-#' @references [Tesseract training data](https://github.com/tesseract-ocr/tessdata)
+#' @references [Tesseract training data](https://github.com/tesseract-ocr/tesseract/wiki/Data-Files)
 #' @aliases tesseract ocr
 #' @importFrom Rcpp sourceCpp
 #' @examples # Simple example
@@ -101,43 +95,45 @@ ocr_data <- function(image, engine = tesseract("eng")) {
 #' @param language string with language for training data. Usually defaults to `eng`
 #' @param datapath path with the training data for this language. Default uses
 #' the system library.
-#' @param config a config file which contains one or more parameter values. The can be
-#' a file in the current directory or one of the standard tesseract config files that
-#' live in the tessdata directory.
+#' @param configs character vector with files, each containing one or more parameter
+#' values. These config files can exist in the current directory or one of the standard
+#' tesseract config files that live in the tessdata directory. See details.
 #' @param options a named list with tesseract parameters. See [tesseract_params()]
-#' for a list of supported options with description.
-#' @param cache use a cached version of this training data if available
+#' for a list of supported options with description. See details.
+#' @param cache use a cached version of engine if possible to speed up loading
 tesseract <- local({
   store <- new.env()
-  function(language = NULL, datapath = NULL, config = NULL, options = NULL, cache = TRUE){
+  function(language = NULL, datapath = NULL, configs = NULL, options = NULL, cache = TRUE){
     datapath <- as.character(datapath)
     language <- as.character(language)
-    config <- as.character(config)
+    configs <- as.character(configs)
     options <- as.list(options)
     if(isTRUE(cache)){
-      key <- digest::digest(list(language, datapath, config, options))
+      key <- digest::digest(list(language, datapath, configs, options))
       if(is.null(store[[key]])){
-        ptr <- tesseract_engine(datapath, language, config, options)
+        ptr <- tesseract_engine(datapath, language, configs, options)
         assign(key, ptr, store);
       }
       store[[key]]
     } else {
-      tesseract_engine(datapath, language, config, options)
+      tesseract_engine(datapath, language, configs, options)
     }
   }
 })
 
-tesseract_engine <- function(datapath, language, confpath, options){
+tesseract_engine <- function(datapath, language, configs, options){
 
   # Tesseract::read_config_file first checks for local file, then in tessdata
-  if(length(confpath) && file.exists(confpath)){
-    params <- tryCatch(utils::read.table(confpath), error = function(e){
-      bail("Failed to parse config file '%s': %s", confpath, e$message)
-    })
-    ok <- validate_params(params$V1)
-    if(any(!ok))
-      bail("Unsupported Tesseract parameter(s): [%s] in %s", paste(params$V1[!ok], collapse = ", "), confpath)
-  }
+  lapply(configs, function(confpath){
+    if(file.exists(confpath)){
+      params <- tryCatch(utils::read.table(confpath, quote = ""), error = function(e){
+        bail("Failed to parse config file '%s': %s", confpath, e$message)
+      })
+      ok <- validate_params(params$V1)
+      if(any(!ok))
+        bail("Unsupported Tesseract parameter(s): [%s] in %s", paste(params$V1[!ok], collapse = ", "), confpath)
+    }
+  })
 
   opt_names <- as.character(names(options))
   opt_values <- as.character(options)
@@ -145,7 +141,7 @@ tesseract_engine <- function(datapath, language, confpath, options){
   if(any(!ok))
     bail("Unsupported Tesseract parameter(s): [%s]", paste(opt_names[!ok], collapse = ", "))
 
-  tesseract_engine_internal(datapath, language, confpath, opt_names, opt_values)
+  tesseract_engine_internal(datapath, language, configs, opt_names, opt_values)
 }
 
 download_files <- function(urls){

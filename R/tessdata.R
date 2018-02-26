@@ -6,6 +6,22 @@
 #' [yum](https://apps.fedoraproject.org/packages/tesseract) or
 #' [apt-get](https://packages.debian.org/search?suite=stable&section=all&arch=any&searchon=names&keywords=tesseract-ocr-).
 #'
+#' Tesseract uses training data to perform OCR. Most systems default to English
+#' training data. To improve OCR performance for other languages you can to install the
+#' training data from your distribution. For example to install the spanish training data:
+#'
+#'  - [tesseract-ocr-spa](https://packages.debian.org/testing/tesseract-ocr-spa) (Debian, Ubuntu)
+#'  - [tesseract-langpack-spa](https://apps.fedoraproject.org/packages/tesseract-langpack-spa) (Fedora, EPEL)
+#'
+#' On Windows and MacOS you can install languages using the [tesseract_download] function
+#' which downloads training data directly from [github](https://github.com/tesseract-ocr/tessdata)
+#' and stores it in a the path on disk given by the `TESSDATA_PREFIX` variable.
+#'
+#' Tesseract supports hundreds of [control parameters](https://github.com/tesseract-ocr/tesseract/wiki/ControlParams)
+#' which alter the OCR engine. Use `tesseract_params()` to list all parameters with their
+#' default value and a brief description. The `filter` argument finds parameters that match
+#' a particular string.
+#'
 #' @export
 #' @aliases tessdata
 #' @rdname tessdata

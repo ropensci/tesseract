@@ -10,7 +10,7 @@ ocr(image, engine = tesseract("eng"), HOCR = FALSE)
 
 ocr_data(image, engine = tesseract("eng"))
 
-tesseract(language = NULL, datapath = NULL, config = NULL,
+tesseract(language = NULL, datapath = NULL, configs = NULL,
   options = NULL, cache = TRUE)
 }
 \arguments{
@@ -25,14 +25,14 @@ tesseract(language = NULL, datapath = NULL, config = NULL,
 \item{datapath}{path with the training data for this language. Default uses
 the system library.}
 
-\item{config}{a config file which contains one or more parameter values. The can be
-a file in the current directory or one of the standard tesseract config files that
-live in the tessdata directory.}
+\item{configs}{character vector with files, each containing one or more parameter
+values. These config files can exist in the current directory or one of the standard
+tesseract config files that live in the tessdata directory. See details.}
 
 \item{options}{a named list with tesseract parameters. See \code{\link[=tesseract_params]{tesseract_params()}}
-for a list of supported options with description.}
+for a list of supported options with description. See details.}
 
-\item{cache}{use a cached version of this training data if available}
+\item{cache}{use a cached version of engine if possible to speed up loading}
 }
 \description{
 Extract text from an image. Requires that you have training data for the language you
@@ -40,20 +40,13 @@ are reading. Works best for images with high contrast, little noise and horizont
 }
 \details{
 The \code{ocr()} function returns plain text by default, or hOCR output if hOCR is set to \code{TRUE}.
-The \code{ocr_data()} function internally parses the hOCR output and returns a data frame with
-a confidence rate and bounding box for each word in the text.
+The \code{ocr_data()} function returns a data frame with a confidence rate and bounding box for
+each word in the text.
 
-Tesseract uses training data to perform OCR. Most systems default to English
-training data. To improve OCR performance for other languages you can to install the
-training data from your distribution. For example to install the spanish training data:
-\itemize{
-\item \href{https://packages.debian.org/testing/tesseract-ocr-spa}{tesseract-ocr-spa} (Debian, Ubuntu)
-\item \href{https://apps.fedoraproject.org/packages/tesseract-langpack-spa}{tesseract-langpack-spa} (Fedora, EPEL)
-}
-
-On Windows and MacOS you can install languages using the \link{tesseract_download} function
-which downloads training data directly from \href{https://github.com/tesseract-ocr/tessdata}{github}
-and stores it in a the path on disk given by the \code{TESSDATA_PREFIX} variable.
+Tesseract \link[=tesseract_params]{control parameters} can be set either via a named list in the
+\code{options} parameter, or in a \code{config} file text file which contains the parameter name
+followed by a space and then the value, one per line. Use\code{\link[=tesseract_params]{tesseract_params()}} to list
+supported parameters. Note that invalid parameters can sometimes cause a crash.
 }
 \examples{
 # Simple example
@@ -83,7 +76,7 @@ cat(text)
 engine <- tesseract(options = list(tessedit_char_whitelist = "0123456789"))
 }
 \references{
-\href{https://github.com/tesseract-ocr/tessdata}{Tesseract training data}
+\href{https://github.com/tesseract-ocr/tesseract/wiki/Data-Files}{Tesseract training data}
 }
 \seealso{
 Other tesseract: \code{\link{tesseract_download}}

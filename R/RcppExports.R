@@ -5,8 +5,8 @@ tesseract_config <- function() {
     .Call('_tesseract_tesseract_config', PACKAGE = 'tesseract')
 }
 
-tesseract_engine_internal <- function(datapath, language, confpath, opt_names, opt_values) {
-    .Call('_tesseract_tesseract_engine_internal', PACKAGE = 'tesseract', datapath, language, confpath, opt_names, opt_values)
+tesseract_engine_internal <- function(datapath, language, confpaths, opt_names, opt_values) {
+    .Call('_tesseract_tesseract_engine_internal', PACKAGE = 'tesseract', datapath, language, confpaths, opt_names, opt_values)
 }
 
 tesseract_engine_set_variable <- function(ptr, name, value) {
