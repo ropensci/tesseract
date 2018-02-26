@@ -145,7 +145,7 @@ tesseract_engine <- function(datapath, language, configs, options){
 }
 
 download_files <- function(urls){
-  vapply(urls, function(path){
+  files <- vapply(urls, function(path){
     if(grepl("^https?://", path)){
       tmp <- tempfile(fileext =  basename(path))
       curl::curl_download(path, tmp)
@@ -153,6 +153,11 @@ download_files <- function(urls){
     }
     normalizePath(path, mustWork = TRUE)
   }, character(1))
+  is_pdf <- grepl(".pdf$", files)
+  out <- unlist(lapply(files[is_pdf], function(path){
+    pdftools::pdf_convert(path, dpi = 600)
+  }))
+  c(files[!is_pdf], out)
 }
 
 #' @export
