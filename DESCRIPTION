@@ -24,7 +24,7 @@ RoxygenNote: 6.0.1.9000
 Roxygen: list(markdown = TRUE)
 Suggests:
     spelling,
-    magick (>= 1.6),
+    magick (>= 1.7),
     pdftools (>= 1.5),
     knitr,
     rmarkdown
