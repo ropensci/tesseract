@@ -9,6 +9,6 @@
 *.jpeg
 .Rproj.user
 .Rhistory
-inst
+inst/tessdata
 windows
 src/Makevars
