@@ -27,10 +27,7 @@ Keep in mind that OCR (pattern recognition in general) is a very difficult probl
 
 OCR is the process of finding and recognizing text inside images, for example from a screenshot, scanned paper. The image below has some example text:
 
-
-```{r echo=FALSE}
-magick::image_read('http://jeroen.github.io/images/testocr.png')
-```
+![test](https://jeroen.github.io/images/testocr.png){data-external=1}
 
 ```{r}
 library(tesseract)
@@ -88,10 +85,12 @@ The awesome [magick](https://cran.r-project.org/package=magick/vignettes/intro.h
 
 Below is an example OCR scan from an online [AI course](https://courses.cs.vt.edu/csonline/AI/Lessons/VisualProcessing/OCRscans.html). The code converts it to black-and-white and resizes + crops the image before feeding it to tesseract to get more accurate OCR results.
 
+![bowers](https://jeroen.github.io/images/bowers.jpg){data-external=1}
+
 
 ```{r}
 library(magick)
-(input <- image_read("https://jeroen.github.io/images/bowers.jpg"))
+input <- image_read("https://jeroen.github.io/images/bowers.jpg")
 
 text <- input %>%
   image_resize("2000x") %>%
@@ -126,10 +125,7 @@ tesseract_params('colour')
 
 One powerful parameter is `tessedit_char_whitelist` which restricts the output to a limited set of characters. This may be useful for reading for example numbers such as a bank account, zip code, or gas meter.
 
-```{r echo=FALSE}
-magick::image_read('https://jeroen.github.io/images/receipt.png', strip = TRUE)
-```
-
+![receipt](https://jeroen.github.io/images/receipt.png){data-external=1}
 
 ```{r}
 numbers <- tesseract(options = list(tessedit_char_whitelist = "$.0123456789"))
