@@ -19,6 +19,8 @@ ocr_data(image, engine = tesseract("eng"))
 \description{
 Extract text from an image. Requires that you have training data for the language you
 are reading. Works best for images with high contrast, little noise and horizontal text.
+See \href{https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality}{tesseract wiki} and
+our package vignette for image preprocessing tips.
 }
 \details{
 The \code{ocr()} function returns plain text by default, or hOCR text if hOCR is set to \code{TRUE}.
@@ -51,6 +53,9 @@ cat(text)
 }
 
 engine <- tesseract(options = list(tessedit_char_whitelist = "0123456789"))
+}
+\references{
+\href{https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality}{Tesseract: Improving Quality}
 }
 \seealso{
 Other tesseract: \code{\link{tesseract_download}},

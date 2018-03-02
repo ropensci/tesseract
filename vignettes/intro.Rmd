@@ -59,18 +59,63 @@ tesseract_info()
 By default the R package only includes English training data. Windows and Mac users can install additional training data using `tesseract_download()`. Let's OCR a screenshot from Wikipedia in Dutch (Nederlands) 
 
 ```{r, eval=FALSE}
-tesseract_download("nld", progress = FALSE)
+tesseract_download("nld")
 ```
 
 ```{r eval = has_nld}
-dutch <- tesseract("nld")
+(dutch <- tesseract("nld"))
 text <- ocr("https://jeroen.github.io/images/utrecht.png", engine = dutch)
 cat(text)
 ```
 
 As you can see immediately: almost perfect! (OK just take my word). 
 
-## Tesseract Parameters
+
+## Preprocessing with Magick
+
+The accuracy of the OCR process depends on the quality of the input image. You can often improve results by properly scaling the image, removing noise and artifacts or cropping the area where the text exists. See [tesseract wiki: improve quality](https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality) for important tips to improve the quality of your input image.
+
+The awesome [magick](https://cran.r-project.org/package=magick/vignettes/intro.html) R package has many useful functions that can be use for enhancing the quality of the image. Some things to try:
+
+ - If your image is skewed, use `image_deskew()` and `image_rotate()` make the text horizontal.
+ - `image_trim()` crops out whitespace in the margins. Increase the `fuzz` parameter to make it work for noisy whitespace.
+ - Use `image_convert()` to turn the image into greyscale, which can reduce artifacts and enhance actual text.
+ - If your image is very large or small resizing with `image_resize()` can help tesseract determine text size.
+ - Use `image_modulate()` or `image_contrast()` or `image_contrast()` to tweak brightness / contrast if this is an issue.
+ - Try `image_reducenoise()` for automated noise removal. Your mileage may vary.
+ - With `image_quantize()` you can reduce the number of colors in the image. This can sometimes help with increasing contrast and reducing artifacts.
+ - True imaging ninjas can use `image_convolve()` to use custom [convolution methods](https://ropensci.org/technotes/2017/11/02/image-convolve/). 
+
+Below is an example OCR scan from an online [AI course](https://courses.cs.vt.edu/csonline/AI/Lessons/VisualProcessing/OCRscans.html). The code converts it to black-and-white and resizes + crops the image before feeding it to tesseract to get more accurate OCR results.
+
+
+```{r}
+library(magick)
+(input <- image_read("https://jeroen.github.io/images/bowers.jpg"))
+
+text <- input %>%
+  image_resize("2000x") %>%
+  image_convert(type = 'Grayscale') %>%
+  image_trim(fuzz = 40) %>%
+  image_write(format = 'png', density = '300x300') %>%
+  tesseract::ocr() 
+
+cat(text)
+```
+
+
+## Read from PDF files
+
+If your images are stored in PDF files they first need to be converted to a proper image format. We can do this in R using the `pdf_convert` function from the pdftools package. Use a high DPI to keep quality of the image.
+
+```{r, eval=require(pdftools)}
+pngfile <- pdftools::pdf_convert('https://jeroen.github.io/images/ocrscan.pdf', dpi = 600)
+text <- tesseract::ocr(pngfile)
+cat(text)
+```
+
+
+## Tesseract Control Parameters
 
 Tesseract supports hundreds of [control parameters](https://github.com/tesseract-ocr/tesseract/wiki/ControlParams) which alter the OCR engine. Use `tesseract_params()` to list all parameters with their default value and a brief description. It also has a handy `filter` argument to quickly find parameters that match a particular string.
 
@@ -102,44 +147,3 @@ cat(ocr("https://jeroen.github.io/images/receipt.png", engine = numbers2))
 Notice how this forces tesseract to detect a number (3 or 8 or 5) if we rule out the dollar sign.
 
 A config file is simply a text file parameters, one name and value per line. You can load config files from your current working directory, or load one of the standard tesseract config files from the tessdata directory.
-
-## Read from PDF files
-
-If your images are stored in PDF files they first need to be converted to a proper image format. We can do this in R using the `pdf_convert` function from the pdftools package. Use a high DPI to keep quality of the image.
-
-```{r, eval=require(pdftools)}
-pngfile <- pdftools::pdf_convert('https://jeroen.github.io/images/ocrscan.pdf', dpi = 600)
-text <- tesseract::ocr(pngfile)
-cat(text)
-```
-
-## Preprocessing with Magick
-
-The accuracy of the OCR process depends on the quality of the input image. You can often improve results by properly scaling the image, removing noise and artifacts or cropping the area where the text exists. The awesome [magick](https://cran.r-project.org/package=magick/vignettes/intro.html) package has many useful functions that can be use for enhancing the quality of the image. Some things to try:
-
- - If your image is skewed, use `image_deskew()` and `image_rotate()` make the text horizontal.
- - `image_trim()` crops out whitespace in the margins. Increase the `fuzz` parameter to make it work for noisy whitespace.
- - Use `image_convert()` to turn the image into greyscale, which can reduce artifacts and enhance actual text.
- - If your image is very large or small resizing with `image_resize()` can help tesseract determine text size.
- - Use `image_modulate()` or `image_contrast()` or `image_contrast()` to tweak brightness / contrast if this is an issue.
- - Try `image_reducenoise()` for automated noise removal. Your mileage may vary.
- - With `image_quantize()` you can reduce the number of colors in the image. This can sometimes help with increasing contrast and reducing artifacts.
- - True imaging ninjas can use `image_convolve()` to use custom [convolution methods](https://ropensci.org/technotes/2017/11/02/image-convolve/). 
-
-Below is an example OCR scan from an online [AI course](https://courses.cs.vt.edu/csonline/AI/Lessons/VisualProcessing/OCRscans.html). The convert it to black-and-white and resize+crop it before feeding it to tesseract.
-
-
-```{r}
-library(magick)
-(input <- image_read("https://jeroen.github.io/images/bowers.jpg"))
-
-text <- input %>%
-  image_resize("2000x") %>%
-  image_convert(type = 'Grayscale') %>%
-  image_trim(fuzz = 40) %>%
-  image_write(format = 'png', density = '300x300') %>%
-  tesseract::ocr() 
-
-cat(text)
-```
-

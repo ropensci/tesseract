@@ -2,6 +2,8 @@
 #'
 #' Extract text from an image. Requires that you have training data for the language you
 #' are reading. Works best for images with high contrast, little noise and horizontal text.
+#' See [tesseract wiki](https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality) and
+#' our package vignette for image preprocessing tips.
 #'
 #' The `ocr()` function returns plain text by default, or hOCR text if hOCR is set to `TRUE`.
 #' The `ocr_data()` function returns a data frame with a confidence rate and bounding box for
@@ -14,6 +16,7 @@
 #' @param engine a tesseract engine created with [tesseract()]
 #' @param HOCR if `TRUE` return results as HOCR xml instead of plain text
 #' @rdname ocr
+#' @references [Tesseract: Improving Quality](https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality)
 #' @importFrom Rcpp sourceCpp
 #' @examples # Simple example
 #' text <- ocr("https://jeroen.github.io/images/testocr.png")
