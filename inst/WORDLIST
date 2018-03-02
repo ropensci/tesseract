@@ -1,6 +1,7 @@
 config
 EPEL
 github
+greyscale
 hOCR
 HOCR
 https
@@ -9,6 +10,7 @@ knitr
 langpack
 libtesseract
 MacOS
+magick
 Magick
 Nederlands
 ocr
@@ -19,7 +21,6 @@ rmarkdown
 spanish
 tessdata
 toc
-unicode
 VignetteEncoding
 VignetteEngine
 VignetteIndexEntry
