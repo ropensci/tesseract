@@ -115,7 +115,7 @@ cat(text)
 
 ## Preprocessing with Magick
 
-The accuracy of the OCR process depends on the quality of the input image. You can often improve results by properly scaling the image, removing noise and artifacts or cropping the area where the text exists. The awesome [magick](https://cran.r-project.org/web/packages/magick/vignettes/intro.html) package has many useful functions that can be use for enhancing the quality of the image. Some things to try:
+The accuracy of the OCR process depends on the quality of the input image. You can often improve results by properly scaling the image, removing noise and artifacts or cropping the area where the text exists. The awesome [magick](https://cran.r-project.org/package=magick/vignettes/intro.html) package has many useful functions that can be use for enhancing the quality of the image. Some things to try:
 
  - If your image is skewed, use `image_deskew()` and `image_rotate()` make the text horizontal.
  - `image_trim()` crops out whitespace in the margins. Increase the `fuzz` parameter to make it work for noisy whitespace.
