@@ -17,11 +17,6 @@
 #' which downloads training data directly from [github](https://github.com/tesseract-ocr/tessdata)
 #' and stores it in a the path on disk given by the `TESSDATA_PREFIX` variable.
 #'
-#' Tesseract supports hundreds of [control parameters](https://github.com/tesseract-ocr/tesseract/wiki/ControlParams)
-#' which alter the OCR engine. Use `tesseract_params()` to list all parameters with their
-#' default value and a brief description. The `filter` argument finds parameters that match
-#' a particular string.
-#'
 #' @export
 #' @aliases tessdata
 #' @rdname tessdata
@@ -29,7 +24,7 @@
 #' @param lang three letter code for language, see [tessdata](https://github.com/tesseract-ocr/tessdata) repository.
 #' @param datapath destination directory where to download store the file
 #' @param progress print progress while downloading
-#' @references [tessdata wiki](https://github.com/tesseract-ocr/tesseract/wiki/Data-Files)
+#' @references [tesseract wiki: training data](https://github.com/tesseract-ocr/tesseract/wiki/Data-Files)
 #' @examples \dontrun{
 #' tesseract_download("fra")
 #' french <- tesseract("fra")
@@ -63,34 +58,6 @@ tesseract_download <- function(lang, datapath = NULL, progress = TRUE){
   destfile <- normalizePath(file.path(datapath, basename(url)), mustWork = FALSE)
   writeBin(req$content, destfile)
   return(destfile)
-}
-
-#' @export
-#' @rdname tessdata
-tesseract_info <- function(){
-  info <- engine_info_internal(tesseract())
-  config <- tesseract_config()
-  list(datapath = info$datapath,
-       available = info$available,
-       version = config$version,
-       configs = list.files(file.path(info$datapath, "configs")))
-}
-
-#' @export
-#' @rdname tessdata
-#' @param filter only list parameters containing a particular string
-#' @examples tesseract_params('debug')
-tesseract_params <- function(filter = ""){
-  tmp <- print_params(tempfile())
-  on.exit(unlink(tmp))
-  df <- parse_params(tmp)
-  subset <- grepl(filter, paste(df$param, df$desc), ignore.case = TRUE)
-  tibble::as.tibble(df[subset,])
-}
-
-parse_params <- function(path){
-  utils::read.delim(path, header = FALSE, quote = "",
-             col.names = c("param", "default", "desc"), stringsAsFactors = FALSE)
 }
 
 progress_fun <- function(down, up) {

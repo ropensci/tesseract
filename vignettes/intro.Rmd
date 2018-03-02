@@ -39,7 +39,7 @@ text <- tesseract::ocr("http://jeroen.github.io/images/testocr.png", engine = en
 cat(text)
 ```
 
-Not bad! The `ocr_data()` function returns all words in the image along with a bounding box and confidence rate. Did you notice the word with the lowest confidence? 
+Not bad! The `ocr_data()` function returns all words in the image along with a bounding box and confidence rate.
 
 ```{r}
 results <- tesseract::ocr_data("http://jeroen.github.io/images/testocr.png", engine = eng)

@@ -1,106 +1,27 @@
-#' Tesseract OCR
+#' Tesseract Engine
 #'
-#' Extract text from an image. Requires that you have training data for the language you
-#' are reading. Works best for images with high contrast, little noise and horizontal text.
+#' Initiates a custom OCR engine with a given language and control parameters. This can
+#' be used in the [ocr] and [ocr_data] functions.
 #'
-#' The `ocr()` function returns plain text by default, or hOCR output if hOCR is set to `TRUE`.
-#' The `ocr_data()` function returns a data frame with a confidence rate and bounding box for
-#' each word in the text.
-#'
-#' Tesseract [control parameters][tesseract_params] can be set either via a named list in the
+#' Tesseract [control parameters](https://github.com/tesseract-ocr/tesseract/wiki/ControlParams)
+#'  can be set either via a named list in the
 #' `options` parameter, or in a `config` file text file which contains the parameter name
-#' followed by a space and then the value, one per line. Use[tesseract_params()] to list
-#' supported parameters. Note that invalid parameters can sometimes cause a crash.
+#' followed by a space and then the value, one per line. Use [tesseract_params()] to list
+#' or find parameters. Note that that some parameters are only supported in certain versions
+#' of libtesseract, and that invalid parameters can sometimes cause libtesseract to crash.
 #'
 #' @export
-#' @useDynLib tesseract
+#' @rdname tesseract
 #' @family tesseract
-#' @param image file path, url, or raw vector to image (png, tiff, jpeg, etc)
-#' @param engine a tesseract engine created with `tesseract()`
-#' @param HOCR if `TRUE` return results as HOCR xml instead of plain text
-#' @rdname tesseract
-#' @references [Tesseract training data](https://github.com/tesseract-ocr/tesseract/wiki/Data-Files)
-#' @aliases tesseract ocr
-#' @importFrom Rcpp sourceCpp
-#' @examples # Simple example
-#' text <- ocr("https://jeroen.github.io/images/testocr.png")
-#' cat(text)
-#'
-#' xml <- ocr("https://jeroen.github.io/images/testocr.png", HOCR = TRUE)
-#' cat(xml)
-#'
-#' df <- ocr_data("https://jeroen.github.io/images/testocr.png")
-#' print(df)
-#'
-#' \dontrun{
-#' # Full roundtrip test: render PDF to image and OCR it back to text
-#' curl::curl_download("https://cran.r-project.org/doc/manuals/r-release/R-intro.pdf", "R-intro.pdf")
-#' orig <- pdftools::pdf_text("R-intro.pdf")[1]
-#'
-#' # Render pdf to png image
-#' img_file <- pdftools::pdf_convert("R-intro.pdf", format = 'tiff', pages = 1, dpi = 400)
-#'
-#' # Extract text from png image
-#' text <- ocr(img_file)
-#' unlink(img_file)
-#' cat(text)
-#' }
-#'
-#' engine <- tesseract(options = list(tessedit_char_whitelist = "0123456789"))
-ocr <- function(image, engine = tesseract("eng"), HOCR = FALSE) {
-  stopifnot(inherits(engine, "tesseract"))
-  if(inherits(image, "magick-image")){
-    vapply(image, function(x){
-      tmp <- tempfile(fileext = ".png")
-      on.exit(unlink(tmp))
-      magick::image_write(x, tmp, format = 'PNG', density = '300x300')
-      ocr(tmp, engine = engine)
-    }, character(1))
-  } else if(is.character(image)){
-    image <- download_files(image)
-    vapply(image, ocr_file, character(1), ptr = engine, HOCR = HOCR, USE.NAMES = FALSE)
-  } else if(is.raw(image)){
-    ocr_raw(image, engine, HOCR = HOCR)
-  } else {
-    stop("Argument 'image' must be file-path, url or raw vector")
-  }
-}
-
-#' @rdname tesseract
-#' @export
-ocr_data <- function(image, engine = tesseract("eng")) {
-  stopifnot(inherits(engine, "tesseract"))
-  df_list <- if(inherits(image, "magick-image")){
-    lapply(image, function(x){
-      tmp <- tempfile(fileext = ".png")
-      on.exit(unlink(tmp))
-      magick::image_write(x, tmp, format = 'PNG', density = "72x72")
-      ocr_data(tmp, engine = engine)
-    })
-  } else if(is.character(image)){
-    image <- download_files(image)
-    lapply(image, function(im){
-      ocr_file_data(im, ptr = engine)
-    })
-  } else if(is.raw(image)){
-    list(ocr_raw_data(image, engine))
-  } else {
-    stop("Argument 'image' must be file-path, url or raw vector")
-  }
-  tibble::as.tibble(do.call(rbind.data.frame, unname(df_list)))
-}
-
-#' @export
-#' @rdname tesseract
 #' @param language string with language for training data. Usually defaults to `eng`
 #' @param datapath path with the training data for this language. Default uses
 #' the system library.
 #' @param configs character vector with files, each containing one or more parameter
 #' values. These config files can exist in the current directory or one of the standard
 #' tesseract config files that live in the tessdata directory. See details.
-#' @param options a named list with tesseract parameters. See [tesseract_params()]
-#' for a list of supported options with description. See details.
-#' @param cache use a cached version of engine if possible to speed up loading
+#' @param options a named list with tesseract parameters. See details.
+#' @param cache speed things up by caching engines
+#' @references [tesseract wiki: control parameters](https://github.com/tesseract-ocr/tesseract/wiki/ControlParams)
 tesseract <- local({
   store <- new.env()
   function(language = NULL, datapath = NULL, configs = NULL, options = NULL, cache = TRUE){
@@ -120,6 +41,34 @@ tesseract <- local({
     }
   }
 })
+
+#' @export
+#' @rdname tesseract
+#' @param filter only list parameters containing a particular string
+#' @examples tesseract_params('debug')
+tesseract_params <- function(filter = ""){
+  tmp <- print_params(tempfile())
+  on.exit(unlink(tmp))
+  df <- parse_params(tmp)
+  subset <- grepl(filter, paste(df$param, df$desc), ignore.case = TRUE)
+  tibble::as.tibble(df[subset,])
+}
+
+#' @export
+#' @rdname tesseract
+tesseract_info <- function(){
+  info <- engine_info_internal(tesseract())
+  config <- tesseract_config()
+  list(datapath = info$datapath,
+       available = info$available,
+       version = config$version,
+       configs = list.files(file.path(info$datapath, "configs")))
+}
+
+parse_params <- function(path){
+  utils::read.delim(path, header = FALSE, quote = "",
+                    col.names = c("param", "default", "desc"), stringsAsFactors = FALSE)
+}
 
 tesseract_engine <- function(datapath, language, configs, options){
 

@@ -3,15 +3,9 @@
 \name{tesseract_download}
 \alias{tesseract_download}
 \alias{tessdata}
-\alias{tesseract_info}
-\alias{tesseract_params}
 \title{Tesseract Training Data}
 \usage{
 tesseract_download(lang, datapath = NULL, progress = TRUE)
-
-tesseract_info()
-
-tesseract_params(filter = "")
 }
 \arguments{
 \item{lang}{three letter code for language, see \href{https://github.com/tesseract-ocr/tessdata}{tessdata} repository.}
@@ -19,8 +13,6 @@ tesseract_params(filter = "")
 \item{datapath}{destination directory where to download store the file}
 
 \item{progress}{print progress while downloading}
-
-\item{filter}{only list parameters containing a particular string}
 }
 \description{
 Helper function to download training data from the official
@@ -41,11 +33,6 @@ training data from your distribution. For example to install the spanish trainin
 On Windows and MacOS you can install languages using the \link{tesseract_download} function
 which downloads training data directly from \href{https://github.com/tesseract-ocr/tessdata}{github}
 and stores it in a the path on disk given by the \code{TESSDATA_PREFIX} variable.
-
-Tesseract supports hundreds of \href{https://github.com/tesseract-ocr/tesseract/wiki/ControlParams}{control parameters}
-which alter the OCR engine. Use \code{tesseract_params()} to list all parameters with their
-default value and a brief description. The \code{filter} argument finds parameters that match
-a particular string.
 }
 \examples{
 \dontrun{
@@ -54,12 +41,11 @@ french <- tesseract("fra")
 text <- ocr("https://jeroen.github.io/images/french_text.png", engine = french)
 cat(text)
 }
-tesseract_params('debug')
 }
 \references{
-\href{https://github.com/tesseract-ocr/tesseract/wiki/Data-Files}{tessdata wiki}
+\href{https://github.com/tesseract-ocr/tesseract/wiki/Data-Files}{tesseract wiki: training data}
 }
 \seealso{
-Other tesseract: \code{\link{ocr}}
+Other tesseract: \code{\link{ocr}}, \code{\link{tesseract}}
 }
 \concept{tesseract}
