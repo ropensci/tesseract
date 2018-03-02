@@ -6,6 +6,7 @@ output:
     toc: true
     toc_depth: 2
     toc_float: true
+    fig_caption: false
 vignette: >
   %\VignetteIndexEntry{Using the Tesseract OCR engine in R}
   %\VignetteEngine{knitr::rmarkdown}
