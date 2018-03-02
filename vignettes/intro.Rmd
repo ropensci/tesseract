@@ -115,7 +115,18 @@ cat(text)
 
 ## Preprocessing with Magick
 
-The accuracy of the OCR process depends on the quality of the input image. You can often improve results by properly scaling the image, removing noise and artifacts or cropping the area where the text it.
+The accuracy of the OCR process depends on the quality of the input image. You can often improve results by properly scaling the image, removing noise and artifacts or cropping the area where the text exists. The awesome [magick](https://cran.r-project.org/web/packages/magick/vignettes/intro.html) package has many useful functions that can be use for enhancing the quality of the image. Some things to try:
+
+ - If your image is skewed, use `image_deskew()` and `image_rotate()` make the text horizontal.
+ - `image_trim()` crops out whitespace in the margins. Increase the `fuzz` parameter to make it work for noisy whitespace.
+ - Use `image_convert()` to turn the image into greyscale, which can reduce artifacts and enhance actual text.
+ - If your image is very large or small resizing with `image_resize()` can help tesseract determine text size.
+ - Use `image_modulate()` or `image_contrast()` or `image_contrast()` to tweak brightness / contrast if this is an issue.
+ - Try `image_reducenoise()` for automated noise removal. Your mileage may vary.
+ - With `image_quantize()` you can reduce the number of colors in the image. This can sometimes help with increasing contrast and reducing artifacts.
+ - True imaging ninjas can use `image_convolve()` to use custom [convolution methods](https://ropensci.org/technotes/2017/11/02/image-convolve/). 
+
+Below is an example OCR scan from an online [AI course](https://courses.cs.vt.edu/csonline/AI/Lessons/VisualProcessing/OCRscans.html). The convert it to black-and-white and resize+crop it before feeding it to tesseract.
 
 
 ```{r}
@@ -123,10 +134,11 @@ library(magick)
 (input <- image_read("https://jeroen.github.io/images/bowers.jpg"))
 
 text <- input %>%
-  image_resize("2000") %>%
-  image_convert(colorspace = 'gray') %>%
-  image_trim(fuzz = 10) %>%
-  image_ocr()
+  image_resize("2000x") %>%
+  image_convert(type = 'Grayscale') %>%
+  image_trim(fuzz = 40) %>%
+  image_write(format = 'png', density = '300x300') %>%
+  tesseract::ocr() 
 
 cat(text)
 ```

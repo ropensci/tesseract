@@ -15,6 +15,7 @@ SystemRequirements: Tesseract >= 3.03 (libtesseract-dev / tesseract-devel) and
     the English training data separately (tesseract-ocr-eng)
 Imports:
     Rcpp (>= 0.12.12),
+    pdftools (>= 1.5),    
     curl,
     rappdirs,
     tibble,
@@ -23,9 +24,8 @@ LinkingTo: Rcpp
 RoxygenNote: 6.0.1.9000
 Roxygen: list(markdown = TRUE)
 Suggests:
-    spelling,
     magick (>= 1.7),
-    pdftools (>= 1.5),
+    spelling,
     knitr,
     rmarkdown
 Encoding: UTF-8
