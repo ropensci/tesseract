@@ -23,9 +23,9 @@ TessPtr tesseract_engine_internal(Rcpp::CharacterVector datapath, Rcpp::Characte
     path = datapath.at(0);
   if(language.length())
     lang = language.at(0);
-  for(size_t i = 0; i < confpaths.length(); i++)
+  for(int i = 0; i < confpaths.length(); i++)
     configs[i] = confpaths.at(i);
-  for(size_t i = 0; i < opt_names.length(); i++){
+  for(int i = 0; i < opt_names.length(); i++){
     params.push_back(std::string(opt_names.at(i)).c_str());
     values.push_back(std::string(opt_values.at(i)).c_str());
   }
@@ -181,7 +181,7 @@ Rcpp::DataFrame ocr_data_internal(tesseract::TessBaseAPI * api, Pix * image){
   Rcpp::CharacterVector rwords(n);
   Rcpp::CharacterVector rbbox(n);
   Rcpp::NumericVector rconf(n);
-  for(int i = 0; i < n; i++) {
+  for(size_t i = 0; i < n; i++) {
     rwords[i] = words.front(); words.pop_front();
     rbbox[i] = bbox.front(); bbox.pop_front();
     rconf[i] = conf.front(); conf.pop_front();
