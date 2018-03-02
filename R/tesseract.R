@@ -1,7 +1,7 @@
 #' Tesseract Engine
 #'
-#' Initiates a custom OCR engine with a given language and control parameters. This can
-#' be used in the [ocr] and [ocr_data] functions.
+#' Create an OCR engine for a given language and control parameters. This can be used by
+#' the [ocr] and [ocr_data] functions to recognize text.
 #'
 #' Tesseract [control parameters](https://github.com/tesseract-ocr/tesseract/wiki/ControlParams)
 #'  can be set either via a named list in the
