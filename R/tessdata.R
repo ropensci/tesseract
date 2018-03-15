@@ -38,13 +38,13 @@ tesseract_download <- function(lang, datapath = NULL, progress = TRUE){
   }
   stopifnot(is.character(lang))
   stopifnot(is.character(datapath))
-  version <- as.numeric(substring(tesseract_config()$version, 1, 4))
+  version <- tesseract_version_major()
   if(version < 4){
     repo <- "tessdata"
     release <- "3.04.00"
   } else {
     repo <- "tessdata_fast"
-    release <- "v1.0rc1"
+    release <- "4.0.0-beta.1"
   }
   url <- sprintf('https://github.com/tesseract-ocr/%s/raw/%s/%s.traineddata', repo, release, lang)
   req <- curl::curl_fetch_memory(url, curl::new_handle(

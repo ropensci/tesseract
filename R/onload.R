@@ -1,6 +1,6 @@
 .onLoad <- function(lib, pkg){
   pkgdir <- file.path(lib, pkg)
-  version <- as.numeric(substring(tesseract_config()$version, 1, 1))
+  version <- tesseract_version_major()
   appname <- ifelse(version < 4, "tesseract", paste0("tesseract", version))
   sysdir <- rappdirs::user_data_dir(appname)
   pkgdata <- normalizePath(file.path(pkgdir, "tessdata"), mustWork = FALSE)
@@ -22,6 +22,10 @@
       Sys.setenv(TESSDATA_PREFIX = pkgdata)
     }
   }
+}
+
+tesseract_version_major <- function(){
+  as.numeric(substring(tesseract_config()$version, 1, 1))
 }
 
 onload_notify <- function(){
