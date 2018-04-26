@@ -17,8 +17,8 @@ if(!file.exists("../windows/tessdata/eng.traineddata")){
 }
 
 # This is diasabled now because CRAN wants to reduce the size of the binary
-#if(!file.exists("../windows/tessdata/osd.traineddata")){
-#  message("Downloading osd.traineddata...")
-#  download.file("https://github.com/tesseract-ocr/tessdata/raw/3.04.00/osd.traineddata",
-#                "../windows/tessdata/osd.traineddata", mode = "wb", quiet = TRUE)
-#}
+if(!file.exists("../windows/tessdata/osd.traineddata")){
+  message("Downloading osd.traineddata...")
+  download.file("https://github.com/tesseract-ocr/tessdata/raw/3.04.00/osd.traineddata",
+                "../windows/tessdata/osd.traineddata", mode = "wb", quiet = TRUE)
+}
