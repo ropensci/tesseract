@@ -4,6 +4,8 @@ latex: false
 fortran: false
 pandoc: false
 
+r: oldrel
+
 matrix:
   include:
     - os: linux
