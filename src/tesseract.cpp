@@ -31,7 +31,8 @@ TessPtr tesseract_engine_internal(Rcpp::CharacterVector datapath, Rcpp::Characte
   }
   tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
   //workaroundf for https://github.com/ropensci/tesseract/issues/14
-  char * old_ctype = setlocale(LC_CTYPE, NULL);
+  char old_ctype[100];
+  strncpy(old_ctype, setlocale(LC_CTYPE, NULL), 99);
   setlocale(LC_CTYPE,"C");
   int err = api->Init(path, lang, tesseract::OEM_DEFAULT, configs, confpaths.length(), &params, &values, false);
   setlocale(LC_CTYPE, old_ctype);
