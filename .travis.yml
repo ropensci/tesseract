@@ -4,7 +4,7 @@ latex: false
 fortran: false
 pandoc: false
 
-r: oldrel
+r: 3.4.4
 
 matrix:
   include:
