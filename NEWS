@@ -1,5 +1,7 @@
 2.1
   - Fixes for 4.0.0-beta.1: they switched to semver + other data branch
+  - Set LC_CTYPE to "C" when loading training data (required for some asian languages)
+  - Add back OSD training data on Windows
 
 2.0
   - Set tesseract parameters at init so that all parameters types now actually work!
