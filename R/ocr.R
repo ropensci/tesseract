@@ -13,7 +13,8 @@
 #' @useDynLib tesseract
 #' @family tesseract
 #' @param image file path, url, or raw vector to image (png, tiff, jpeg, etc)
-#' @param engine a tesseract engine created with [tesseract()]
+#' @param engine a tesseract engine created with [tesseract()]. Alternatively a
+#' language string which will be passed to [tesseract()].
 #' @param HOCR if `TRUE` return results as HOCR xml instead of plain text
 #' @rdname ocr
 #' @references [Tesseract: Improving Quality](https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality)
@@ -44,6 +45,8 @@
 #'
 #' engine <- tesseract(options = list(tessedit_char_whitelist = "0123456789"))
 ocr <- function(image, engine = tesseract("eng"), HOCR = FALSE) {
+  if(is.character(engine))
+    engine <- tesseract(engine)
   stopifnot(inherits(engine, "tesseract"))
   if(inherits(image, "magick-image")){
     vapply(image, function(x){
@@ -65,6 +68,8 @@ ocr <- function(image, engine = tesseract("eng"), HOCR = FALSE) {
 #' @rdname ocr
 #' @export
 ocr_data <- function(image, engine = tesseract("eng")) {
+  if(is.character(engine))
+    engine <- tesseract(engine)
   stopifnot(inherits(engine, "tesseract"))
   df_list <- if(inherits(image, "magick-image")){
     lapply(image, function(x){

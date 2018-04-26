@@ -48,4 +48,3 @@ cat(text)
 \seealso{
 Other tesseract: \code{\link{ocr}}, \code{\link{tesseract}}
 }
-\concept{tesseract}

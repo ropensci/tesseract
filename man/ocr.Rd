@@ -12,7 +12,8 @@ ocr_data(image, engine = tesseract("eng"))
 \arguments{
 \item{image}{file path, url, or raw vector to image (png, tiff, jpeg, etc)}
 
-\item{engine}{a tesseract engine created with \code{\link[=tesseract]{tesseract()}}}
+\item{engine}{a tesseract engine created with \code{\link[=tesseract]{tesseract()}}. Alternatively a
+language string which will be passed to \code{\link[=tesseract]{tesseract()}}.}
 
 \item{HOCR}{if \code{TRUE} return results as HOCR xml instead of plain text}
 }
@@ -61,4 +62,3 @@ engine <- tesseract(options = list(tessedit_char_whitelist = "0123456789"))
 Other tesseract: \code{\link{tesseract_download}},
   \code{\link{tesseract}}
 }
-\concept{tesseract}
