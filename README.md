@@ -2,6 +2,7 @@
 
 > Extract text from an image. Requires that you have training data for the language you are reading. Works best for images with high contrast, little noise and horizontal text.
 
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 [![Build Status](https://travis-ci.org/ropensci/tesseract.svg?branch=master)](https://travis-ci.org/ropensci/tesseract)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/ropensci/tesseract?branch=master&svg=true)](https://ci.appveyor.com/project/jeroen/tesseract)
 [![Coverage Status](https://codecov.io/github/ropensci/tesseract/coverage.svg?branch=master)](https://codecov.io/github/ropensci/tesseract?branch=master)
