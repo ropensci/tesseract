@@ -1,2 +1,2 @@
-#include <baseapi.h>
+#include <tesseract/baseapi.h>
 #include <allheaders.h>

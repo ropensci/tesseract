@@ -17,10 +17,6 @@ validate_params <- function(params) {
     .Call('_tesseract_validate_params', PACKAGE = 'tesseract', params)
 }
 
-validate_paramfile <- function(path) {
-    invisible(.Call('_tesseract_validate_paramfile', PACKAGE = 'tesseract', path))
-}
-
 engine_info_internal <- function(ptr) {
     .Call('_tesseract_engine_info_internal', PACKAGE = 'tesseract', ptr)
 }

@@ -55,16 +55,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// validate_paramfile
-void validate_paramfile(const char * path);
-RcppExport SEXP _tesseract_validate_paramfile(SEXP pathSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const char * >::type path(pathSEXP);
-    validate_paramfile(path);
-    return R_NilValue;
-END_RCPP
-}
 // engine_info_internal
 Rcpp::List engine_info_internal(TessPtr ptr);
 RcppExport SEXP _tesseract_engine_info_internal(SEXP ptrSEXP) {
@@ -155,7 +145,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_tesseract_tesseract_engine_internal", (DL_FUNC) &_tesseract_tesseract_engine_internal, 5},
     {"_tesseract_tesseract_engine_set_variable", (DL_FUNC) &_tesseract_tesseract_engine_set_variable, 3},
     {"_tesseract_validate_params", (DL_FUNC) &_tesseract_validate_params, 1},
-    {"_tesseract_validate_paramfile", (DL_FUNC) &_tesseract_validate_paramfile, 1},
     {"_tesseract_engine_info_internal", (DL_FUNC) &_tesseract_engine_info_internal, 1},
     {"_tesseract_print_params", (DL_FUNC) &_tesseract_print_params, 1},
     {"_tesseract_get_param_values", (DL_FUNC) &_tesseract_get_param_values, 2},

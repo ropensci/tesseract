@@ -11,8 +11,7 @@ endif
 CXX_STD=CXX11
 
 PKG_CPPFLAGS = \
-	-I${RWINLIB}/include/tesseract \
-	-I${RWINLIB}/include/leptonica
+	-I${RWINLIB}/include -I${RWINLIB}/include/leptonica
 
 PKG_LIBS = \
 	-L${RWINLIB}/lib${subst gcc,,${COMPILED_BY}}${R_ARCH} \

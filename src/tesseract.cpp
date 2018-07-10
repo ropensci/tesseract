@@ -1,11 +1,14 @@
 #include "tesseract_types.h"
-#include <genericvector.h>
-#include <params.h>
+#include <tesseract/genericvector.h>
 
 // [[Rcpp::export]]
 Rcpp::List tesseract_config(){
+  char old_ctype[100];
+  strncpy(old_ctype, setlocale(LC_ALL, NULL), 99);
+  setlocale(LC_ALL,"C");
   tesseract::TessBaseAPI api;
   api.InitForAnalysePage();
+  setlocale(LC_CTYPE, old_ctype);
   return Rcpp::List::create(
     Rcpp::_["version"] = tesseract::TessBaseAPI::Version(),
     Rcpp::_["path"] = api.GetDatapath()
@@ -29,13 +32,12 @@ TessPtr tesseract_engine_internal(Rcpp::CharacterVector datapath, Rcpp::Characte
     params.push_back(std::string(opt_names.at(i)).c_str());
     values.push_back(std::string(opt_values.at(i)).c_str());
   }
-  tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
-  //workaroundf for https://github.com/ropensci/tesseract/issues/14
   char old_ctype[100];
-  strncpy(old_ctype, setlocale(LC_CTYPE, NULL), 99);
-  setlocale(LC_CTYPE,"C");
+  strncpy(old_ctype, setlocale(LC_ALL, NULL), 99);
+  setlocale(LC_ALL,"C");
+  tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
   int err = api->Init(path, lang, tesseract::OEM_DEFAULT, configs, confpaths.length(), &params, &values, false);
-  setlocale(LC_CTYPE, old_ctype);
+  setlocale(LC_ALL, old_ctype);
   if(err){
     delete api;
     throw std::runtime_error(std::string("Unable to find training data for: ") + (lang ? lang : "eng") + ". Please consult manual for: ?tesseract_download");
@@ -69,12 +71,6 @@ Rcpp::LogicalVector validate_params(Rcpp::CharacterVector params){
   for(int i = 0; i < params.length(); i++)
     out[i] = api.GetVariableAsString(params.at(i), &str);
   return out;
-}
-
-// [[Rcpp::export]]
-void validate_paramfile(const char * path){
-  tesseract::ParamsVectors p;
-  tesseract::ParamUtils::ReadParamsFile(path, tesseract::SET_PARAM_CONSTRAINT_NONE, &p);
 }
 
 // [[Rcpp::export]]
