@@ -53,7 +53,7 @@ ocr <- function(image, engine = tesseract("eng"), HOCR = FALSE) {
       tmp <- tempfile(fileext = ".png")
       on.exit(unlink(tmp))
       magick::image_write(x, tmp, format = 'PNG', density = '300x300')
-      ocr(tmp, engine = engine)
+      ocr(tmp, engine = engine, HOCR = HOCR)
     }, character(1))
   } else if(is.character(image)){
     image <- download_files(image)
