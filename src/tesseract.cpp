@@ -1,14 +1,24 @@
 #include "tesseract_types.h"
 #include <tesseract/genericvector.h>
 
-// [[Rcpp::export]]
-Rcpp::List tesseract_config(){
-  char old_ctype[100];
-  strncpy(old_ctype, setlocale(LC_ALL, NULL), 99);
-  setlocale(LC_ALL,"C");
+/* NB: libtesseract now insists that the engine is loaded in 'C' locale.
+ * Hopefully this is temporary and it will be fixed upstream.
+ * Full discussion: https://github.com/tesseract-ocr/tesseract/issues/1670
+ */
+
+static tesseract::TessBaseAPI make_analyze_api(){
+  char *old_ctype = strdup(setlocale(LC_ALL, NULL));
+  setlocale(LC_ALL, "C");
   tesseract::TessBaseAPI api;
   api.InitForAnalysePage();
-  setlocale(LC_CTYPE, old_ctype);
+  setlocale(LC_ALL, old_ctype);
+  free(old_ctype);
+  return api;
+}
+
+// [[Rcpp::export]]
+Rcpp::List tesseract_config(){
+  tesseract::TessBaseAPI api = make_analyze_api();
   return Rcpp::List::create(
     Rcpp::_["version"] = tesseract::TessBaseAPI::Version(),
     Rcpp::_["path"] = api.GetDatapath()
@@ -32,12 +42,12 @@ TessPtr tesseract_engine_internal(Rcpp::CharacterVector datapath, Rcpp::Characte
     params.push_back(std::string(opt_names.at(i)).c_str());
     values.push_back(std::string(opt_values.at(i)).c_str());
   }
-  char old_ctype[100];
-  strncpy(old_ctype, setlocale(LC_ALL, NULL), 99);
-  setlocale(LC_ALL,"C");
+  char *old_ctype = strdup(setlocale(LC_ALL, NULL));
+  setlocale(LC_ALL, "C");
   tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
   int err = api->Init(path, lang, tesseract::OEM_DEFAULT, configs, confpaths.length(), &params, &values, false);
   setlocale(LC_ALL, old_ctype);
+  free(old_ctype);
   if(err){
     delete api;
     throw std::runtime_error(std::string("Unable to find training data for: ") + (lang ? lang : "eng") + ". Please consult manual for: ?tesseract_download");
@@ -65,8 +75,7 @@ TessPtr tesseract_engine_set_variable(TessPtr ptr, const char * name, const char
 // [[Rcpp::export]]
 Rcpp::LogicalVector validate_params(Rcpp::CharacterVector params){
   STRING str;
-  tesseract::TessBaseAPI api;
-  api.InitForAnalysePage();
+  tesseract::TessBaseAPI api = make_analyze_api();
   Rcpp::LogicalVector out(params.length());
   for(int i = 0; i < params.length(); i++)
     out[i] = api.GetVariableAsString(params.at(i), &str);
@@ -95,8 +104,7 @@ Rcpp::List engine_info_internal(TessPtr ptr){
 
 // [[Rcpp::export]]
 Rcpp::String print_params(std::string filename){
-  tesseract::TessBaseAPI api;
-  api.InitForAnalysePage();
+  tesseract::TessBaseAPI api = make_analyze_api();
   FILE * fp = fopen(filename.c_str(), "w");
   api.PrintVariables(fp);
   fclose(fp);
