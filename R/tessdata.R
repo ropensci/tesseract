@@ -26,12 +26,13 @@
 #' @param progress print progress while downloading
 #' @references [tesseract wiki: training data](https://github.com/tesseract-ocr/tesseract/wiki/Data-Files)
 #' @examples \donttest{
-#' tesseract_download("fra")
+#' if(is.na(match("fra", tesseract_info()$available)))
+#'   tesseract_download("fra")
 #' french <- tesseract("fra")
 #' text <- ocr("https://jeroen.github.io/images/french_text.png", engine = french)
 #' cat(text)
 #' }
-tesseract_download <- function(lang, datapath = NULL, progress = TRUE){
+tesseract_download <- function(lang, datapath = NULL, progress = interactive()){
   if(!length(datapath)){
     warn_on_linux()
     datapath <- tesseract_info()$datapath

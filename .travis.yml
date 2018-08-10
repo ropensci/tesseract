@@ -30,6 +30,7 @@ addons:
       - libtesseract-dev
       - libleptonica-dev
       - tesseract-ocr-eng
+      - tesseract-ocr-fra
       - libpoppler-cpp-dev
       - libmagick++-dev
 

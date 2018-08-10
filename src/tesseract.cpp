@@ -1,7 +1,9 @@
 #include "tesseract_types.h"
 #include <tesseract/genericvector.h>
 
-/* NB: libtesseract now insists that the engine is loaded in 'C' locale.
+/* NB: libtesseract now insists that the engine is initiated in 'C' locale.
+ * We do this as exemplified in the example code in the libc manual:
+ * https://www.gnu.org/software/libc/manual/html_node/Setting-the-Locale.html
  * Hopefully this is temporary and it will be fixed upstream.
  * Full discussion: https://github.com/tesseract-ocr/tesseract/issues/1670
  */
