@@ -51,3 +51,4 @@ tesseract_params('debug')
 Other tesseract: \code{\link{ocr}},
   \code{\link{tesseract_download}}
 }
+\concept{tesseract}

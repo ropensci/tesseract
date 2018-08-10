@@ -4,6 +4,8 @@ latex: false
 fortran: false
 pandoc: false
 
+r_check_args: '--run-donttest'
+
 matrix:
   include:
     - os: linux

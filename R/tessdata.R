@@ -25,7 +25,7 @@
 #' @param datapath destination directory where to download store the file
 #' @param progress print progress while downloading
 #' @references [tesseract wiki: training data](https://github.com/tesseract-ocr/tesseract/wiki/Data-Files)
-#' @examples \dontrun{
+#' @examples \donttest{
 #' tesseract_download("fra")
 #' french <- tesseract("fra")
 #' text <- ocr("https://jeroen.github.io/images/french_text.png", engine = french)

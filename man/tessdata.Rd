@@ -35,7 +35,7 @@ which downloads training data directly from \href{https://github.com/tesseract-o
 and stores it in a the path on disk given by the \code{TESSDATA_PREFIX} variable.
 }
 \examples{
-\dontrun{
+\donttest{
 tesseract_download("fra")
 french <- tesseract("fra")
 text <- ocr("https://jeroen.github.io/images/french_text.png", engine = french)
@@ -48,3 +48,4 @@ cat(text)
 \seealso{
 Other tesseract: \code{\link{ocr}}, \code{\link{tesseract}}
 }
+\concept{tesseract}
