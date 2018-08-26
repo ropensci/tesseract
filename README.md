@@ -82,7 +82,7 @@ brew install tesseract
 ```
 
 Tesseract uses training data to perform OCR. Most systems default to English
-training data. To improve OCR results for other langauges you can to install the
+training data. To improve OCR results for other languages you can to install the
 appropriate training data. On Windows and OSX you can do this in R using 
 `tesseract_download()`:
 
