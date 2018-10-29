@@ -1,5 +1,5 @@
 # Tesseract Version
-VERSION = 3.05.01
+VERSION = 4.0.0
 RWINLIB = ../windows/tesseract-${VERSION}
 
 # Support R < 3.3 with gcc-4.6.3
@@ -10,8 +10,7 @@ endif
 
 CXX_STD=CXX11
 
-PKG_CPPFLAGS = \
-	-I${RWINLIB}/include -I${RWINLIB}/include/leptonica
+PKG_CPPFLAGS = -I${RWINLIB}/include
 
 PKG_LIBS = \
 	-L${RWINLIB}/lib${subst gcc,,${COMPILED_BY}}${R_ARCH} \

@@ -12,13 +12,13 @@ if(!file.exists(sprintf("../windows/tesseract-%s/include/tesseract/baseapi.h", V
 dir.create("../windows/tessdata", showWarnings = FALSE)
 if(!file.exists("../windows/tessdata/eng.traineddata")){
   message("Downloading eng.traineddata...")
-  download.file("https://github.com/tesseract-ocr/tessdata/raw/3.04.00/eng.traineddata",
+  download.file("https://github.com/tesseract-ocr/tessdata_fast/raw/master/eng.traineddata",
                 "../windows/tessdata/eng.traineddata", mode = "wb", quiet = TRUE)
 }
 
-# This is diasabled now because CRAN wants to reduce the size of the binary
+# This is base training data for Orientation and Script Detection
 if(!file.exists("../windows/tessdata/osd.traineddata")){
   message("Downloading osd.traineddata...")
-  download.file("https://github.com/tesseract-ocr/tessdata/raw/3.04.00/osd.traineddata",
+  download.file("https://github.com/tesseract-ocr/tessdata_fast/raw/master/osd.traineddata",
                 "../windows/tessdata/osd.traineddata", mode = "wb", quiet = TRUE)
 }
