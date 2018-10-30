@@ -57,7 +57,7 @@ tesseract_info()
 
 By default the R package only includes English training data. Windows and Mac users can install additional training data using `tesseract_download()`. Let's OCR a screenshot from Wikipedia in Dutch (Nederlands) 
 
-[![utrecht](http://jeroen.github.io/images/utrecht2.png)](https://nl.wikipedia.org/wiki/Geschiedenis_van_de_stad_Utrecht)
+[![utrecht](https://jeroen.github.io/images/utrecht2.png)](https://nl.wikipedia.org/wiki/Geschiedenis_van_de_stad_Utrecht)
 
 ```{r, eval=FALSE}
 # Only need to do download once:
@@ -67,7 +67,7 @@ tesseract_download("nld")
 ```{r eval = has_nld}
 # Now load the dictionary
 (dutch <- tesseract("nld"))
-text <- ocr("http://jeroen.github.io/images/utrecht2.png", engine = dutch)
+text <- ocr("https://jeroen.github.io/images/utrecht2.png", engine = dutch)
 cat(text)
 ```
 
