@@ -19,7 +19,6 @@ Imports:
     pdftools (>= 1.5),    
     curl,
     rappdirs,
-    tibble,
     digest
 LinkingTo: Rcpp
 RoxygenNote: 6.1.0

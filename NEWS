@@ -1,5 +1,10 @@
 4.0
   - Windows, MacOS: Upgrade to upstream Tesseract 4.0! Completely new OCR engine.
+  - Tesseract 4 has a new training data format. On Windows / MacOS you need to
+    re-download your language data with tesseract_download(). The package uses
+    separate directories for storing Tesseract 3 vs 4 data so they shouldn't get
+    mixed up (hopefully).
+  - Drop hard-dependency on tibble (only load if available)
 
 2.3
   - Fix problem with setlocale() not properly restoring locale.

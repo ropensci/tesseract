@@ -51,7 +51,7 @@ tesseract_params <- function(filter = ""){
   on.exit(unlink(tmp))
   df <- parse_params(tmp)
   subset <- grepl(filter, paste(df$param, df$desc), ignore.case = TRUE)
-  tibble::as.tibble(df[subset,])
+  df_as_tibble(df[subset,])
 }
 
 #' @export
@@ -120,4 +120,10 @@ download_files <- function(urls){
 
 bail <- function(...){
   stop(sprintf(...), call. = FALSE)
+}
+
+df_as_tibble <- function(df){
+  stopifnot(is.data.frame(df))
+  class(df) <- c("tbl_df", "tbl", "data.frame")
+  df
 }

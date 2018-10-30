@@ -42,6 +42,13 @@ is_testload <- function(){
 
 .onAttach <- function(lib, pkg){
   check_training_data()
+
+  # Load tibble (if available) for pretty printing
+  if(interactive() && is.null(.getNamespace('tibble'))){
+    tryCatch({
+      getNamespace('tibble')
+    }, error= function(e){})
+  }
 }
 
 check_training_data <- function(){

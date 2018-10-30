@@ -88,5 +88,5 @@ ocr_data <- function(image, engine = tesseract("eng")) {
   } else {
     stop("Argument 'image' must be file-path, url or raw vector")
   }
-  tibble::as.tibble(do.call(rbind.data.frame, unname(df_list)))
+  df_as_tibble(do.call(rbind.data.frame, unname(df_list)))
 }
