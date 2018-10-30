@@ -56,7 +56,7 @@ tesseract_download <- function(lang, datapath = NULL, progress = interactive()){
     cat("\n")
   if(req$status_code != 200)
     stop("Download failed: HTTP ", req$status_code, call. = FALSE)
-  destfile <- normalizePath(file.path(datapath, basename(url)), mustWork = FALSE)
+  destfile <- file.path(normalizePath(datapath, mustWork = TRUE), basename(url))
   writeBin(req$content, destfile)
   return(destfile)
 }
