@@ -33,12 +33,12 @@
 #' cat(text)
 #' }
 tesseract_download <- function(lang, datapath = NULL, progress = interactive()){
+  stopifnot(is.character(lang))
   if(!length(datapath)){
     warn_on_linux()
     datapath <- tesseract_info()$datapath
   }
-  stopifnot(is.character(lang))
-  stopifnot(is.character(datapath))
+  datapath <- normalizePath(datapath, mustWork = TRUE)
   version <- tesseract_version_major()
   if(version < 4){
     repo <- "tessdata"
@@ -56,7 +56,7 @@ tesseract_download <- function(lang, datapath = NULL, progress = interactive()){
     cat("\n")
   if(req$status_code != 200)
     stop("Download failed: HTTP ", req$status_code, call. = FALSE)
-  destfile <- file.path(normalizePath(datapath, mustWork = TRUE), basename(url))
+  destfile <- file.path(datapath, basename(url))
   writeBin(req$content, destfile)
   return(destfile)
 }
