@@ -1,3 +1,6 @@
+4.0
+  - Windows, MacOS: Upgrade to upstream Tesseract 4.0! Completely new OCR engine.
+
 2.3
   - Fix problem with setlocale() not properly restoring locale.
   - Switch examples from dontrun{} to donttest{}, and '--run-donttest' on travis/appveyor
