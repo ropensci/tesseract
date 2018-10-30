@@ -27,6 +27,7 @@ Suggests:
     magick (>= 1.7),
     spelling,
     knitr,
+    tibble,
     rmarkdown
 Encoding: UTF-8
 VignetteBuilder: knitr

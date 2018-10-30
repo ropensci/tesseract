@@ -15,6 +15,7 @@ vignette: >
 
 
 ```{r, echo = FALSE, message = FALSE}
+library(tibble)
 knitr::opts_chunk$set(comment = "")
 options(width = 100, max.print = 100)
 has_nld <- "nld" %in% tesseract::tesseract_info()$available
@@ -41,7 +42,7 @@ Not bad! The `ocr_data()` function returns all words in the image along with a b
 
 ```{r}
 results <- tesseract::ocr_data("http://jeroen.github.io/images/testocr.png", engine = eng)
-print(results, n = 20)
+results
 ```
 
 ## Language Data
@@ -56,11 +57,15 @@ tesseract_info()
 
 By default the R package only includes English training data. Windows and Mac users can install additional training data using `tesseract_download()`. Let's OCR a screenshot from Wikipedia in Dutch (Nederlands) 
 
+![utrecht](https://jeroen.github.io/images/utrecht.png)
+
 ```{r, eval=FALSE}
+# Only need to do download once:
 tesseract_download("nld")
 ```
 
 ```{r eval = has_nld}
+# Now load the dictionary
 (dutch <- tesseract("nld"))
 text <- ocr("https://jeroen.github.io/images/utrecht.png", engine = dutch)
 cat(text)
@@ -124,23 +129,4 @@ Tesseract supports hundreds of [control parameters](https://github.com/tesseract
 tesseract_params('colour')
 ```
 
-One powerful parameter is `tessedit_char_whitelist` which restricts the output to a limited set of characters. This may be useful for reading for example numbers such as a bank account, zip code, or gas meter.
-
-![receipt](https://jeroen.github.io/images/receipt.png){data-external=1}
-
-```{r}
-numbers <- tesseract(options = list(tessedit_char_whitelist = "$.0123456789"))
-cat(ocr("https://jeroen.github.io/images/receipt.png", engine = numbers))
-```
-
-To test if this actually works, look what happens if we remove the `$` from `tessedit_char_whitelist`:
-
-```{r}
-# Do not allow any dollar sign 
-numbers2 <- tesseract(options = list(tessedit_char_whitelist = ".0123456789"))
-cat(ocr("https://jeroen.github.io/images/receipt.png", engine = numbers2))
-```
-
-Notice how this forces tesseract to detect a number (3 or 8 or 5) if we rule out the dollar sign.
-
-A config file is simply a text file parameters, one name and value per line. You can load config files from your current working directory, or load one of the standard tesseract config files from the tessdata directory.
+Note that many of the control parameters have changed between Tesseract 3 and 4, and some no longer work. The major drawback of the new LSTM neural network engine in Tesseract 4 is that the recognition is more accurate but also more difficult to control.
