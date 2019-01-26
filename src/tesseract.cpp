@@ -200,6 +200,12 @@ Rcpp::DataFrame ocr_data_internal(tesseract::TessBaseAPI * api, Pix * image){
     rbbox[i] = bbox.front(); bbox.pop_front();
     rconf[i] = conf.front(); conf.pop_front();
   }
+
+  //cleanup
+  pixDestroy(&image);
+  api->Clear();
+  delete ri;
+
   return Rcpp::DataFrame::create(
     Rcpp::_["word"] = rwords,
     Rcpp::_["confidence"] = rconf,

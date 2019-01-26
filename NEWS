@@ -1,3 +1,6 @@
+4.1
+  - Fix memory leak in ocr_data()
+
 4.0
   - Windows, MacOS: Upgrade to upstream Tesseract 4.0! Completely new OCR engine.
   - Tesseract 4 has a new training data format. On Windows / MacOS you need to
