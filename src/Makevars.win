@@ -1,5 +1,5 @@
 # Tesseract Version
-VERSION = 4.0.0
+VERSION = 4.1.0
 RWINLIB = ../windows/tesseract-${VERSION}
 
 # Support R < 3.3 with gcc-4.6.3
