@@ -1,5 +1,7 @@
 4.1
   - Fix memory leak in ocr_data()
+  - Windows / MacOS: update to libtesseract 4.1.0. This re-enables
+    the whitelist/blacklist options that were missing in Tesseract 4.0
 
 4.0
   - Windows, MacOS: Upgrade to upstream Tesseract 4.0! Completely new OCR engine.
