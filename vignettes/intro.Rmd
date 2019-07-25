@@ -129,4 +129,27 @@ Tesseract supports hundreds of [control parameters](https://github.com/tesseract
 tesseract_params('colour')
 ```
 
-Note that many of the control parameters have changed between Tesseract 3 and 4, and some no longer work. One drawback of the new LSTM neural network engine in Tesseract 4 is that the recognition is more accurate but also more difficult to control.
+Do note that some of the control parameters have changed between Tesseract 3 and 4.
+
+### Whitelist / Blacklist
+
+One powerful parameter is `tessedit_char_whitelist` which restricts the output to a limited set of characters. This may be useful for reading for example numbers such as a bank account, zip code, or gas meter.
+
+The whitelist parameter works for all versions of Tesseract 3 and also 4.1 and higher, but it was broken for tesseract 4.0 unfortunately.
+
+![receipt](https://jeroen.github.io/images/receipt.png){data-external=1}
+
+```{r}
+numbers <- tesseract(options = list(tessedit_char_whitelist = "$.0123456789"))
+cat(ocr("https://jeroen.github.io/images/receipt.png", engine = numbers))
+```
+
+To test if this actually works, look what happens if we remove the `$` from `tessedit_char_whitelist`:
+
+```{r}
+# Do not allow any dollar sign 
+numbers2 <- tesseract(options = list(tessedit_char_whitelist = ".0123456789"))
+cat(ocr("https://jeroen.github.io/images/receipt.png", engine = numbers2))
+```
+
+Notice how this forces tesseract to detect a number (3 or 8 or 5) if we rule out the dollar sign.
