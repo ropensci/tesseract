@@ -8,9 +8,13 @@ r_check_args: '--run-donttest'
 
 matrix:
   include:
-    - os: linux
-      dist: trusty
-      env: R_CODECOV=true
+    - dist: trusty
+    - dist: xenial
+    - dist: xenial
+      addons:
+        apt:
+          sources:
+          - sourceline: 'ppa:cran/tesseract'
     - os: osx
       brew_packages: tesseract
     - os: osx
@@ -29,17 +33,3 @@ addons:
       - tesseract-ocr-fra
       - libpoppler-cpp-dev
       - libmagick++-dev
-
-r_github_packages:
-  - jimhester/covr
-
-warnings_are_errors: true
-#r_check_revdep: true
-
-notifications:
-  email:
-    on_success: change
-    on_failure: change
-
-after_success:
-  - if [[ "${R_CODECOV}" ]]; then R -e 'covr::codecov()'; fi
