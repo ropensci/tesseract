@@ -59,6 +59,13 @@ Installation from source on Linux or OSX requires the `Tesseract` library (see b
 sudo apt-get install -y libtesseract-dev libleptonica-dev tesseract-ocr-eng
 ```
 
+On __Ubuntu Xenial__ and __Ubuntu Bionic__ you can use this PPA to get the latest version of Tesseract:
+
+```
+sudo add-apt-repository ppa:cran/tesseract
+sudo apt-get install -y libtesseract-dev tesseract-ocr-eng
+```
+
 On __Fedora__ we need [tesseract-devel](https://apps.fedoraproject.org/packages/tesseract-devel) and
 [leptonica-devel](https://apps.fedoraproject.org/packages/leptonica-devel)
 
