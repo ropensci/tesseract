@@ -15,6 +15,13 @@ matrix:
         apt:
           sources:
           - sourceline: 'ppa:cran/tesseract'
+          packages:
+          - libtesseract-dev
+          - libleptonica-dev
+          - tesseract-ocr-eng
+          - tesseract-ocr-fra
+          - libpoppler-cpp-dev
+          - libmagick++-dev
     - os: osx
       brew_packages: tesseract
     - os: osx
