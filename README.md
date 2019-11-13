@@ -7,7 +7,6 @@
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/ropensci/tesseract?branch=master&svg=true)](https://ci.appveyor.com/project/jeroen/tesseract)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/tesseract)](https://cran.r-project.org/package=tesseract)
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/tesseract)](https://cran.r-project.org/package=tesseract)
-[![Github Stars](https://img.shields.io/github/stars/ropensci/tesseract.svg?style=social&label=Github)](https://github.com/ropensci/tesseract)
 
 ## Hello World
 
