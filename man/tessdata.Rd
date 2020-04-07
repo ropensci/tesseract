@@ -47,6 +47,8 @@ cat(text)
 \href{https://github.com/tesseract-ocr/tesseract/wiki/Data-Files}{tesseract wiki: training data}
 }
 \seealso{
-Other tesseract: \code{\link{ocr}}, \code{\link{tesseract}}
+Other tesseract: 
+\code{\link{ocr}()},
+\code{\link{tesseract}()}
 }
 \concept{tesseract}

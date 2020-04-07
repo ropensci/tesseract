@@ -6,8 +6,13 @@
 \alias{tesseract_info}
 \title{Tesseract Engine}
 \usage{
-tesseract(language = NULL, datapath = NULL, configs = NULL,
-  options = NULL, cache = TRUE)
+tesseract(
+  language = NULL,
+  datapath = NULL,
+  configs = NULL,
+  options = NULL,
+  cache = TRUE
+)
 
 tesseract_params(filter = "")
 
@@ -48,7 +53,8 @@ tesseract_params('debug')
 \href{https://github.com/tesseract-ocr/tesseract/wiki/ControlParams}{tesseract wiki: control parameters}
 }
 \seealso{
-Other tesseract: \code{\link{ocr}},
-  \code{\link{tesseract_download}}
+Other tesseract: 
+\code{\link{ocr}()},
+\code{\link{tesseract_download}()}
 }
 \concept{tesseract}
