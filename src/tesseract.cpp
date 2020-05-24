@@ -9,7 +9,7 @@
  */
 
 /* Very old tesseract (mostly Solaris) */
-#if TESSERACT_MAJOR_VERSION == 3 && TESSERACT_MINOR_VERSION < 3
+#if (defined(__sun) && defined(__SVR4))
 #define LEGACY_TESSERACT_API
 #endif
 
