@@ -1,4 +1,5 @@
-# Anticonf (tm) script by Jeroen Ooms (2016)
+#!/usr/bin/env bash
+# Anticonf (tm) script by Jeroen Ooms (2020)
 # This script will query 'pkg-config' for the required cflags and ldflags.
 # If pkg-config is unavailable or does not find the library, try setting
 # INCLUDE_DIR and LIB_DIR manually via e.g:
@@ -61,12 +62,12 @@ fi
 
 # Test configuration
 echo "Using CXX11CPP: ${CXX11CPP}"
-${CXX11CPP} ${CPPFLAGS} ${PKG_CFLAGS} src/test.h >/dev/null 2>&1
+${CXX11CPP} ${CPPFLAGS} ${PKG_CFLAGS} src/test.cpp >/dev/null 2>configure.log
 
 # Customize the error
 if [ $? -ne 0 ]; then
-  echo "------------------------- ANTICONF ERROR ---------------------------"
-  echo "Configuration failed because $PKG_CONFIG_NAME was not found. Try installing:"
+  echo "--------------------------- [ANTICONF] --------------------------------"
+  echo "Configuration failed to find '$PKG_CONFIG_NAME' system library. Try installing:"
   echo " * deb: $PKG_DEB_NAME (Debian, Ubuntu, etc)"
   echo " * rpm: $PKG_RPM_NAME (Fedora, CentOS, RHEL)"
   echo " * csw: $PKG_CSW_NAME (Solaris)"
@@ -75,8 +76,10 @@ if [ $? -ne 0 ]; then
   echo "PATH and PKG_CONFIG_PATH contains a $PKG_CONFIG_NAME.pc file. If pkg-config"
   echo "is unavailable you can set INCLUDE_DIR and LIB_DIR manually via:"
   echo "R CMD INSTALL --configure-vars='INCLUDE_DIR=... LIB_DIR=...'"
+  echo "-------------------------- [ERROR MESSAGE] ---------------------------"
+  cat configure.log
   echo "--------------------------------------------------------------------"
-  exit 1;
+  exit 1
 fi
 
 # Write to Makevars

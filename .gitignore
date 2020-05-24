@@ -12,3 +12,4 @@
 inst/tessdata
 windows
 src/Makevars
+configure.log
