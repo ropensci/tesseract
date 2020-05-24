@@ -9,7 +9,7 @@
 PKG_CONFIG_NAME="tesseract"
 PKG_DEB_NAME="libtesseract-dev libleptonica-dev"
 PKG_RPM_NAME="tesseract-devel leptonica-devel"
-PKG_CSW_NAME="libtesseract_dev"
+PKG_CSW_NAME="libtesseract_dev liblept_dev"
 PKG_BREW_NAME="tesseract"
 PKG_TEST_HEADER="<baseapi.h>"
 PKG_CFLAGS="-I/usr/include/tesseract -I/usr/include/leptonica"
