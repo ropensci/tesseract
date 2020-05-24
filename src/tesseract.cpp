@@ -91,12 +91,12 @@ Rcpp::List engine_info_internal(TessPtr ptr){
   api->GetAvailableLanguagesAsVector(&langs);
   Rcpp::CharacterVector available = Rcpp::CharacterVector::create();
   for(int i = 0; i < langs.length(); i++)
-    available.push_back(langs.get(i).c_str());
+    available.push_back(langs.get(i).string());
   langs.clear();
   api->GetLoadedLanguagesAsVector(&langs);
   Rcpp::CharacterVector loaded = Rcpp::CharacterVector::create();
   for(int i = 0; i < langs.length(); i++)
-    loaded.push_back(langs.get(i).c_str());
+    loaded.push_back(langs.get(i).string());
   return Rcpp::List::create(
     Rcpp::_["datapath"] = api->GetDatapath(),
     Rcpp::_["loaded"] = loaded,
@@ -119,7 +119,7 @@ Rcpp::CharacterVector get_param_values(TessPtr ptr, Rcpp::CharacterVector params
   tesseract::TessBaseAPI * api = get_engine(ptr);
   Rcpp::CharacterVector out(params.length());
   for(int i = 0; i < params.length(); i++)
-    out[i] = api->GetVariableAsString(params.at(i), &str) ? Rcpp::String(str.c_str()) : NA_STRING;
+    out[i] = api->GetVariableAsString(params.at(i), &str) ? Rcpp::String(str.string()) : NA_STRING;
   return out;
 }
 
