@@ -62,7 +62,7 @@ fi
 
 # Test configuration
 echo "Using CXX11CPP: ${CXX11CPP}"
-${CXX11CPP} ${CPPFLAGS} ${PKG_CFLAGS} src/test.cpp >/dev/null 2>configure.log
+${CXX11CPP} ${CPPFLAGS} ${PKG_CFLAGS} tools/test.cpp >/dev/null 2>configure.log
 
 # Customize the error
 if [ $? -ne 0 ]; then
