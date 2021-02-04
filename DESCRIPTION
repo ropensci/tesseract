@@ -22,7 +22,7 @@ Imports:
     rappdirs,
     digest
 LinkingTo: Rcpp
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 Suggests:
     magick (>= 1.7),

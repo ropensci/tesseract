@@ -1,7 +1,7 @@
 #' Tesseract Training Data
 #'
 #' Helper function to download training data from the official
-#' [tessdata](https://github.com/tesseract-ocr/tesseract/wiki/Data-Files) repository. Only use this function on
+#' [tessdata](https://tesseract-ocr.github.io/tessdoc/Data-Files) repository. Only use this function on
 #' Windows and OS-X. On Linux, training data can be installed directly with
 #' [yum](https://apps.fedoraproject.org/packages/tesseract) or
 #' [apt-get](https://packages.debian.org/search?suite=stable&section=all&arch=any&searchon=names&keywords=tesseract-ocr-).
@@ -24,7 +24,7 @@
 #' @param lang three letter code for language, see [tessdata](https://github.com/tesseract-ocr/tessdata) repository.
 #' @param datapath destination directory where to download store the file
 #' @param progress print progress while downloading
-#' @references [tesseract wiki: training data](https://github.com/tesseract-ocr/tesseract/wiki/Data-Files)
+#' @references [tesseract wiki: training data](https://tesseract-ocr.github.io/tessdoc/Data-Files)
 #' @examples \donttest{
 #' if(is.na(match("fra", tesseract_info()$available)))
 #'   tesseract_download("fra")
