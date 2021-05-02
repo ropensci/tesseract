@@ -35,7 +35,7 @@ which downloads training data directly from \href{https://github.com/tesseract-o
 and stores it in a the path on disk given by the \code{TESSDATA_PREFIX} variable.
 }
 \examples{
-\donttest{
+\dontrun{
 if(is.na(match("fra", tesseract_info()$available)))
   tesseract_download("fra")
 french <- tesseract("fra")

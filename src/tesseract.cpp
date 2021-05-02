@@ -13,11 +13,11 @@
 #define LEGACY_TESSERACT_API
 #endif
 
-static tesseract::TessBaseAPI make_analyze_api(){
+static tesseract::TessBaseAPI *make_analyze_api(){
   char *old_ctype = strdup(setlocale(LC_ALL, NULL));
   setlocale(LC_ALL, "C");
-  tesseract::TessBaseAPI api;
-  api.InitForAnalysePage();
+  tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
+  api->InitForAnalysePage();
   setlocale(LC_ALL, old_ctype);
   free(old_ctype);
   return api;
@@ -25,15 +25,18 @@ static tesseract::TessBaseAPI make_analyze_api(){
 
 // [[Rcpp::export]]
 Rcpp::List tesseract_config(){
-  tesseract::TessBaseAPI api = make_analyze_api();
-  return Rcpp::List::create(
+  tesseract::TessBaseAPI *api = make_analyze_api();
+  Rcpp::List out = Rcpp::List::create(
     Rcpp::_["version"] = tesseract::TessBaseAPI::Version(),
 #ifndef LEGACY_TESSERACT_API
-    Rcpp::_["path"] = api.GetDatapath()
+    Rcpp::_["path"] = api->GetDatapath()
 #else
     Rcpp::_["path"] = Rcpp::CharacterVector(0)
 #endif
   );
+  api->End();
+  delete api;
+  return out;
 }
 
 // [[Rcpp::export]]
@@ -86,10 +89,12 @@ TessPtr tesseract_engine_set_variable(TessPtr ptr, const char * name, const char
 // [[Rcpp::export]]
 Rcpp::LogicalVector validate_params(Rcpp::CharacterVector params){
   STRING str;
-  tesseract::TessBaseAPI api = make_analyze_api();
+  tesseract::TessBaseAPI *api = make_analyze_api();
   Rcpp::LogicalVector out(params.length());
   for(int i = 0; i < params.length(); i++)
-    out[i] = api.GetVariableAsString(params.at(i), &str);
+    out[i] = api->GetVariableAsString(params.at(i), &str);
+  api->End();
+  delete api;
   return out;
 }
 
@@ -119,10 +124,12 @@ Rcpp::List engine_info_internal(TessPtr ptr){
 
 // [[Rcpp::export]]
 Rcpp::String print_params(std::string filename){
-  tesseract::TessBaseAPI api = make_analyze_api();
+  tesseract::TessBaseAPI *api = make_analyze_api();
   FILE * fp = fopen(filename.c_str(), "w");
-  api.PrintVariables(fp);
+  api->PrintVariables(fp);
   fclose(fp);
+  api->End();
+  delete api;
   return filename;
 }
 

@@ -25,7 +25,7 @@
 #' @param datapath destination directory where to download store the file
 #' @param progress print progress while downloading
 #' @references [tesseract wiki: training data](https://tesseract-ocr.github.io/tessdoc/Data-Files)
-#' @examples \donttest{
+#' @examples \dontrun{
 #' if(is.na(match("fra", tesseract_info()$available)))
 #'   tesseract_download("fra")
 #' french <- tesseract("fra")
