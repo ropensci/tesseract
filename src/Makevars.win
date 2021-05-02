@@ -1,5 +1,5 @@
 # Tesseract Version
-VERSION = 4.1.0
+VERSION = 4.1.1
 RWINLIB = ../windows/tesseract-${VERSION}
 
 # Support R < 3.3 with gcc-4.6.3
@@ -14,9 +14,9 @@ PKG_CPPFLAGS = -I${RWINLIB}/include
 
 PKG_LIBS = \
 	-L${RWINLIB}/lib${subst gcc,,${COMPILED_BY}}${R_ARCH} \
-	-L${RWINLIB}/lib${R_ARCH} \
+	-L${RWINLIB}/lib${R_ARCH}${CRT} \
 	-ltesseract -llept \
-	-ltiff -llzma -lopenjp2 -lwebp -ljpeg -lgif -lpng16 -lz \
+	-ltiff -lopenjp2 -lwebp -ljpeg -lgif -lpng16 -lz \
 	-lws2_32
 
 all: clean winlibs
