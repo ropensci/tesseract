@@ -18,7 +18,7 @@ tesseract_download(lang, datapath = NULL, progress = interactive())
 Helper function to download training data from the official
 \href{https://tesseract-ocr.github.io/tessdoc/Data-Files}{tessdata} repository. Only use this function on
 Windows and OS-X. On Linux, training data can be installed directly with
-\href{https://apps.fedoraproject.org/packages/tesseract}{yum} or
+\href{https://src.fedoraproject.org/rpms/tesseract}{yum} or
 \href{https://packages.debian.org/search?suite=stable&section=all&arch=any&searchon=names&keywords=tesseract-ocr-}{apt-get}.
 }
 \details{
@@ -27,7 +27,7 @@ training data. To improve OCR performance for other languages you can to install
 training data from your distribution. For example to install the spanish training data:
 \itemize{
 \item \href{https://packages.debian.org/testing/tesseract-ocr-spa}{tesseract-ocr-spa} (Debian, Ubuntu)
-\item \href{https://apps.fedoraproject.org/packages/tesseract-langpack-spa}{tesseract-langpack-spa} (Fedora, EPEL)
+\item \code{tesseract-langpack-spa} (Fedora, EPEL)
 }
 
 On Windows and MacOS you can install languages using the \link{tesseract_download} function

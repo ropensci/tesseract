@@ -1,3 +1,6 @@
+4.1.1
+  - Win/Mac: update to libtesseract 4.1.1
+
 4.1
   - Fix memory leak in ocr_data()
   - Windows / MacOS: update to libtesseract 4.1.0. This re-enables

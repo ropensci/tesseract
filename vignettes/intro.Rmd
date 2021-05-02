@@ -21,7 +21,7 @@ options(width = 100, max.print = 100)
 has_nld <- "nld" %in% tesseract::tesseract_info()$available
 ```
 
-The tesseract package provides R bindings [Tesseract](https://opensource.google.com/projects/tesseract): a powerful optical character recognition (OCR) engine that supports over 100 languages. The engine is highly configurable in order to tune the detection algorithms and obtain the best possible results.
+The tesseract package provides R bindings [Tesseract](https://opensource.google/projects/tesseract): a powerful optical character recognition (OCR) engine that supports over 100 languages. The engine is highly configurable in order to tune the detection algorithms and obtain the best possible results.
 
 Keep in mind that OCR (pattern recognition in general) is a very difficult problem for computers. Results will rarely be perfect and the accuracy rapidly decreases with the quality of the input image. But if you can get your input images to reasonable quality, Tesseract can often help to extract most of the text from the image.
 
