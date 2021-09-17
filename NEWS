@@ -1,3 +1,6 @@
+4.1.2
+  - Fix for upstream master/main renames in language repos
+
 4.1.1
   - Win/Mac: update to libtesseract 4.1.1
 

@@ -45,7 +45,7 @@ tesseract_download <- function(lang, datapath = NULL, progress = interactive()){
     release <- "3.04.00"
   } else {
     repo <- "tessdata_fast"
-    release <- "4.0.0"
+    release <- "4.1.0"
   }
   url <- sprintf('https://github.com/tesseract-ocr/%s/raw/%s/%s.traineddata', repo, release, lang)
   req <- curl::curl_fetch_memory(url, curl::new_handle(
