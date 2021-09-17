@@ -6,6 +6,8 @@
 \.png$
 \.webp$
 \.jpeg$
+\.o$
+\.dll$
 ^\.travis\.yml$
 ^appveyor\.yml$
 ^README.md$
