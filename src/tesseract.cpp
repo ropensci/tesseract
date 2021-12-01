@@ -1,5 +1,12 @@
 #include "tesseract_types.h"
+#if TESSERACT_MAJOR_VERSION < 5
 #include <tesseract/genericvector.h>
+#define getorat get
+#else
+#define STRING std::string
+#define GenericVector std::vector
+#define getorat at
+#endif
 
 /* NB: libtesseract now insists that the engine is initiated in 'C' locale.
  * We do this as exemplified in the example code in the libc manual:
@@ -104,13 +111,13 @@ Rcpp::List engine_info_internal(TessPtr ptr){
   GenericVector<STRING> langs;
   api->GetAvailableLanguagesAsVector(&langs);
   Rcpp::CharacterVector available = Rcpp::CharacterVector::create();
-  for(int i = 0; i < langs.length(); i++)
-    available.push_back(langs.get(i).string());
+  for(int i = 0; i < langs.size(); i++)
+    available.push_back(langs.getorat(i).c_str());
   langs.clear();
   api->GetLoadedLanguagesAsVector(&langs);
   Rcpp::CharacterVector loaded = Rcpp::CharacterVector::create();
-  for(int i = 0; i < langs.length(); i++)
-    loaded.push_back(langs.get(i).string());
+  for(int i = 0; i < langs.size(); i++)
+    loaded.push_back(langs.getorat(i).c_str());
   return Rcpp::List::create(
 #ifndef LEGACY_TESSERACT_API
     Rcpp::_["datapath"] = api->GetDatapath(),
@@ -139,7 +146,7 @@ Rcpp::CharacterVector get_param_values(TessPtr ptr, Rcpp::CharacterVector params
   tesseract::TessBaseAPI * api = get_engine(ptr);
   Rcpp::CharacterVector out(params.length());
   for(int i = 0; i < params.length(); i++)
-    out[i] = api->GetVariableAsString(params.at(i), &str) ? Rcpp::String(str.string()) : NA_STRING;
+    out[i] = api->GetVariableAsString(params.at(i), &str) ? Rcpp::String(str.c_str()) : NA_STRING;
   return out;
 }
 
