@@ -2,7 +2,7 @@
 
 > Extract text from an image. Requires that you have training data for the language you are reading. Works best for images with high contrast, little noise and horizontal text.
 
-[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/ropensci/tesseract?branch=master&svg=true)](https://ci.appveyor.com/project/jeroen/tesseract)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/tesseract)](https://cran.r-project.org/package=tesseract)
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/tesseract)](https://cran.r-project.org/package=tesseract)
@@ -63,15 +63,15 @@ sudo add-apt-repository ppa:cran/tesseract
 sudo apt-get install -y libtesseract-dev tesseract-ocr-eng
 ```
 
-On __Fedora__ we need [tesseract-devel](https://apps.fedoraproject.org/packages/tesseract-devel) and
-[leptonica-devel](https://apps.fedoraproject.org/packages/leptonica-devel)
+On __Fedora__ we need [tesseract-devel](https://src.fedoraproject.org/rpms/tesseract) and
+[leptonica-devel](https://src.fedoraproject.org/rpms/leptonica)
 
 ```
 sudo yum install tesseract-devel leptonica-devel
 ````
 
-On __RHEL__ and __CentOS__ we need [tesseract-devel](https://apps.fedoraproject.org/packages/tesseract-devel) and
-[leptonica-devel](https://apps.fedoraproject.org/packages/leptonica-devel) from EPEL
+On __RHEL__ and __CentOS__ we need [tesseract-devel](https://src.fedoraproject.org/rpms/tesseract) and
+[leptonica-devel](https://src.fedoraproject.org/rpms/leptonica) from EPEL
 
 ```
 sudo yum install epel-release
@@ -99,7 +99,7 @@ On Linux you need to install the appropriate training data from your distributio
 For example to install the spanish training data:
 
   - [tesseract-ocr-spa](https://packages.debian.org/testing/tesseract-ocr-spa) (Debian, Ubuntu)
-  - [tesseract-langpack-spa](https://apps.fedoraproject.org/packages/tesseract-langpack-spa) (Fedora, EPEL)
+  - [tesseract-langpack-spa](https://src.fedoraproject.org/rpms/tesseract-langpack) (Fedora, EPEL)
 
 Alternatively you can manually download training data from [github](https://github.com/tesseract-ocr/tessdata)
 and store it in a path on disk that you pass in the `datapath` parameter or set a default path via the
