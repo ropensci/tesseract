@@ -24,7 +24,7 @@
 #' @references [tesseract wiki: control parameters](https://github.com/tesseract-ocr/tesseract/wiki/ControlParams)
 tesseract <- local({
   store <- new.env()
-  function(language = NULL, datapath = NULL, configs = NULL, options = NULL, cache = TRUE){
+  function(language = "eng", datapath = NULL, configs = NULL, options = NULL, cache = TRUE){
     datapath <- as.character(datapath)
     language <- as.character(language)
     configs <- as.character(configs)

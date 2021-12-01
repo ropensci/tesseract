@@ -1,5 +1,6 @@
 4.2.0
   - Prepare for API changes in upcoming Tesseract 5 release
+  - Change the default language="eng" in tesseract()
 
 4.1.2
   - Fix for upstream master/main renames in language repos

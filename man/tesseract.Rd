@@ -7,7 +7,7 @@
 \title{Tesseract Engine}
 \usage{
 tesseract(
-  language = NULL,
+  language = "eng",
   datapath = NULL,
   configs = NULL,
   options = NULL,
