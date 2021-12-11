@@ -16,7 +16,7 @@ vignette: >
 
 ```{r, echo = FALSE, message = FALSE}
 library(tibble)
-knitr::opts_chunk$set(comment = "")
+#knitr::opts_chunk$set(comment = "")
 has_nld <- "nld" %in% tesseract::tesseract_info()$available
 ```
 
