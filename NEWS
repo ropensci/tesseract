@@ -1,3 +1,6 @@
+4.2.1
+  - Mac: update to libtesseract 5.0.0
+
 4.2.0
   - Prepare for API changes in upcoming Tesseract 5 release
   - Change the default language="eng" in tesseract()
