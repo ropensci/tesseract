@@ -21,12 +21,16 @@
 #endif
 
 static tesseract::TessBaseAPI *make_analyze_api(){
+#if TESSERACT_MAJOR_VERSION < 5
   char *old_ctype = strdup(setlocale(LC_ALL, NULL));
   setlocale(LC_ALL, "C");
+#endif
   tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
   api->InitForAnalysePage();
+#if TESSERACT_MAJOR_VERSION < 5
   setlocale(LC_ALL, old_ctype);
   free(old_ctype);
+#endif
   return api;
 }
 
@@ -63,12 +67,16 @@ TessPtr tesseract_engine_internal(Rcpp::CharacterVector datapath, Rcpp::Characte
     params.push_back(std::string(opt_names.at(i)).c_str());
     values.push_back(std::string(opt_values.at(i)).c_str());
   }
+#if TESSERACT_MAJOR_VERSION < 5
   char *old_ctype = strdup(setlocale(LC_ALL, NULL));
   setlocale(LC_ALL, "C");
+#endif
   tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
   int err = api->Init(path, lang, tesseract::OEM_DEFAULT, configs, confpaths.length(), &params, &values, false);
+#if TESSERACT_MAJOR_VERSION < 5
   setlocale(LC_ALL, old_ctype);
   free(old_ctype);
+#endif
   if(err){
     delete api;
     throw std::runtime_error(std::string("Unable to find training data for: ") + (lang ? lang : "eng") + ". Please consult manual for: ?tesseract_download");
