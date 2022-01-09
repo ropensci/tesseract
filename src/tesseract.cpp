@@ -8,17 +8,11 @@
 #define getorat at
 #endif
 
-/* NB: libtesseract now insists that the engine is initiated in 'C' locale.
+/* libtesseract 4 insisted that the engine is initiated in 'C' locale.
  * We do this as exemplified in the example code in the libc manual:
  * https://www.gnu.org/software/libc/manual/html_node/Setting-the-Locale.html
- * Hopefully this is temporary and it will be fixed upstream.
  * Full discussion: https://github.com/tesseract-ocr/tesseract/issues/1670
  */
-
-/* Very old tesseract (mostly Solaris) */
-#if (defined(__sun) && defined(__SVR4))
-#define LEGACY_TESSERACT_API
-#endif
 
 static tesseract::TessBaseAPI *make_analyze_api(){
 #if TESSERACT_MAJOR_VERSION < 5
@@ -39,11 +33,7 @@ Rcpp::List tesseract_config(){
   tesseract::TessBaseAPI *api = make_analyze_api();
   Rcpp::List out = Rcpp::List::create(
     Rcpp::_["version"] = tesseract::TessBaseAPI::Version(),
-#ifndef LEGACY_TESSERACT_API
     Rcpp::_["path"] = api->GetDatapath()
-#else
-    Rcpp::_["path"] = Rcpp::CharacterVector(0)
-#endif
   );
   api->End();
   delete api;
@@ -127,11 +117,7 @@ Rcpp::List engine_info_internal(TessPtr ptr){
   for(size_t i = 0; i < langs.size(); i++)
     loaded.push_back(langs.getorat(i).c_str());
   return Rcpp::List::create(
-#ifndef LEGACY_TESSERACT_API
     Rcpp::_["datapath"] = api->GetDatapath(),
-#else
-    Rcpp::_["datapath"] = Rcpp::CharacterVector(0),
-#endif
     Rcpp::_["loaded"] = loaded,
     Rcpp::_["available"] = available
   );
@@ -163,11 +149,9 @@ Rcpp::String ocr_pix(tesseract::TessBaseAPI * api, Pix * image, bool HOCR){
   api->ClearAdaptiveClassifier();
   api->SetImage(image);
 
-#ifndef LEGACY_TESSERACT_API
   // Workaround for annoying warning, see https://github.com/tesseract-ocr/tesseract/issues/756
   if(api->GetSourceYResolution() < 70)
     api->SetSourceResolution(300);
-#endif
   char *outText = HOCR ? api->GetHOCRText(0) : api->GetUTF8Text();
 
   //cleanup
@@ -202,12 +186,8 @@ Rcpp::String ocr_file(std::string file, TessPtr ptr, bool HOCR = false){
 Rcpp::DataFrame ocr_data_internal(tesseract::TessBaseAPI * api, Pix * image){
   api->ClearAdaptiveClassifier();
   api->SetImage(image);
-
-#ifndef LEGACY_TESSERACT_API
   if(api->GetSourceYResolution() < 70)
     api->SetSourceResolution(300);
-#endif
-
   api->Recognize(0);
   tesseract::ResultIterator* ri = api->GetIterator();
   tesseract::PageIteratorLevel level = tesseract::RIL_WORD;
