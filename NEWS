@@ -1,5 +1,5 @@
 5.0.0
-  - Win/Mac: update to libtesseract 5.0.0
+  - Win/Mac: update to libtesseract 5.0.1
   - Remove locale workaround on libtesseract 5+ (should not be needed anymore)
   - Remove cruft that was needed to support Solaris
 
