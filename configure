@@ -1,4 +1,4 @@
-# Anticonf (tm) script by Jeroen Ooms (2020)
+# Anticonf (tm) script by Jeroen Ooms (2022)
 # This script will query 'pkg-config' for the required cflags and ldflags.
 # If pkg-config is unavailable or does not find the library, try setting
 # INCLUDE_DIR and LIB_DIR manually via e.g:
@@ -8,7 +8,6 @@
 PKG_CONFIG_NAME="tesseract"
 PKG_DEB_NAME="libtesseract-dev libleptonica-dev"
 PKG_RPM_NAME="tesseract-devel leptonica-devel"
-PKG_CSW_NAME="libtesseract_dev liblept_dev"
 PKG_BREW_NAME="tesseract"
 PKG_TEST_HEADER="<baseapi.h>"
 PKG_CFLAGS="-I/usr/include/tesseract -I/usr/include/leptonica"
@@ -65,7 +64,6 @@ if [ $? -ne 0 ]; then
   echo "Configuration failed to find '$PKG_CONFIG_NAME' system library. Try installing:"
   echo " * deb: $PKG_DEB_NAME (Debian, Ubuntu, etc)"
   echo " * rpm: $PKG_RPM_NAME (Fedora, CentOS, RHEL)"
-  echo " * csw: $PKG_CSW_NAME (Solaris)"
   echo " * brew: $PKG_BREW_NAME (Mac OSX)"
   echo "If $PKG_CONFIG_NAME is already installed, check that 'pkg-config' is in your"
   echo "PATH and PKG_CONFIG_PATH contains a $PKG_CONFIG_NAME.pc file. If pkg-config"
