@@ -1,10 +1,17 @@
 # tesseract
 
-> Extract text from an image. Requires that you have training data for the language you are reading. Works best for images with high contrast, little noise and horizontal text.
+> Bindings to [Tesseract-OCR](https://opensource.google/projects/tesseract): 
+  a powerful optical character recognition (OCR) engine that supports over 100 languages.
+  The engine is highly configurable in order to tune the detection algorithms and
+  obtain the best possible results.
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/tesseract)](https://cran.r-project.org/package=tesseract)
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/tesseract)](https://cran.r-project.org/package=tesseract)
+
+ - Upstream Tesseract-OCR documentation: https://tesseract-ocr.github.io/tessdoc/
+ - Introduction: https://docs.ropensci.org/tesseract/articles/intro.html
+ - Reference: https://docs.ropensci.org/tesseract/reference/ocr.html
 
 ## Hello World
 
@@ -55,10 +62,10 @@ Installation from source on Linux or OSX requires the `Tesseract` library (see b
 sudo apt-get install -y libtesseract-dev libleptonica-dev tesseract-ocr-eng
 ```
 
-On __Ubuntu Xenial__ and __Ubuntu Bionic__ you can use this PPA to get the latest version of Tesseract:
+On __Ubuntu__ you can optionally use [this PPA](https://launchpad.net/~alex-p/+archive/ubuntu/tesseract-ocr-devel) to get the latest version of Tesseract:
 
 ```
-sudo add-apt-repository ppa:cran/tesseract
+sudo add-apt-repository ppa:alex-p/tesseract-ocr-devel
 sudo apt-get install -y libtesseract-dev tesseract-ocr-eng
 ```
 

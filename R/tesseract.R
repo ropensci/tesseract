@@ -3,7 +3,7 @@
 #' Create an OCR engine for a given language and control parameters. This can be used by
 #' the [ocr] and [ocr_data] functions to recognize text.
 #'
-#' Tesseract [control parameters](https://github.com/tesseract-ocr/tesseract/wiki/ControlParams)
+#' Tesseract [control parameters](https://tesseract-ocr.github.io/tessdoc/ControlParams)
 #'  can be set either via a named list in the
 #' `options` parameter, or in a `config` file text file which contains the parameter name
 #' followed by a space and then the value, one per line. Use [tesseract_params()] to list
@@ -21,7 +21,7 @@
 #' tesseract config files that live in the tessdata directory. See details.
 #' @param options a named list with tesseract parameters. See details.
 #' @param cache speed things up by caching engines
-#' @references [tesseract wiki: control parameters](https://github.com/tesseract-ocr/tesseract/wiki/ControlParams)
+#' @references [tesseract wiki: control parameters](https://tesseract-ocr.github.io/tessdoc/ControlParams)
 tesseract <- local({
   store <- new.env()
   function(language = "eng", datapath = NULL, configs = NULL, options = NULL, cache = TRUE){

@@ -122,7 +122,7 @@ cat(text)
 
 ## Tesseract Control Parameters
 
-Tesseract supports hundreds of [control parameters](https://github.com/tesseract-ocr/tesseract/wiki/ControlParams) which alter the OCR engine. Use `tesseract_params()` to list all parameters with their default value and a brief description. It also has a handy `filter` argument to quickly find parameters that match a particular string.
+Tesseract supports hundreds of [control parameters](https://tesseract-ocr.github.io/tessdoc/ControlParams) which alter the OCR engine. Use `tesseract_params()` to list all parameters with their default value and a brief description. It also has a handy `filter` argument to quickly find parameters that match a particular string.
 
 ```{r}
 # List all parameters with *colour* in name or description
