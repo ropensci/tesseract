@@ -18,6 +18,7 @@ vignette: >
 library(tibble)
 #knitr::opts_chunk$set(comment = "")
 has_nld <- "nld" %in% tesseract::tesseract_info()$available
+if(identical(Sys.info()[['user']], 'jeroen')) stopifnot(has_nld)
 ```
 
 The tesseract package provides R bindings [Tesseract](https://opensource.google/projects/tesseract): a powerful optical character recognition (OCR) engine that supports over 100 languages. The engine is highly configurable in order to tune the detection algorithms and obtain the best possible results.
