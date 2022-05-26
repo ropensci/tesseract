@@ -1,3 +1,6 @@
+5.1.0
+  - Win: update to tesseract 5.1.0
+
 5.0.0
   - Win/Mac: update to libtesseract 5.0.1
   - Remove locale workaround on libtesseract 4.1+ (should only be needed for 4.0)
