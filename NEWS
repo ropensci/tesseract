@@ -1,5 +1,7 @@
 5.1.0
-  - Win: update to tesseract 5.1.0
+  - Win: update to tesseract 5.1.0.
+  - Win: apply patch to fix freezes when running under UTF-8.
+    See: https://github.com/tesseract-ocr/tesseract/issues/3830
 
 5.0.0
   - Win/Mac: update to libtesseract 5.0.1
