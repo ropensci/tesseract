@@ -39,8 +39,7 @@ Create an OCR engine for a given language and control parameters. This can be us
 the \link{ocr} and \link{ocr_data} functions to recognize text.
 }
 \details{
-Tesseract \href{https://tesseract-ocr.github.io/tessdoc/ControlParams}{control parameters}
-can be set either via a named list in the
+Tesseract control parameters can be set either via a named list in the
 \code{options} parameter, or in a \code{config} file text file which contains the parameter name
 followed by a space and then the value, one per line. Use \code{\link[=tesseract_params]{tesseract_params()}} to list
 or find parameters. Note that that some parameters are only supported in certain versions
@@ -48,9 +47,6 @@ of libtesseract, and that invalid parameters can sometimes cause libtesseract to
 }
 \examples{
 tesseract_params('debug')
-}
-\references{
-\href{https://tesseract-ocr.github.io/tessdoc/ControlParams}{tesseract wiki: control parameters}
 }
 \seealso{
 Other tesseract: 
