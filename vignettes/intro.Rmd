@@ -21,7 +21,7 @@ has_nld <- "nld" %in% tesseract::tesseract_info()$available
 if(identical(Sys.info()[['user']], 'jeroen')) stopifnot(has_nld)
 ```
 
-The tesseract package provides R bindings [Tesseract](https://opensource.google/projects/tesseract): a powerful optical character recognition (OCR) engine that supports over 100 languages. The engine is highly configurable in order to tune the detection algorithms and obtain the best possible results.
+The tesseract package provides R bindings [Tesseract](https://github.com/tesseract-ocr/tesseract): a powerful optical character recognition (OCR) engine that supports over 100 languages. The engine is highly configurable in order to tune the detection algorithms and obtain the best possible results.
 
 Keep in mind that OCR (pattern recognition in general) is a very difficult problem for computers. Results will rarely be perfect and the accuracy rapidly decreases with the quality of the input image. But if you can get your input images to reasonable quality, Tesseract can often help to extract most of the text from the image.
 
@@ -122,7 +122,7 @@ cat(text)
 
 ## Tesseract Control Parameters
 
-Tesseract supports hundreds of [control parameters](https://tesseract-ocr.github.io/tessdoc/ControlParams) which alter the OCR engine. Use `tesseract_params()` to list all parameters with their default value and a brief description. It also has a handy `filter` argument to quickly find parameters that match a particular string.
+Tesseract supports hundreds of "control parameters" which alter the OCR engine. Use `tesseract_params()` to list all parameters with their default value and a brief description. It also has a handy `filter` argument to quickly find parameters that match a particular string.
 
 ```{r}
 # List all parameters with *colour* in name or description

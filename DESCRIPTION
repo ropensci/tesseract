@@ -4,7 +4,7 @@ Title: Open Source OCR Engine
 Version: 5.1.0
 Authors@R: person("Jeroen", "Ooms", role = c("aut", "cre"), email = "jeroen@berkeley.edu",
     comment = c(ORCID = "0000-0002-4035-0289"))
-Description: Bindings to 'Tesseract' <https://opensource.google/projects/tesseract>: 
+Description: Bindings to 'Tesseract': 
      a powerful optical character recognition (OCR) engine that supports over 100 languages.
      The engine is highly configurable in order to tune the detection algorithms and
      obtain the best possible results.
