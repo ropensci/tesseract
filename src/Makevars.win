@@ -1,20 +1,11 @@
-# Tesseract Version
-VERSION = 5.1.0
-
-# Need older tesseract for R < 4.0
-ifeq ($(R_COMPILED_BY),gcc 4.9.3)
-VERSION=4.1.1
-endif
-
-CXX_STD=CXX11
-RWINLIB = ../windows/tesseract-${VERSION}
+RWINLIB = ../windows/tesseract
 PKG_CPPFLAGS = -I${RWINLIB}/include
 
 PKG_LIBS = \
 	-L${RWINLIB}/lib${subst gcc,,${COMPILED_BY}}${R_ARCH} \
-	-L${RWINLIB}/lib${R_ARCH} \
-	-ltesseract -llept \
-	-ltiff -lopenjp2 -lwebp -ljpeg -lgif -lpng16 -lz \
+	-L${RWINLIB}/lib \
+	-ltesseract -lleptonica \
+	-ltiff -lopenjp2 -lwebp -lsharpyuv -ljpeg -lgif -lpng16 -lz \
 	-lws2_32
 
 all: clean winlibs

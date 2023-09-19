@@ -1,3 +1,6 @@
+5.2.0
+  - Windows: update to tesseract 5.3.2
+
 5.1.0
   - Win: update to tesseract 5.1.0.
   - Win: apply patch for freezes when running under UTF-8 in R-4.2.

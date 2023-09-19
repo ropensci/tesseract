@@ -1,11 +1,18 @@
-# Build against tesseract static library
-VERSION <- commandArgs(TRUE)
-if(!file.exists(sprintf("../windows/tesseract-%s/include/tesseract/baseapi.h", VERSION))){
-  if(getRversion() < "3.3.0") setInternet2()
-  download.file(sprintf("https://github.com/rwinlib/tesseract/archive/v%s.zip", VERSION), "lib.zip", quiet = TRUE)
+if(!file.exists("../windows/tesseract/include/tesseract/baseapi.h")){
+  unlink("../windows", recursive = TRUE)
+  url <- if(grepl("aarch", R.version$platform)){
+    "https://github.com/r-windows/bundles/releases/download/tesseract-5.3.2/tesseract-ocr-5.3.2-clang-aarch64.tar.xz"
+  } else if(getRversion() >= "4.3") {
+    "https://github.com/r-windows/bundles/releases/download/tesseract-5.3.2/tesseract-ocr-5.3.2-ucrt-x86_64.tar.xz"
+  } else {
+    "https://github.com/rwinlib/tesseract/archive/v5.3.2.tar.gz"
+  }
+  download.file(url, basename(url), quiet = TRUE)
   dir.create("../windows", showWarnings = FALSE)
-  unzip("lib.zip", exdir = "../windows")
-  unlink("lib.zip")
+  untar(basename(url), exdir = "../windows", tar = 'internal')
+  unlink(basename(url))
+  setwd("../windows")
+  file.rename(list.files(), 'tesseract')
 }
 
 # Also download the english training data
