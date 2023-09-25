@@ -39,7 +39,7 @@ cat(xml)
 df <- ocr_data("https://jeroen.github.io/images/testocr.png")
 print(df)
 
-\donttest{
+\dontrun{
 # Full roundtrip test: render PDF to image and OCR it back to text
 curl::curl_download("https://cran.r-project.org/doc/manuals/r-release/R-intro.pdf", "R-intro.pdf")
 orig <- pdftools::pdf_text("R-intro.pdf")[1]
