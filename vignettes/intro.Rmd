@@ -92,7 +92,7 @@ The awesome [magick](https://cran.r-project.org/package=magick/vignettes/intro.h
  - With `image_quantize()` you can reduce the number of colors in the image. This can sometimes help with increasing contrast and reducing artifacts.
  - True imaging ninjas can use `image_convolve()` to use custom [convolution methods](https://ropensci.org/technotes/2017/11/02/image-convolve/). 
 
-Below is an example OCR scan from an online [AI course](https://courses.cs.vt.edu/csonline/AI/Lessons/VisualProcessing/OCRscans.html). The code converts it to black-and-white and resizes + crops the image before feeding it to tesseract to get more accurate OCR results.
+Below is an example OCR scan. The code converts it to black-and-white and resizes + crops the image before feeding it to tesseract to get more accurate OCR results.
 
 ![bowers](https://jeroen.github.io/images/bowers.jpg){data-external=1}
 
