@@ -1,3 +1,6 @@
+5.2.1
+  - Fix shell script for cross compilation
+
 5.2.0
   - Windows: update to tesseract 5.3.2
 
