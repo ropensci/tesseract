@@ -2,7 +2,7 @@
 #'
 #' Extract text from an image. Requires that you have training data for the language you
 #' are reading. Works best for images with high contrast, little noise and horizontal text.
-#' See [tesseract wiki](https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality) and
+#' See [tesseract wiki](https://github.com/tesseract-ocr/tessdoc) and
 #' our package vignette for image preprocessing tips.
 #'
 #' The `ocr()` function returns plain text by default, or hOCR text if hOCR is set to `TRUE`.
