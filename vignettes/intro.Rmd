@@ -13,14 +13,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
 ```{r, echo = FALSE, message = FALSE}
 library(tibble)
-#knitr::opts_chunk$set(comment = "")
+# knitr::opts_chunk$set(comment = "")
 has_nld <- "nld" %in% tesseract::tesseract_info()$available
-if(identical(Sys.info()[['user']], 'jeroen')) stopifnot(has_nld)
-if(grepl('tesseract.Rcheck', getwd())){
-  Sys.sleep(10) #workaround for CPU time check
+if (identical(Sys.info()[["user"]], "jeroen")) stopifnot(has_nld)
+if (grepl("tesseract.Rcheck", getwd())) {
+  Sys.sleep(10) # workaround for CPU time check
 }
 ```
 
@@ -32,19 +31,20 @@ Keep in mind that OCR (pattern recognition in general) is a very difficult probl
 
 OCR is the process of finding and recognizing text inside images, for example from a screenshot, scanned paper. The image below has some example text:
 
-![test](https://jeroen.github.io/images/testocr.png){data-external=1}
+![test](../man/figures/testocr.png)
 
 ```{r}
 library(tesseract)
+file <- system.file("examples", "testocr.png", package = "tesseract")
 eng <- tesseract("eng")
-text <- tesseract::ocr("http://jeroen.github.io/images/testocr.png", engine = eng)
+text <- tesseract::ocr(file, engine = eng)
 cat(text)
 ```
 
 Not bad! The `ocr_data()` function returns all words in the image along with a bounding box and confidence rate.
 
 ```{r}
-results <- tesseract::ocr_data("http://jeroen.github.io/images/testocr.png", engine = eng)
+results <- tesseract::ocr_data(file, engine = eng)
 results
 ```
 
@@ -60,7 +60,7 @@ tesseract_info()
 
 By default the R package only includes English training data. Windows and Mac users can install additional training data using `tesseract_download()`. Let's OCR a screenshot from Wikipedia in Dutch (Nederlands) 
 
-[![utrecht](https://jeroen.github.io/images/utrecht2.png)](https://nl.wikipedia.org/wiki/Geschiedenis_van_de_stad_Utrecht)
+![utrecht](../man/figures/utrecht.png)
 
 ```{r, eval=FALSE}
 # Only need to do download once:
@@ -70,12 +70,12 @@ tesseract_download("nld")
 ```{r eval = has_nld}
 # Now load the dictionary
 (dutch <- tesseract("nld"))
-text <- ocr("https://jeroen.github.io/images/utrecht2.png", engine = dutch)
+file <- system.file("examples", "utrecht2.png", package = "tesseract")
+text <- ocr(file, engine = dutch)
 cat(text)
 ```
 
 As you can see immediately: almost perfect! (OK just take my word). 
-
 
 ## Preprocessing with Magick
 
@@ -94,34 +94,33 @@ The awesome [magick](https://cran.r-project.org/package=magick/vignettes/intro.h
 
 Below is an example OCR scan. The code converts it to black-and-white and resizes + crops the image before feeding it to tesseract to get more accurate OCR results.
 
-![bowers](https://jeroen.github.io/images/bowers.jpg){data-external=1}
-
+![bowers](../man/figures/bowers.jpg)
 
 ```{r}
 library(magick)
-input <- image_read("https://jeroen.github.io/images/bowers.jpg")
+file <- system.file("examples", "bowers.jpg", package = "tesseract")
+input <- image_read(file)
 
 text <- input %>%
   image_resize("2000x") %>%
-  image_convert(type = 'Grayscale') %>%
+  image_convert(type = "Grayscale") %>%
   image_trim(fuzz = 40) %>%
-  image_write(format = 'png', density = '300x300') %>%
-  tesseract::ocr() 
+  image_write(format = "png", density = "300x300") %>%
+  tesseract::ocr()
 
 cat(text)
 ```
-
 
 ## Read from PDF files
 
 If your images are stored in PDF files they first need to be converted to a proper image format. We can do this in R using the `pdf_convert` function from the pdftools package. Use a high DPI to keep quality of the image.
 
 ```{r, eval=require(pdftools)}
-pngfile <- pdftools::pdf_convert('https://jeroen.github.io/images/ocrscan.pdf', dpi = 600)
+file <- system.file("examples", "ocrscan.pdf", package = "tesseract")
+pngfile <- pdftools::pdf_convert(file, dpi = 600)
 text <- tesseract::ocr(pngfile)
 cat(text)
 ```
-
 
 ## Tesseract Control Parameters
 
@@ -129,13 +128,13 @@ Tesseract supports hundreds of "control parameters" which alter the OCR engine. 
 
 ```{r}
 # List all parameters with *colour* in name or description
-tesseract_params('colour')
+tesseract_params("colour")
 ```
 
 Do note that some of the control parameters have changed between Tesseract engine 3 and 4.
 
 ```{r}
-tesseract::tesseract_info()['version']
+tesseract::tesseract_info()["version"]
 ```
 
 ### Whitelist / Blacklist characters
@@ -144,18 +143,18 @@ One powerful parameter is `tessedit_char_whitelist` which restricts the output t
 
 The whitelist parameter works for all versions of Tesseract engine 3 and also engine versions 4.1 and higher, but unfortunately it did not work in Tesseract 4.0.
 
-
-![receipt](https://jeroen.github.io/images/receipt.png){data-external=1}
+![receipt](../man/figures/receipt.png)
 
 ```{r}
+file <- system.file("examples", "receipt.png", package = "tesseract")
 numbers <- tesseract(options = list(tessedit_char_whitelist = "$.0123456789"))
-cat(ocr("https://jeroen.github.io/images/receipt.png", engine = numbers))
+cat(ocr(file, engine = numbers))
 ```
 
 To test if this actually works, look what happens if we remove the `$` from `tessedit_char_whitelist`:
 
 ```{r}
-# Do not allow any dollar sign 
+# Do not allow any dollar sign
 numbers2 <- tesseract(options = list(tessedit_char_whitelist = ".0123456789"))
-cat(ocr("https://jeroen.github.io/images/receipt.png", engine = numbers2))
+cat(ocr(file, engine = numbers2))
 ```
