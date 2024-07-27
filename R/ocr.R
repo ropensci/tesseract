@@ -19,13 +19,14 @@
 #' @rdname ocr
 #' @references [Tesseract: Improving Quality](https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality)
 #' @examples # Simple example
-#' text <- ocr("https://jeroen.github.io/images/testocr.png")
+#' file <- system.file("examples", "testocr.png", package = "tesseract")
+#' text <- ocr(file)
 #' cat(text)
 #'
-#' xml <- ocr("https://jeroen.github.io/images/testocr.png", HOCR = TRUE)
+#' xml <- ocr(file, HOCR = TRUE)
 #' cat(xml)
 #'
-#' df <- ocr_data("https://jeroen.github.io/images/testocr.png")
+#' df <- ocr_data(file)
 #' print(df)
 #'
 #' \donttest{

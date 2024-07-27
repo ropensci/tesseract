@@ -60,7 +60,7 @@ tesseract_info()
 
 By default the R package only includes English training data. Windows and Mac users can install additional training data using `tesseract_download()`. Let's OCR a screenshot from Wikipedia in Simplified Chinese.
 
-![olympics](../man/figures/olympics.png)
+![chinese](../man/figures/chinese.png)
 
 ```{r, eval=FALSE}
 # Only need to do download once:
@@ -70,7 +70,7 @@ tesseract_download("chi_sim")
 ```{r eval = has_chi_sim}
 # Now load the dictionary
 (simplified_chinese <- tesseract("chi_sim"))
-file <- system.file("examples", "olympics.png", package = "tesseract")
+file <- system.file("examples", "chinese.png", package = "tesseract")
 text <- ocr(file, engine = simplified_chinese)
 cat(text)
 ```
@@ -79,7 +79,7 @@ Compare with the copy and paste from the Wikipedia.
 
 ```{r}
 text2 <- readLines(
-  system.file("examples", "olympics.txt", package = "tesseract")
+  system.file("examples", "chinese.txt", package = "tesseract")
 )
 
 cat(text2)

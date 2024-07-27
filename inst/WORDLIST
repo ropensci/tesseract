@@ -1,3 +1,4 @@
+chinese
 config
 EPEL
 github
@@ -14,7 +15,6 @@ magick
 Magick
 Nederlands
 ocr
-olympics
 opensource
 ORCID
 pdftools
