@@ -32,7 +32,7 @@ Keep in mind that OCR (pattern recognition in general) is a very difficult probl
 
 OCR is the process of finding and recognizing text inside images, for example from a screenshot, scanned paper. The image below has some example text:
 
-![test](../inst/examples/testocr.png){data-external=1}
+![test](https://jeroen.github.io/images/testocr.png){data-external=1}
 
 ```{r}
 library(tesseract)
@@ -60,7 +60,7 @@ tesseract_info()
 
 By default the R package only includes English training data. Windows and Mac users can install additional training data using `tesseract_download()`. Let's OCR a screenshot from Wikipedia in Dutch (Nederlands) 
 
-[![utrecht](../inst/examples/utrecht2.png)](https://nl.wikipedia.org/wiki/Geschiedenis_van_de_stad_Utrecht)
+[![utrecht](https://jeroen.github.io/images/utrecht2.png)](https://nl.wikipedia.org/wiki/Geschiedenis_van_de_stad_Utrecht)
 
 ```{r, eval=FALSE}
 # Only need to do download once:
@@ -70,8 +70,7 @@ tesseract_download("nld")
 ```{r eval = has_nld}
 # Now load the dictionary
 (dutch <- tesseract("nld"))
-file <- system.file("examples", "utrecht2.png", package = "tesseract")
-text <- ocr(file, engine = dutch)
+text <- ocr("https://jeroen.github.io/images/utrecht2.png", engine = dutch)
 cat(text)
 ```
 
@@ -95,13 +94,12 @@ The awesome [magick](https://cran.r-project.org/package=magick/vignettes/intro.h
 
 Below is an example OCR scan. The code converts it to black-and-white and resizes + crops the image before feeding it to tesseract to get more accurate OCR results.
 
-![bowers](../inst/examples/bowers.jpg){data-external=1}
+![bowers](https://jeroen.github.io/images/bowers.jpg){data-external=1}
 
 
 ```{r}
 library(magick)
-file <- system.file("examples", "bowers.jpg", package = "tesseract")
-input <- image_read(file)
+input <- image_read("https://jeroen.github.io/images/bowers.jpg")
 
 text <- input %>%
   image_resize("2000x") %>%
@@ -119,8 +117,7 @@ cat(text)
 If your images are stored in PDF files they first need to be converted to a proper image format. We can do this in R using the `pdf_convert` function from the pdftools package. Use a high DPI to keep quality of the image.
 
 ```{r, eval=require(pdftools)}
-file <- system.file("examples", "ocrscan.pdf", package = "tesseract")
-pngfile <- pdftools::pdf_convert(file, dpi = 600)
+pngfile <- pdftools::pdf_convert('https://jeroen.github.io/images/ocrscan.pdf', dpi = 600)
 text <- tesseract::ocr(pngfile)
 cat(text)
 ```
@@ -147,12 +144,12 @@ One powerful parameter is `tessedit_char_whitelist` which restricts the output t
 
 The whitelist parameter works for all versions of Tesseract engine 3 and also engine versions 4.1 and higher, but unfortunately it did not work in Tesseract 4.0.
 
-![receipt](../inst/examples/receipt.png){data-external=1}
+
+![receipt](https://jeroen.github.io/images/receipt.png){data-external=1}
 
 ```{r}
 numbers <- tesseract(options = list(tessedit_char_whitelist = "$.0123456789"))
-file <- system.file("examples", "receipt.png", package = "tesseract")
-cat(ocr(file, engine = numbers))
+cat(ocr("https://jeroen.github.io/images/receipt.png", engine = numbers))
 ```
 
 To test if this actually works, look what happens if we remove the `$` from `tessedit_char_whitelist`:
@@ -160,5 +157,5 @@ To test if this actually works, look what happens if we remove the `$` from `tes
 ```{r}
 # Do not allow any dollar sign 
 numbers2 <- tesseract(options = list(tessedit_char_whitelist = ".0123456789"))
-cat(ocr(file, engine = numbers2))
+cat(ocr("https://jeroen.github.io/images/receipt.png", engine = numbers2))
 ```
