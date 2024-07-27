@@ -1,9 +1,5 @@
 #include "tesseract_types.h"
 
-#if TESSERACT_MAJOR_VERSION < 5
-#include <tesseract/genericvector.h>
-#endif
-
 #include <list>
 // #include <iostream>
 #include <string>
