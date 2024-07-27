@@ -2,8 +2,6 @@
 ^\.Rproj\.user$
 ^src/Makevars$
 ^windows
-\.pdf$
-\.png$
 \.webp$
 \.jpeg$
 \.o$
@@ -14,3 +12,4 @@
 vignettes/.*\.png$
 ^configure.log$
 ^\.github$
+^\.vscode$

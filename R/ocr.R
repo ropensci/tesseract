@@ -18,7 +18,6 @@
 #' @param HOCR if `TRUE` return results as HOCR xml instead of plain text
 #' @rdname ocr
 #' @references [Tesseract: Improving Quality](https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality)
-#' @importFrom Rcpp sourceCpp
 #' @examples # Simple example
 #' text <- ocr("https://jeroen.github.io/images/testocr.png")
 #' cat(text)

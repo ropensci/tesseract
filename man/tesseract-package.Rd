@@ -21,4 +21,9 @@ Useful links:
 \author{
 \strong{Maintainer}: Jeroen Ooms \email{jeroen@berkeley.edu} (\href{https://orcid.org/0000-0002-4035-0289}{ORCID})
 
+Authors:
+\itemize{
+  \item Mauricio Vargas Sepulveda \email{m.sepulveda@mail.utoronto.ca} (\href{https://orcid.org/0000-0003-1017-7574}{ORCID})
+}
+
 }

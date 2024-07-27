@@ -1,3 +1,7 @@
+5.3.0
+  - The C++ parts were refactored to use cpp11 instead of Rcpp, and therefore
+    it now allows to use vendoring.
+
 5.2.1
   - Fix shell script for cross compilation
 
