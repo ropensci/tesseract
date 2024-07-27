@@ -21,8 +21,9 @@ Imports:
     curl,
     rappdirs,
     digest
-LinkingTo: Rcpp
-RoxygenNote: 7.2.3
+LinkingTo: 
+    cpp11
+RoxygenNote: 7.3.1
 Roxygen: list(markdown = TRUE)
 Suggests:
     magick (>= 1.7),

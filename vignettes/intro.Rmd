@@ -144,10 +144,10 @@ One powerful parameter is `tessedit_char_whitelist` which restricts the output t
 
 The whitelist parameter works for all versions of Tesseract engine 3 and also engine versions 4.1 and higher, but unfortunately it did not work in Tesseract 4.0.
 
-
 ![receipt](https://jeroen.github.io/images/receipt.png){data-external=1}
 
 ```{r}
+Sys.setenv(TESSDATA_PREFIX = tempdir())
 numbers <- tesseract(options = list(tessedit_char_whitelist = "$.0123456789"))
 cat(ocr("https://jeroen.github.io/images/receipt.png", engine = numbers))
 ```

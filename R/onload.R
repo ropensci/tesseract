@@ -60,7 +60,7 @@ check_training_data <- function(){
   tryCatch(tesseract(), error = function(e){
     warning("Unable to find English training data", call. = FALSE)
     os <- utils::sessionInfo()$running
-    if(isTRUE(grepl("ubuntu|debian", os, TRUE))){
+    if(isTRUE(grepl("ubuntu|debian|pop", os, TRUE))){
       stop("DEBIAN / UBUNTU: Please run: apt-get install tesseract-ocr-eng")
     }
   })

@@ -20,7 +20,7 @@ language string which will be passed to \code{\link[=tesseract]{tesseract()}}.}
 \description{
 Extract text from an image. Requires that you have training data for the language you
 are reading. Works best for images with high contrast, little noise and horizontal text.
-See \href{https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality}{tesseract wiki} and
+See \href{https://github.com/tesseract-ocr/tessdoc}{tesseract wiki} and
 our package vignette for image preprocessing tips.
 }
 \details{
@@ -61,7 +61,7 @@ engine <- tesseract(options = list(tessedit_char_whitelist = "0123456789"))
 }
 \seealso{
 Other tesseract: 
-\code{\link{tesseract_download}()},
-\code{\link{tesseract}()}
+\code{\link{tesseract}()},
+\code{\link{tesseract_download}()}
 }
 \concept{tesseract}

@@ -48,7 +48,7 @@
 ocr <- function(image, engine = tesseract("eng"), HOCR = FALSE) {
   if(is.character(engine))
     engine <- tesseract(engine)
-  stopifnot(inherits(engine, "tesseract"))
+  stopifnot(inherits(engine, "externalptr"))
   if(inherits(image, "magick-image")){
     vapply(image, function(x){
       tmp <- tempfile(fileext = ".png")
@@ -71,7 +71,7 @@ ocr <- function(image, engine = tesseract("eng"), HOCR = FALSE) {
 ocr_data <- function(image, engine = tesseract("eng")) {
   if(is.character(engine))
     engine <- tesseract(engine)
-  stopifnot(inherits(engine, "tesseract"))
+  stopifnot(inherits(engine, "externalptr"))
   df_list <- if(inherits(image, "magick-image")){
     lapply(image, function(x){
       tmp <- tempfile(fileext = ".png")
