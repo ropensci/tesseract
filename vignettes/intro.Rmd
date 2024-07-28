@@ -184,3 +184,80 @@ text2 <- ocr(file, engine = tesseract("chi_sim", datapath = "~/Downloads"))
 cat(text1)
 cat(text2)
 ```
+
+## Comparison with Amazon Textract
+
+*Note: Amazon and Textract are trademarks of Amazon.com, Inc.*
+
+Textract [documentation](https://aws.amazon.com/blogs/opensource/using-r-with-amazon-web-services-for-document-analysis/) uses page three of the [January 1966 report](https://www.philadelphiafed.org/-/media/frbp/assets/surveys-and-data/greenbook-data/greensheets/greensheets-1966.zip?la=en&hash=8B8ABA92C3F0B2939328D47B6230F3A3) from Philadelphia Fed's [Tealbook](https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/philadelphia-data-set) (formerly Greenbook).
+
+![tealbook](../man/figures/tealbook.png)
+
+Here is the first element of the list retured by Textract:
+
+```r
+# List of 13
+# $ BlockType      : chr "TABLE"
+# $ Confidence     : num 100
+# $ Text           : chr(0)
+# $ RowIndex       : int(0)
+# $ ColumnIndex    : int(0)
+# $ RowSpan        : int(0)
+# $ ColumnSpan     : int(0)
+# $ Geometry       :List of 2
+# .. <not shown>
+# $ Id             : chr "c6841638-d3e0-414b-af12-b94ed34aac8a"
+# $ Relationships  :List of 1
+# ..$ :List of 2
+# .. ..$ Type: chr "CHILD"
+# .. ..$ Ids : chr [1:256] "e1866e80-0ef0-4bdd-a6fd-9508bb833c03" ...
+# $ EntityTypes    : list()
+# $ SelectionStatus: chr(0)
+# $ Page           : int 3
+```
+
+Here is Tesseract's output:
+
+```{r}
+file <- system.file("examples", "tealbook.png", package = "tesseract")
+text <- ocr(file)
+
+cat(text)
+```
+
+One way to organize the output is to split the text before the first digit on each line.
+
+```{r}
+text <- strsplit(text, "\n")[[1]]
+text <- text[6:length(text)]
+
+for (i in seq_along(text)) {
+  firstdigit <- regexpr("[0-9]", text[i])[1]
+
+  variable <- trimws(substr(text[i], 1, firstdigit - 1))
+
+  values <- strsplit(substr(text[i], firstdigit, nchar(text[i])), " ")[[1]]
+  values <- trimws(gsub(",", ".", values))
+  values <- suppressWarnings(as.numeric(gsub("\\.$", "", values)))
+
+  if (length(values[!is.na(values)]) < 1) {
+    next
+  }
+
+  res <- c(variable, values)
+
+  names(res) <- c("variable", "y1964", "y1965est", "y1965q1",
+    "y1965q2", "y1965q3", "y1965q4est", "y1966q1pro"
+  )
+  
+  if (i == 1) {
+    df <- as.data.frame(t(res))
+  } else {
+    df <- rbind(df, as.data.frame(t(res)))
+  }
+}
+
+head(df)
+```
+
+The result is not perfect (e.g. I still need to change "Gross National Product in Constant" to add the "(1958) Dollars"), but neither is Textract's and it requires to write a more complex loop to organize the data. Certainly, this can be simplified by using the Tidyverse.
