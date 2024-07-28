@@ -5,12 +5,19 @@
 \alias{tessdata}
 \title{Tesseract Training Data}
 \usage{
-tesseract_download(lang, datapath = NULL, progress = interactive())
+tesseract_download(
+  lang,
+  datapath = NULL,
+  best = FALSE,
+  progress = interactive()
+)
 }
 \arguments{
 \item{lang}{three letter code for language, see \href{https://github.com/tesseract-ocr/tessdata}{tessdata} repository.}
 
 \item{datapath}{destination directory where to download store the file}
+
+\item{best}{download the most accurate (but slower) trained models}
 
 \item{progress}{print progress while downloading}
 }

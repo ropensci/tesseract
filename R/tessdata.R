@@ -23,6 +23,7 @@
 #' @family tesseract
 #' @param lang three letter code for language, see [tessdata](https://github.com/tesseract-ocr/tessdata) repository.
 #' @param datapath destination directory where to download store the file
+#' @param best download the most accurate (but slower) trained models
 #' @param progress print progress while downloading
 #' @references [tesseract wiki: training data](https://tesseract-ocr.github.io/tessdoc/Data-Files)
 #' @examples \dontrun{
@@ -34,7 +35,7 @@
 #' text <- ocr(file, engine = french)
 #' cat(text)
 #' }
-tesseract_download <- function(lang, datapath = NULL, progress = interactive()) {
+tesseract_download <- function(lang, datapath = NULL, best = FALSE, progress = interactive()) {
   stopifnot(is.character(lang))
   if (!length(datapath)) {
     warn_on_linux()
@@ -42,13 +43,12 @@ tesseract_download <- function(lang, datapath = NULL, progress = interactive()) 
   }
   datapath <- normalizePath(datapath, mustWork = TRUE)
   version <- tesseract_version_major()
-  if (version < 4) {
-    repo <- "tessdata"
-    release <- "3.04.00"
+  if (isTRUE(best)) {
+    repo <- "tessdata_best"
   } else {
     repo <- "tessdata_fast"
-    release <- "4.1.0"
   }
+  release <- "4.1.0"
   url <- sprintf("https://github.com/tesseract-ocr/%s/raw/%s/%s.traineddata", repo, release, lang)
   req <- curl::curl_fetch_memory(url, curl::new_handle(
     progressfunction = progress_fun,

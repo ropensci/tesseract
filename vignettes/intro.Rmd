@@ -166,3 +166,21 @@ To test if this actually works, look what happens if we remove the `$` from `tes
 numbers2 <- tesseract(options = list(tessedit_char_whitelist = ".0123456789"))
 cat(ocr(file, engine = numbers2))
 ```
+
+## Best versus Fast models
+
+In order to improve the OCR results, Tesseract has two variants of models that can be used. The `tesseract_download()` can download the 'best' (but slower) model, which increases the accuracy. The 'fast' (but less accurate) model is the default.
+
+```{r, eval = FALSE}
+file <- system.file("examples", "chinese.png", package = "tesseract")
+
+# download the best model
+tesseract_download("chi_sim", datapath = "~/Downloads", best = TRUE)
+
+# compare the results: fast (text1) vs best (text2)
+text1 <- ocr(file, engine = tesseract("chi_sim"))
+text2 <- ocr(file, engine = tesseract("chi_sim", datapath = "~/Downloads"))
+
+cat(text1)
+cat(text2)
+```

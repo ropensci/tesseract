@@ -13,3 +13,4 @@ src/Makevars
 configure.log
 .vscode
 vignettes/ocrscan_1.png
+dev/*.traineddata
