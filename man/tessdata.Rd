@@ -5,12 +5,19 @@
 \alias{tessdata}
 \title{Tesseract Training Data}
 \usage{
-tesseract_download(lang, datapath = NULL, progress = interactive())
+tesseract_download(
+  lang,
+  datapath = NULL,
+  best = FALSE,
+  progress = interactive()
+)
 }
 \arguments{
 \item{lang}{three letter code for language, see \href{https://github.com/tesseract-ocr/tessdata}{tessdata} repository.}
 
 \item{datapath}{destination directory where to download store the file}
+
+\item{best}{download the most accurate (but slower) trained models}
 
 \item{progress}{print progress while downloading}
 }
@@ -36,10 +43,12 @@ and stores it in a the path on disk given by the \code{TESSDATA_PREFIX} variable
 }
 \examples{
 \dontrun{
-if(is.na(match("fra", tesseract_info()$available)))
+if (is.na(match("fra", tesseract_info()$available))) {
   tesseract_download("fra")
+}
 french <- tesseract("fra")
-text <- ocr("https://jeroen.github.io/images/french_text.png", engine = french)
+file <- system.file("examples", "french.png", package = "tesseract")
+text <- ocr(file, engine = french)
 cat(text)
 }
 }

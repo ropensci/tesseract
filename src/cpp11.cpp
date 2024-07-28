@@ -48,10 +48,10 @@ extern "C" SEXP _tesseract_print_params(SEXP filename) {
   END_CPP11
 }
 // tesseract.cpp
-strings get_param_values(TessPtr ptr, strings params);
-extern "C" SEXP _tesseract_get_param_values(SEXP ptr, SEXP params) {
+cpp11::writable::strings get_param_values(TessPtr api, cpp11::strings params);
+extern "C" SEXP _tesseract_get_param_values(SEXP api, SEXP params) {
   BEGIN_CPP11
-    return cpp11::as_sexp(get_param_values(cpp11::as_cpp<cpp11::decay_t<TessPtr>>(ptr), cpp11::as_cpp<cpp11::decay_t<strings>>(params)));
+    return cpp11::as_sexp(get_param_values(cpp11::as_cpp<cpp11::decay_t<TessPtr>>(api), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(params)));
   END_CPP11
 }
 // tesseract.cpp

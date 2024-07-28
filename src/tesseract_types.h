@@ -5,14 +5,13 @@
 #define STRICT_R_HEADERS
 
 #include <cpp11.hpp>
-#include <cpp11/external_pointer.hpp>
 
 inline void tess_finalizer(tesseract::TessBaseAPI* engine) {
   engine->End();
   delete engine;
 }
 
-typedef cpp11::external_pointer<tesseract::TessBaseAPI> TessPtr;
+typedef cpp11::external_pointer<tesseract::TessBaseAPI, tess_finalizer> TessPtr;
 
 inline void set_tesseract_options(tesseract::TessBaseAPI* engine,
                                   cpp11::list options) {
@@ -26,5 +25,5 @@ inline void set_tesseract_options(tesseract::TessBaseAPI* engine,
 inline TessPtr make_tess_ptr(tesseract::TessBaseAPI* engine,
                              cpp11::list options = cpp11::list()) {
   set_tesseract_options(engine, options);
-  return TessPtr(engine, tess_finalizer);
+  return TessPtr(engine);
 }

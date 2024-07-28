@@ -1,9 +1,5 @@
 #include "tesseract_types.h"
 
-#if TESSERACT_MAJOR_VERSION < 5
-#include <tesseract/genericvector.h>
-#endif
-
 #include <list>
 // #include <iostream>
 #include <string>
@@ -11,26 +7,9 @@
 
 using namespace cpp11;
 
-/* libtesseract 4.0 insisted that the engine is initiated in 'C' locale.
- * We do this as exemplified in the example code in the libc manual:
- * https://www.gnu.org/software/libc/manual/html_node/Setting-the-Locale.html
- * Full discussion: https://github.com/tesseract-ocr/tesseract/issues/1670
- */
-#if TESSERACT_MAJOR_VERSION == 4 && TESSERACT_MINOR_VERSION == 0
-#define TESSERACT40
-#endif
-
 static tesseract::TessBaseAPI *make_analyze_api() {
-#ifdef TESSERACT40
-  char *old_ctype = strdup(setlocale(LC_ALL, NULL));
-  setlocale(LC_ALL, "C");
-#endif
   tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
   api->InitForAnalysePage();
-#ifdef TESSERACT40
-  setlocale(LC_ALL, old_ctype);
-  free(old_ctype);
-#endif
   return api;
 }
 
@@ -66,24 +45,16 @@ static tesseract::TessBaseAPI *make_analyze_api() {
     configs.push_back(&config_strings.back()[0]);
   }
 
-  GenericVector<STRING> params;
-  GenericVector<STRING> values;
+  std::vector<std::string> params;
+  std::vector<std::string> values;
   for (int i = 0; i < opt_names.size(); i++) {
-    params.push_back(STRING(std::string(opt_names[i]).c_str()));
-    values.push_back(STRING(std::string(opt_values[i]).c_str()));
+    params.push_back(std::string(opt_names[i]).c_str());
+    values.push_back(std::string(opt_values[i]).c_str());
   }
 
-#ifdef TESSERACT40
-  char *old_ctype = strdup(setlocale(LC_ALL, NULL));
-  setlocale(LC_ALL, "C");
-#endif
   tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
   int err = api->Init(path, lang, tesseract::OEM_DEFAULT, configs.data(),
                       configs.size(), &params, &values, false);
-#ifdef TESSERACT40
-  setlocale(LC_ALL, old_ctype);
-  free(old_ctype);
-#endif
   if (err) {
     delete api;
     throw std::runtime_error(
@@ -113,7 +84,7 @@ tesseract::TessBaseAPI *get_engine(TessPtr engine) {
 }
 
 [[cpp11::register]] logicals validate_params(strings params) {
-  STRING str;
+  std::string str;
   tesseract::TessBaseAPI *api = make_analyze_api();
   writable::logicals out(params.size());
   for (int i = 0; i < params.size(); i++)
@@ -125,19 +96,17 @@ tesseract::TessBaseAPI *get_engine(TessPtr engine) {
 
 [[cpp11::register]] list engine_info_internal(TessPtr ptr) {
   tesseract::TessBaseAPI *api = get_engine(ptr);
-  GenericVector<STRING> langs;
+  std::vector<std::string> langs;
   api->GetAvailableLanguagesAsVector(&langs);
   writable::strings available;
-  size_t n = langs.size();
-  for (size_t i = 0; i < n; i++) {
-    available.push_back(langs[i].string());
+  for (const auto &lang : langs) {
+    available.push_back(lang);
   }
   langs.clear();
   api->GetLoadedLanguagesAsVector(&langs);
   writable::strings loaded;
-  n = langs.size();
-  for (size_t i = 0; i < n; i++) {
-    loaded.push_back(langs[i].string());
+  for (const auto &lang : loaded) {
+    loaded.push_back(lang);
   }
   return writable::list({
     "datapath"_nm = api->GetDatapath(),
@@ -156,18 +125,24 @@ tesseract::TessBaseAPI *get_engine(TessPtr engine) {
   return writable::strings({filename});
 }
 
-[[cpp11::register]] strings get_param_values(TessPtr ptr, strings params) {
-  STRING str;
-  tesseract::TessBaseAPI *api = get_engine(ptr);
-  writable::strings out(params.size());
-  for (int i = 0; i < params.size(); i++) {
+[[cpp11::register]] cpp11::writable::strings get_param_values(
+    TessPtr api, cpp11::strings params) {
+  std::vector<std::string> values;
+  for (int i = 0; i < params.size(); ++i) {
+    std::string str;
     if (api->GetVariableAsString(std::string(params.at(i)).c_str(), &str)) {
-      out[i] = str.string();
+      values.push_back(str);
     } else {
-      out[i] = NA_STRING;
+      values.push_back("");
     }
   }
-  return out;
+
+  writable::strings result(values.size());
+  for (size_t i = 0; i < values.size(); ++i) {
+    result[i] = values[i];
+  }
+
+  return result;
 }
 
 strings ocr_pix(tesseract::TessBaseAPI *api, Pix *image, bool HOCR) {

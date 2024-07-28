@@ -24,8 +24,8 @@ print_params <- function(filename) {
   .Call(`_tesseract_print_params`, filename)
 }
 
-get_param_values <- function(ptr, params) {
-  .Call(`_tesseract_get_param_values`, ptr, params)
+get_param_values <- function(api, params) {
+  .Call(`_tesseract_get_param_values`, api, params)
 }
 
 ocr_raw <- function(input, ptr, HOCR) {

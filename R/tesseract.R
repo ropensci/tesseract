@@ -22,16 +22,16 @@
 #' @param cache speed things up by caching engines
 tesseract <- local({
   store <- new.env()
-  function(language = "eng", datapath = NULL, configs = NULL, options = NULL, cache = TRUE){
+  function(language = "eng", datapath = NULL, configs = NULL, options = NULL, cache = TRUE) {
     datapath <- as.character(datapath)
     language <- as.character(language)
     configs <- as.character(configs)
     options <- as.list(options)
-    if(isTRUE(cache)){
+    if (isTRUE(cache)) {
       key <- digest::digest(list(language, datapath, configs, options))
-      if(is.null(store[[key]])){
+      if (is.null(store[[key]])) {
         ptr <- tesseract_engine(datapath, language, configs, options)
-        assign(key, ptr, store);
+        assign(key, ptr, store)
       }
       store[[key]]
     } else {
@@ -43,72 +43,77 @@ tesseract <- local({
 #' @export
 #' @rdname tesseract
 #' @param filter only list parameters containing a particular string
-#' @examples tesseract_params('debug')
-tesseract_params <- function(filter = ""){
+#' @examples tesseract_params("debug")
+tesseract_params <- function(filter = "") {
   tmp <- print_params(tempfile())
   on.exit(unlink(tmp))
   df <- parse_params(tmp)
   subset <- grepl(filter, paste(df$param, df$desc), ignore.case = TRUE)
-  df_as_tibble(df[subset,])
+  df_as_tibble(df[subset, ])
 }
 
 #' @export
 #' @rdname tesseract
-tesseract_info <- function(){
+tesseract_info <- function() {
   info <- engine_info_internal(tesseract())
   config <- tesseract_config()
-  list(datapath = info$datapath,
-       available = info$available,
-       version = config$version,
-       configs = list.files(file.path(info$datapath, "configs")))
+  list(
+    datapath = info$datapath,
+    available = info$available,
+    version = config$version,
+    configs = list.files(file.path(info$datapath, "configs"))
+  )
 }
 
-parse_params <- function(path){
-  utils::read.delim(path, header = FALSE, quote = "",
-                    col.names = c("param", "default", "desc"), stringsAsFactors = FALSE)
+parse_params <- function(path) {
+  utils::read.delim(path,
+    header = FALSE, quote = "",
+    col.names = c("param", "default", "desc"), stringsAsFactors = FALSE
+  )
 }
 
-tesseract_engine <- function(datapath, language, configs, options){
-
+tesseract_engine <- function(datapath, language, configs, options) {
   # Tesseract::read_config_file first checks for local file, then in tessdata
-  lapply(configs, function(confpath){
-    if(file.exists(confpath)){
-      params <- tryCatch(utils::read.table(confpath, quote = ""), error = function(e){
+  lapply(configs, function(confpath) {
+    if (file.exists(confpath)) {
+      params <- tryCatch(utils::read.table(confpath, quote = ""), error = function(e) {
         bail("Failed to parse config file '%s': %s", confpath, e$message)
       })
       ok <- validate_params(params$V1)
-      if(any(!ok))
+      if (any(!ok)) {
         bail("Unsupported Tesseract parameter(s): [%s] in %s", paste(params$V1[!ok], collapse = ", "), confpath)
+      }
     }
   })
 
   opt_names <- as.character(names(options))
   opt_values <- as.character(options)
   ok <- validate_params(opt_names)
-  if(any(!ok))
+  if (any(!ok)) {
     bail("Unsupported Tesseract parameter(s): [%s]", paste(opt_names[!ok], collapse = ", "))
+  }
 
   tesseract_engine_internal(datapath, language, configs, opt_names, opt_values)
 }
 
-download_files <- function(urls){
-  files <- vapply(urls, function(path){
-    if(grepl("^https?://", path)){
-      tmp <- tempfile(fileext =  basename(path))
+download_files <- function(urls) {
+  files <- vapply(urls, function(path) {
+    if (grepl("^https?://", path)) {
+      tmp <- tempfile(fileext = basename(path))
       curl::curl_download(path, tmp)
       path <- tmp
     }
     normalizePath(path, mustWork = TRUE)
   }, character(1))
   is_pdf <- grepl(".pdf$", files)
-  out <- unlist(lapply(files[is_pdf], function(path){
+  out <- unlist(lapply(files[is_pdf], function(path) {
     pdftools::pdf_convert(path, dpi = 600)
   }))
   c(files[!is_pdf], out)
 }
 
 #' @export
-"print.tesseract" <- function(x, ...){
+"print.tesseract" <- function(x, ...) {
   info <- engine_info_internal(x)
   cat("<tesseract engine>\n")
   cat(" loaded:", info$loaded, "\n")
@@ -116,11 +121,11 @@ download_files <- function(urls){
   cat(" available:", info$available, "\n")
 }
 
-bail <- function(...){
+bail <- function(...) {
   stop(sprintf(...), call. = FALSE)
 }
 
-df_as_tibble <- function(df){
+df_as_tibble <- function(df) {
   stopifnot(is.data.frame(df))
   class(df) <- c("tbl_df", "tbl", "data.frame")
   df

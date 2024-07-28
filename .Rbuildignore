@@ -13,3 +13,4 @@ vignettes/.*\.png$
 ^configure.log$
 ^\.github$
 ^\.vscode$
+^dev$
