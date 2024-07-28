@@ -61,7 +61,11 @@ tesseract_download <- function(lang, datapath = NULL, best = FALSE, progress = i
     stop("Download failed: HTTP ", req$status_code, call. = FALSE)
   }
   destfile <- file.path(datapath, basename(url))
-  writeBin(req$content, destfile)
+  if (file.exists(destfile)) {
+    message("File already exists.")
+  } else {
+    writeBin(req$content, destfile)
+  }
   return(destfile)
 }
 
