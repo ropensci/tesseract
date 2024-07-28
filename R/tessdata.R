@@ -37,35 +37,48 @@
 #' }
 tesseract_download <- function(lang, datapath = NULL, best = FALSE, progress = interactive()) {
   stopifnot(is.character(lang))
+  
   if (!length(datapath)) {
     warn_on_linux()
     datapath <- tesseract_info()$datapath
   }
+
   datapath <- normalizePath(datapath, mustWork = TRUE)
+
   version <- tesseract_version_major()
+  
   if (isTRUE(best)) {
     repo <- "tessdata_best"
   } else {
     repo <- "tessdata_fast"
   }
+  
   release <- "4.1.0"
+  
   url <- sprintf("https://github.com/tesseract-ocr/%s/raw/%s/%s.traineddata", repo, release, lang)
+  
+  destfile <- file.path(datapath, basename(url))
+
+  if (file.exists(destfile)) {
+    message("Training data already exists.")
+    return(destfile)
+  }
+
   req <- curl::curl_fetch_memory(url, curl::new_handle(
     progressfunction = progress_fun,
     noprogress = !isTRUE(progress)
   ))
+
   if (progress) {
     cat("\n")
   }
+
   if (req$status_code != 200) {
     stop("Download failed: HTTP ", req$status_code, call. = FALSE)
   }
-  destfile <- file.path(datapath, basename(url))
-  if (file.exists(destfile)) {
-    message("File already exists.")
-  } else {
-    writeBin(req$content, destfile)
-  }
+  
+  writeBin(req$content, destfile)
+
   return(destfile)
 }
 
