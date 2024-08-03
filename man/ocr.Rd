@@ -30,13 +30,14 @@ each word in the text.
 }
 \examples{
 # Simple example
-text <- ocr("https://jeroen.github.io/images/testocr.png")
+file <- system.file("examples", "testocr.png", package = "tesseract")
+text <- ocr(file)
 cat(text)
 
-xml <- ocr("https://jeroen.github.io/images/testocr.png", HOCR = TRUE)
+xml <- ocr(file, HOCR = TRUE)
 cat(xml)
 
-df <- ocr_data("https://jeroen.github.io/images/testocr.png")
+df <- ocr_data(file)
 print(df)
 
 \donttest{
@@ -61,7 +62,7 @@ engine <- tesseract(options = list(tessedit_char_whitelist = "0123456789"))
 }
 \seealso{
 Other tesseract: 
-\code{\link{tesseract_download}()},
-\code{\link{tesseract}()}
+\code{\link{tesseract}()},
+\code{\link{tesseract_download}()}
 }
 \concept{tesseract}

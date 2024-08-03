@@ -39,7 +39,8 @@ and stores it in a the path on disk given by the \code{TESSDATA_PREFIX} variable
 if(is.na(match("fra", tesseract_info()$available)))
   tesseract_download("fra")
 french <- tesseract("fra")
-text <- ocr("https://jeroen.github.io/images/french_text.png", engine = french)
+file <- system.file("examples", "french.png", package = "tesseract")
+text <- ocr(file, engine = french)
 cat(text)
 }
 }
