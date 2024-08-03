@@ -13,14 +13,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
 ```{r, echo = FALSE, message = FALSE}
 library(tibble)
-#knitr::opts_chunk$set(comment = "")
-has_nld <- "nld" %in% tesseract::tesseract_info()$available
-if(identical(Sys.info()[['user']], 'jeroen')) stopifnot(has_nld)
-if(grepl('tesseract.Rcheck', getwd())){
-  Sys.sleep(10) #workaround for CPU time check
+# knitr::opts_chunk$set(comment = "")
+has_chi_sim <- "chi_sim" %in% tesseract::tesseract_info()$available
+if (identical(Sys.info()[["user"]], "pacha")) stopifnot(has_chi_sim)
+if (grepl("tesseract.Rcheck", getwd())) {
+  Sys.sleep(10) # workaround for CPU time check
 }
 ```
 
@@ -32,19 +31,20 @@ Keep in mind that OCR (pattern recognition in general) is a very difficult probl
 
 OCR is the process of finding and recognizing text inside images, for example from a screenshot, scanned paper. The image below has some example text:
 
-![test](https://jeroen.github.io/images/testocr.png){data-external=1}
+![test](../man/figures/testocr.png)
 
 ```{r}
 library(tesseract)
+file <- system.file("examples", "testocr.png", package = "tesseract")
 eng <- tesseract("eng")
-text <- tesseract::ocr("http://jeroen.github.io/images/testocr.png", engine = eng)
+text <- tesseract::ocr(file, engine = eng)
 cat(text)
 ```
 
 Not bad! The `ocr_data()` function returns all words in the image along with a bounding box and confidence rate.
 
 ```{r}
-results <- tesseract::ocr_data("http://jeroen.github.io/images/testocr.png", engine = eng)
+results <- tesseract::ocr_data(file, engine = eng)
 results
 ```
 
@@ -58,28 +58,36 @@ Use `tesseract_info()` to list the languages that you currently have installed.
 tesseract_info()
 ```
 
-By default the R package only includes English training data. Windows and Mac users can install additional training data using `tesseract_download()`. Let's OCR a screenshot from Wikipedia in Dutch (Nederlands) 
+By default the R package only includes English training data. Windows and Mac users can install additional training data using `tesseract_download()`. Let's OCR a screenshot from Wikipedia in Simplified Chinese.
 
-[![utrecht](https://jeroen.github.io/images/utrecht2.png)](https://nl.wikipedia.org/wiki/Geschiedenis_van_de_stad_Utrecht)
+![chinese](../man/figures/chinese.png)
 
 ```{r, eval=FALSE}
 # Only need to do download once:
-tesseract_download("nld")
+tesseract_download("chi_sim")
 ```
 
-```{r eval = has_nld}
+```{r eval = has_chi_sim}
 # Now load the dictionary
-(dutch <- tesseract("nld"))
-text <- ocr("https://jeroen.github.io/images/utrecht2.png", engine = dutch)
+(simplified_chinese <- tesseract("chi_sim"))
+file <- system.file("examples", "chinese.png", package = "tesseract")
+text <- ocr(file, engine = simplified_chinese)
 cat(text)
 ```
 
-As you can see immediately: almost perfect! (OK just take my word). 
+Compare with the copy and paste from the Wikipedia.
 
+```{r}
+text2 <- readLines(
+  system.file("examples", "chinese.txt", package = "tesseract")
+)
+
+cat(text2)
+```
 
 ## Preprocessing with Magick
 
-The accuracy of the OCR process depends on the quality of the input image. You can often improve results by properly scaling the image, removing noise and artifacts or cropping the area where the text exists. See [tesseract wiki: improve quality](https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality) for important tips to improve the quality of your input image.
+The accuracy of the OCR process depends on the quality of the input image. You can often improve results by properly scaling the image, removing noise and artifacts or cropping the area where the text exists. See [tesseract wiki: improve quality](https://tesseract-ocr.github.io/tessdoc/ImproveQuality) for important tips to improve the quality of your input image.
 
 The awesome [magick](https://cran.r-project.org/package=magick/vignettes/intro.html) R package has many useful functions that can be use for enhancing the quality of the image. Some things to try:
 
@@ -94,34 +102,33 @@ The awesome [magick](https://cran.r-project.org/package=magick/vignettes/intro.h
 
 Below is an example OCR scan. The code converts it to black-and-white and resizes + crops the image before feeding it to tesseract to get more accurate OCR results.
 
-![bowers](https://jeroen.github.io/images/bowers.jpg){data-external=1}
-
+![bowers](../man/figures/bowers.jpg)
 
 ```{r}
 library(magick)
-input <- image_read("https://jeroen.github.io/images/bowers.jpg")
+file <- system.file("examples", "bowers.jpg", package = "tesseract")
+input <- image_read(file)
 
 text <- input %>%
   image_resize("2000x") %>%
-  image_convert(type = 'Grayscale') %>%
+  image_convert(type = "Grayscale") %>%
   image_trim(fuzz = 40) %>%
-  image_write(format = 'png', density = '300x300') %>%
-  tesseract::ocr() 
+  image_write(format = "png", density = "300x300") %>%
+  tesseract::ocr()
 
 cat(text)
 ```
-
 
 ## Read from PDF files
 
 If your images are stored in PDF files they first need to be converted to a proper image format. We can do this in R using the `pdf_convert` function from the pdftools package. Use a high DPI to keep quality of the image.
 
 ```{r, eval=require(pdftools)}
-pngfile <- pdftools::pdf_convert('https://jeroen.github.io/images/ocrscan.pdf', dpi = 600)
+file <- system.file("examples", "ocrscan.pdf", package = "tesseract")
+pngfile <- pdftools::pdf_convert(file, dpi = 600)
 text <- tesseract::ocr(pngfile)
 cat(text)
 ```
-
 
 ## Tesseract Control Parameters
 
@@ -129,13 +136,13 @@ Tesseract supports hundreds of "control parameters" which alter the OCR engine. 
 
 ```{r}
 # List all parameters with *colour* in name or description
-tesseract_params('colour')
+tesseract_params("colour")
 ```
 
 Do note that some of the control parameters have changed between Tesseract engine 3 and 4.
 
 ```{r}
-tesseract::tesseract_info()['version']
+tesseract::tesseract_info()["version"]
 ```
 
 ### Whitelist / Blacklist characters
@@ -144,19 +151,113 @@ One powerful parameter is `tessedit_char_whitelist` which restricts the output t
 
 The whitelist parameter works for all versions of Tesseract engine 3 and also engine versions 4.1 and higher, but unfortunately it did not work in Tesseract 4.0.
 
-
-![receipt](https://jeroen.github.io/images/receipt.png){data-external=1}
+![receipt](../man/figures/receipt.png)
 
 ```{r}
+file <- system.file("examples", "receipt.png", package = "tesseract")
 numbers <- tesseract(options = list(tessedit_char_whitelist = "$.0123456789"))
-cat(ocr("https://jeroen.github.io/images/receipt.png", engine = numbers))
+cat(ocr(file, engine = numbers))
 ```
 
 To test if this actually works, look what happens if we remove the `$` from `tessedit_char_whitelist`:
 
 ```{r}
-# Do not allow any dollar sign 
+# Do not allow any dollar sign
 numbers2 <- tesseract(options = list(tessedit_char_whitelist = ".0123456789"))
-cat(ocr("https://jeroen.github.io/images/receipt.png", engine = numbers2))
+cat(ocr(file, engine = numbers2))
 ```
 
+## Best versus Fast models
+
+In order to improve the OCR results, Tesseract has two variants of models that can be used. The `tesseract_download()` can download the 'best' (but slower) model, which increases the accuracy. The 'fast' (but less accurate) model is the default.
+
+```{r, eval = FALSE}
+file <- system.file("examples", "chinese.png", package = "tesseract")
+
+# download the best model
+tesseract_download("chi_sim", datapath = "~/Downloads", best = TRUE)
+
+# compare the results: fast (text1) vs best (text2)
+text1 <- ocr(file, engine = tesseract("chi_sim"))
+text2 <- ocr(file, engine = tesseract("chi_sim", datapath = "~/Downloads"))
+
+cat(text1)
+cat(text2)
+```
+
+## Comparison with Amazon Textract
+
+*Note: Amazon and Textract are trademarks of Amazon.com, Inc.*
+
+Textract [documentation](https://aws.amazon.com/blogs/opensource/using-r-with-amazon-web-services-for-document-analysis/) uses page three of the [January 1966 report](https://www.philadelphiafed.org/-/media/frbp/assets/surveys-and-data/greenbook-data/greensheets/greensheets-1966.zip?la=en&hash=8B8ABA92C3F0B2939328D47B6230F3A3) from Philadelphia Fed's [Tealbook](https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/philadelphia-data-set) (formerly Greenbook).
+
+![tealbook](../man/figures/tealbook.png)
+
+Here is the first element of the list retured by Textract:
+
+```r
+# List of 13
+# $ BlockType      : chr "TABLE"
+# $ Confidence     : num 100
+# $ Text           : chr(0)
+# $ RowIndex       : int(0)
+# $ ColumnIndex    : int(0)
+# $ RowSpan        : int(0)
+# $ ColumnSpan     : int(0)
+# $ Geometry       :List of 2
+# .. <not shown>
+# $ Id             : chr "c6841638-d3e0-414b-af12-b94ed34aac8a"
+# $ Relationships  :List of 1
+# ..$ :List of 2
+# .. ..$ Type: chr "CHILD"
+# .. ..$ Ids : chr [1:256] "e1866e80-0ef0-4bdd-a6fd-9508bb833c03" ...
+# $ EntityTypes    : list()
+# $ SelectionStatus: chr(0)
+# $ Page           : int 3
+```
+
+Here is Tesseract's output:
+
+```{r}
+file <- system.file("examples", "tealbook.png", package = "tesseract")
+text <- ocr(file)
+
+cat(text)
+```
+
+One way to organize the output is to split the text before the first digit on each line.
+
+```{r}
+text <- strsplit(text, "\n")[[1]]
+text <- text[6:length(text)]
+
+for (i in seq_along(text)) {
+  firstdigit <- regexpr("[0-9]", text[i])[1]
+
+  variable <- trimws(substr(text[i], 1, firstdigit - 1))
+
+  values <- strsplit(substr(text[i], firstdigit, nchar(text[i])), " ")[[1]]
+  values <- trimws(gsub(",", ".", values))
+  values <- suppressWarnings(as.numeric(gsub("\\.$", "", values)))
+
+  if (length(values[!is.na(values)]) < 1) {
+    next
+  }
+
+  res <- c(variable, values)
+
+  names(res) <- c("variable", "y1964", "y1965est", "y1965q1",
+    "y1965q2", "y1965q3", "y1965q4est", "y1966q1pro"
+  )
+  
+  if (i == 1) {
+    df <- as.data.frame(t(res))
+  } else {
+    df <- rbind(df, as.data.frame(t(res)))
+  }
+}
+
+head(df)
+```
+
+The result is not perfect (e.g. I still need to change "Gross National Product in Constant" to add the "(1958) Dollars"), but neither is Textract's and it requires to write a more complex loop to organize the data. Certainly, this can be simplified by using the Tidyverse.
