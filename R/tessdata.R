@@ -26,9 +26,8 @@
 #' @param progress print progress while downloading
 #' @references [tesseract wiki: training data](https://tesseract-ocr.github.io/tessdoc/Data-Files)
 #' @examples \dontrun{
-#' if (is.na(match("fra", tesseract_info()$available))) {
+#' if(is.na(match("fra", tesseract_info()$available)))
 #'   tesseract_download("fra")
-#' }
 #' french <- tesseract("fra")
 #' text <- ocr("https://jeroen.github.io/images/french_text.png", engine = french)
 #' cat(text)
@@ -36,7 +35,7 @@
 tesseract_download <- function(lang, datapath = NULL, best = FALSE, progress = interactive()) {
   stopifnot(is.character(lang))
 
-  if (!length(datapath)) {
+  if(!length(datapath)){
     warn_on_linux()
     datapath <- tesseract_info()$datapath
   }
@@ -65,13 +64,11 @@ tesseract_download <- function(lang, datapath = NULL, best = FALSE, progress = i
     noprogress = !isTRUE(progress)
   ))
 
-  if (progress) {
+  if(progress)
     cat("\n")
-  }
 
-  if (req$status_code != 200) {
+  if(req$status_code != 200)
     stop("Download failed: HTTP ", req$status_code, call. = FALSE)
-  }
 
   writeBin(req$content, destfile)
 
@@ -81,19 +78,18 @@ tesseract_download <- function(lang, datapath = NULL, best = FALSE, progress = i
 progress_fun <- function(down, up) {
   total <- down[[1]]
   now <- down[[2]]
-  pct <- if (length(total) && total > 0) {
-    paste0("(", round(now / total * 100), "%)")
+  pct <- if(length(total) && total > 0){
+    paste0("(", round(now/total * 100), "%)")
   } else {
     ""
   }
-  if (now > 10000) {
+  if(now > 10000)
     cat("\r Downloaded:", sprintf("%.2f", now / 2^20), "MB ", pct)
-  }
   TRUE
 }
 
 warn_on_linux <- function() {
-  if (identical(.Platform$OS.type, "unix") && !identical(Sys.info()[["sysname"]], "Darwin")) {
+  if(identical(.Platform$OS.type, "unix") && !identical(Sys.info()[["sysname"]], "Darwin")){
     warning("On Linux you should install training data via yum/apt. Please check the manual page.", call. = FALSE)
   }
 }
