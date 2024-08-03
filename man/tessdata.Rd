@@ -8,7 +8,7 @@
 tesseract_download(
   lang,
   datapath = NULL,
-  best = FALSE,
+  model = c("fast", "best"),
   progress = interactive()
 )
 }
@@ -17,7 +17,8 @@ tesseract_download(
 
 \item{datapath}{destination directory where to download store the file}
 
-\item{best}{download the most accurate (but slower) trained models for Tesseract 4.0 or higher}
+\item{model}{either \code{fast} or \code{best} is currently supported. The latter downloads
+more accurate (but slower) trained models for Tesseract 4.0 or higher}
 
 \item{progress}{print progress while downloading}
 }
@@ -42,9 +43,8 @@ and stores it in a the path on disk given by the \code{TESSDATA_PREFIX} variable
 }
 \examples{
 \dontrun{
-if (is.na(match("fra", tesseract_info()$available))) {
-  tesseract_download("fra")
-}
+if(is.na(match("fra", tesseract_info()$available)))
+  tesseract_download("fra", model = 'best')
 french <- tesseract("fra")
 text <- ocr("https://jeroen.github.io/images/french_text.png", engine = french)
 cat(text)

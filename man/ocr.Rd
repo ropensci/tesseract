@@ -61,7 +61,7 @@ engine <- tesseract(options = list(tessedit_char_whitelist = "0123456789"))
 }
 \seealso{
 Other tesseract: 
-\code{\link{tesseract_download}()},
-\code{\link{tesseract}()}
+\code{\link{tesseract}()},
+\code{\link{tesseract_download}()}
 }
 \concept{tesseract}

@@ -22,18 +22,20 @@
 #' @family tesseract
 #' @param lang three letter code for language, see [tessdata](https://github.com/tesseract-ocr/tessdata) repository.
 #' @param datapath destination directory where to download store the file
-#' @param best download the most accurate (but slower) trained models for Tesseract 4.0 or higher
+#' @param model either `fast` or `best` is currently supported. The latter downloads
+#' more accurate (but slower) trained models for Tesseract 4.0 or higher
 #' @param progress print progress while downloading
 #' @references [tesseract wiki: training data](https://tesseract-ocr.github.io/tessdoc/Data-Files)
 #' @examples \dontrun{
 #' if(is.na(match("fra", tesseract_info()$available)))
-#'   tesseract_download("fra")
+#'   tesseract_download("fra", model = 'best')
 #' french <- tesseract("fra")
 #' text <- ocr("https://jeroen.github.io/images/french_text.png", engine = french)
 #' cat(text)
 #' }
-tesseract_download <- function(lang, datapath = NULL, best = FALSE, progress = interactive()) {
+tesseract_download <- function(lang, datapath = NULL, model = c("fast", "best"), progress = interactive()) {
   stopifnot(is.character(lang))
+  model <- match.arg(model)
   if(!length(datapath)){
     warn_on_linux()
     datapath <- tesseract_info()$datapath
@@ -45,7 +47,7 @@ tesseract_download <- function(lang, datapath = NULL, best = FALSE, progress = i
     repo <- "tessdata"
     release <- "3.04.00"
   } else {
-    repo <- ifelse(best, "tessdata_best", "tessdata_fast")
+    repo <- paste0("tessdata_", model)
     release <- "4.1.0"
   }
 
@@ -54,8 +56,7 @@ tesseract_download <- function(lang, datapath = NULL, best = FALSE, progress = i
   destfile <- file.path(datapath, basename(url))
 
   if (file.exists(destfile)) {
-    message("Training data already exists.")
-    return(destfile)
+    message(paste("Training data already exists. Overwriting", destfile))
   }
 
   req <- curl::curl_fetch_memory(url, curl::new_handle(
