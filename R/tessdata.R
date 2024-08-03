@@ -1,8 +1,7 @@
 #' Tesseract Training Data
 #'
 #' Helper function to download training data from the official
-#' [tessdata](https://tesseract-ocr.github.io/tessdoc/Data-Files) repository. Only use this function on
-#' Windows and OS-X. On Linux, training data can be installed directly with
+#' [tessdata](https://tesseract-ocr.github.io/tessdoc/Data-Files) repository. On Linux, the fast training data can be installed directly with
 #' [yum](https://src.fedoraproject.org/rpms/tesseract) or
 #' [apt-get](https://packages.debian.org/search?suite=stable&section=all&arch=any&searchon=names&keywords=tesseract-ocr-).
 #'
@@ -23,59 +22,78 @@
 #' @family tesseract
 #' @param lang three letter code for language, see [tessdata](https://github.com/tesseract-ocr/tessdata) repository.
 #' @param datapath destination directory where to download store the file
+#' @param best download the most accurate (but slower) trained models for Tesseract 4.0 or higher
 #' @param progress print progress while downloading
 #' @references [tesseract wiki: training data](https://tesseract-ocr.github.io/tessdoc/Data-Files)
 #' @examples \dontrun{
-#' if(is.na(match("fra", tesseract_info()$available)))
+#' if (is.na(match("fra", tesseract_info()$available))) {
 #'   tesseract_download("fra")
+#' }
 #' french <- tesseract("fra")
 #' text <- ocr("https://jeroen.github.io/images/french_text.png", engine = french)
 #' cat(text)
 #' }
-tesseract_download <- function(lang, datapath = NULL, progress = interactive()){
+tesseract_download <- function(lang, datapath = NULL, best = FALSE, progress = interactive()) {
   stopifnot(is.character(lang))
-  if(!length(datapath)){
+
+  if (!length(datapath)) {
     warn_on_linux()
     datapath <- tesseract_info()$datapath
   }
   datapath <- normalizePath(datapath, mustWork = TRUE)
   version <- tesseract_version_major()
+
   if(version < 4){
     repo <- "tessdata"
     release <- "3.04.00"
   } else {
-    repo <- "tessdata_fast"
+    repo <- ifelse(best, "tessdata_best", "tessdata_fast")
     release <- "4.1.0"
   }
-  url <- sprintf('https://github.com/tesseract-ocr/%s/raw/%s/%s.traineddata', repo, release, lang)
+
+  url <- sprintf("https://github.com/tesseract-ocr/%s/raw/%s/%s.traineddata", repo, release, lang)
+
+  destfile <- file.path(datapath, basename(url))
+
+  if (file.exists(destfile)) {
+    message("Training data already exists.")
+    return(destfile)
+  }
+
   req <- curl::curl_fetch_memory(url, curl::new_handle(
     progressfunction = progress_fun,
     noprogress = !isTRUE(progress)
   ))
-  if(progress)
+
+  if (progress) {
     cat("\n")
-  if(req$status_code != 200)
+  }
+
+  if (req$status_code != 200) {
     stop("Download failed: HTTP ", req$status_code, call. = FALSE)
-  destfile <- file.path(datapath, basename(url))
+  }
+
   writeBin(req$content, destfile)
+
   return(destfile)
 }
 
 progress_fun <- function(down, up) {
   total <- down[[1]]
   now <- down[[2]]
-  pct <- if(length(total) && total > 0){
-    paste0("(", round(now/total * 100), "%)")
+  pct <- if (length(total) && total > 0) {
+    paste0("(", round(now / total * 100), "%)")
   } else {
     ""
   }
-  if(now > 10000)
+  if (now > 10000) {
     cat("\r Downloaded:", sprintf("%.2f", now / 2^20), "MB ", pct)
+  }
   TRUE
 }
 
-warn_on_linux <- function(){
-  if(identical(.Platform$OS.type, "unix") && !identical(Sys.info()[["sysname"]], "Darwin")){
+warn_on_linux <- function() {
+  if (identical(.Platform$OS.type, "unix") && !identical(Sys.info()[["sysname"]], "Darwin")) {
     warning("On Linux you should install training data via yum/apt. Please check the manual page.", call. = FALSE)
   }
 }

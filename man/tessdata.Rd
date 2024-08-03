@@ -5,19 +5,25 @@
 \alias{tessdata}
 \title{Tesseract Training Data}
 \usage{
-tesseract_download(lang, datapath = NULL, progress = interactive())
+tesseract_download(
+  lang,
+  datapath = NULL,
+  best = FALSE,
+  progress = interactive()
+)
 }
 \arguments{
 \item{lang}{three letter code for language, see \href{https://github.com/tesseract-ocr/tessdata}{tessdata} repository.}
 
 \item{datapath}{destination directory where to download store the file}
 
+\item{best}{download the most accurate (but slower) trained models for Tesseract 4.0 or higher}
+
 \item{progress}{print progress while downloading}
 }
 \description{
 Helper function to download training data from the official
-\href{https://tesseract-ocr.github.io/tessdoc/Data-Files}{tessdata} repository. Only use this function on
-Windows and OS-X. On Linux, training data can be installed directly with
+\href{https://tesseract-ocr.github.io/tessdoc/Data-Files}{tessdata} repository. On Linux, the fast training data can be installed directly with
 \href{https://src.fedoraproject.org/rpms/tesseract}{yum} or
 \href{https://packages.debian.org/search?suite=stable&section=all&arch=any&searchon=names&keywords=tesseract-ocr-}{apt-get}.
 }
@@ -36,8 +42,9 @@ and stores it in a the path on disk given by the \code{TESSDATA_PREFIX} variable
 }
 \examples{
 \dontrun{
-if(is.na(match("fra", tesseract_info()$available)))
+if (is.na(match("fra", tesseract_info()$available))) {
   tesseract_download("fra")
+}
 french <- tesseract("fra")
 text <- ocr("https://jeroen.github.io/images/french_text.png", engine = french)
 cat(text)
