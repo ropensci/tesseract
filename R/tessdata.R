@@ -34,7 +34,6 @@
 #' }
 tesseract_download <- function(lang, datapath = NULL, best = FALSE, progress = interactive()) {
   stopifnot(is.character(lang))
-
   if(!length(datapath)){
     warn_on_linux()
     datapath <- tesseract_info()$datapath
@@ -71,7 +70,6 @@ tesseract_download <- function(lang, datapath = NULL, best = FALSE, progress = i
     stop("Download failed: HTTP ", req$status_code, call. = FALSE)
 
   writeBin(req$content, destfile)
-
   return(destfile)
 }
 
@@ -88,7 +86,7 @@ progress_fun <- function(down, up) {
   TRUE
 }
 
-warn_on_linux <- function() {
+warn_on_linux <- function(){
   if(identical(.Platform$OS.type, "unix") && !identical(Sys.info()[["sysname"]], "Darwin")){
     warning("On Linux you should install training data via yum/apt. Please check the manual page.", call. = FALSE)
   }
