@@ -1,3 +1,4 @@
+chinese
 config
 EPEL
 github
@@ -15,12 +16,15 @@ Magick
 Nederlands
 ocr
 opensource
+ORCID
 pdftools
 png
 rmarkdown
 spanish
+Sepulveda
 tessdata
 toc
+utrecht
 VignetteEncoding
 VignetteEngine
 VignetteIndexEntry
