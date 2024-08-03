@@ -62,10 +62,8 @@ tesseract_download <- function(lang, datapath = NULL, best = FALSE, progress = i
     progressfunction = progress_fun,
     noprogress = !isTRUE(progress)
   ))
-
   if(progress)
     cat("\n")
-
   if(req$status_code != 200)
     stop("Download failed: HTTP ", req$status_code, call. = FALSE)
 
