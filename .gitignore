@@ -2,9 +2,6 @@
 *.so
 *.dll
 *.a
-*.txt
-*.pdf
-*.png
 *.webp
 *.jpeg
 .Rproj.user
@@ -13,3 +10,6 @@ inst/tessdata
 windows
 src/Makevars
 configure.log
+.vscode
+vignettes/ocrscan_1.png
+dev/*.traineddata
