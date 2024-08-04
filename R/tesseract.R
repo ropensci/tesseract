@@ -23,7 +23,7 @@
 tesseract <- local({
   store <- new.env()
   function(language = "eng", datapath = NULL, configs = NULL, options = NULL, cache = TRUE){
-    datapath <- as.character(datapath)
+    datapath <- normalizePath(as.character(datapath), mustWork = TRUE)
     language <- as.character(language)
     configs <- as.character(configs)
     options <- as.list(options)
