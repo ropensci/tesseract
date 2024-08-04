@@ -120,6 +120,13 @@ tesseract_contributed_download <- function(lang, datapath = NULL, model = c("fas
 }
 
 download_helper <- function(url, datapath, progress) {
+  destfile <- file.path(datapath, basename(url))
+
+  if (file.exists(destfile)) {
+    message("The training data already exists. Skipping download.")
+    return(destfile)
+  }
+  
   req <- curl::curl_fetch_memory(url, curl::new_handle(
     progressfunction = progress_fun,
     noprogress = !isTRUE(progress)
