@@ -174,12 +174,37 @@ In order to improve the OCR results, Tesseract has two variants of models that c
 ```{r, eval = FALSE}
 file <- system.file("examples", "chinese.png", package = "tesseract")
 
-# download the best model
-tesseract_download("chi_sim", datapath = "~/Downloads", best = TRUE)
+# download the best model (vertical script download is to avoid a warning)
+# relative paths will not work (i.e., use /home/downloads instead of ~/downloads)
+dir <- tempdir()
+tesseract_download("chi_sim_vert", datapath = dir, best = TRUE)
+tesseract_download("chi_sim", datapath = dir, best = TRUE)
 
 # compare the results: fast (text1) vs best (text2)
 text1 <- ocr(file, engine = tesseract("chi_sim"))
-text2 <- ocr(file, engine = tesseract("chi_sim", datapath = "~/Downloads"))
+text2 <- ocr(file, engine = tesseract("chi_sim", datapath = dir))
+
+cat(text1)
+cat(text2)
+```
+
+## Contributed models
+
+The `tesseract_contributed_download()` function can download contributed models. For example, the `grc_hist` model is useful for Polytonic Greek. Here is an example from Sophocles' Ajax (source: [Ajax Multi-Commentary](https://github.com/AjaxMultiCommentary))
+
+![polytonicgreek](../man/figures/polytonicgreek.png)
+
+```{r, eval = FALSE}
+file <- system.file("examples", "polytonicgreek.png", package = "tesseract")
+
+# download the best models
+dir <- tempdir()
+tesseract_download("grc", datapath = dir, best = TRUE)
+tesseract_contributed_download("grc_hist", datapath = dir, best = TRUE)
+
+# compare the results: grc (text1) vs grc_hist (text2)
+text1 <- ocr(file, engine = tesseract("grc", datapath = dir))
+text2 <- ocr(file, engine = tesseract("grc_hist", datapath = dir))
 
 cat(text1)
 cat(text2)
