@@ -1,27 +1,34 @@
 Package: tesseract
 Type: Package
 Title: Open Source OCR Engine
-Version: 5.2.1
-Authors@R: person("Jeroen", "Ooms", role = c("aut", "cre"), email = "jeroen@berkeley.edu",
-    comment = c(ORCID = "0000-0002-4035-0289"))
+Version: 5.3.0
+Authors@R: c(person("Jeroen", "Ooms",
+                    role = c("aut", "cre"),
+                    email = "jeroen@berkeley.edu",
+                    comment = c(ORCID = "0000-0002-4035-0289")),
+             person("Mauricio", "Vargas Sepulveda",
+                    role = "aut", 
+                    email = "m.sepulveda@mail.utoronto.ca", 
+                    comment = c(ORCID = "0000-0003-1017-7574")))
 Description: Bindings to 'Tesseract': 
-     a powerful optical character recognition (OCR) engine that supports over 100 languages.
-     The engine is highly configurable in order to tune the detection algorithms and
-     obtain the best possible results.
+     a powerful optical character recognition (OCR) engine that supports over
+     100 languages. The engine is highly configurable in order to tune the
+     detection algorithms and obtain the best possible results.
 License: Apache License 2.0
 URL: https://docs.ropensci.org/tesseract/ (website) 
     https://github.com/ropensci/tesseract (devel)
 BugReports: https://github.com/ropensci/tesseract/issues
-SystemRequirements: Tesseract >= 3.03 (libtesseract-dev / tesseract-devel) and
-    Leptonica (libleptonica-dev / leptonica-devel). On Debian you need to install
-    the English training data separately (tesseract-ocr-eng)
+SystemRequirements: Tesseract >= 5.0.0 (libtesseract-dev / tesseract-devel) and
+    Leptonica (libleptonica-dev / leptonica-devel). On Debian you need to
+    install the English and other languages training data separately
+    (e.g. tesseract-ocr-eng or tesseract-ocr-spa).
 Imports:
-    Rcpp (>= 0.12.12),
     pdftools (>= 1.5),    
     curl,
     rappdirs,
     digest
-LinkingTo: Rcpp
+LinkingTo: 
+    cpp11
 RoxygenNote: 7.3.1
 Roxygen: list(markdown = TRUE)
 Suggests:

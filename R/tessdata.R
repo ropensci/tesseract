@@ -31,7 +31,8 @@
 #'   tesseract_download("fra", model = "best")
 #' }
 #' french <- tesseract("fra")
-#' text <- ocr("https://jeroen.github.io/images/french_text.png", engine = french)
+#' file <- system.file("examples", "french.png", package = "tesseract")
+#' text <- ocr(file, engine = french)
 #' cat(text)
 #' }
 tesseract_download <- function(lang, datapath = NULL, model = c("fast", "best"), progress = interactive()) {
@@ -41,7 +42,9 @@ tesseract_download <- function(lang, datapath = NULL, model = c("fast", "best"),
     warn_on_linux()
     datapath <- tesseract_info()$datapath
   }
+
   datapath <- normalizePath(datapath, mustWork = TRUE)
+
   version <- tesseract_version_major()
 
   if(version < 4){
@@ -51,6 +54,7 @@ tesseract_download <- function(lang, datapath = NULL, model = c("fast", "best"),
     repo <- paste0("tessdata_", model)
     release <- "4.1.0"
   }
+  
   url <- sprintf("https://github.com/tesseract-ocr/%s/raw/%s/%s.traineddata", repo, release, lang)
 
   download_helper(url, datapath, progress)
@@ -131,30 +135,36 @@ download_helper <- function(url, datapath, progress) {
     progressfunction = progress_fun,
     noprogress = !isTRUE(progress)
   ))
-  if(progress)
+
+  if (progress) {
     cat("\n")
-  if(req$status_code != 200)
+  }
+
+  if (req$status_code != 200) {
     stop("Download failed: HTTP ", req$status_code, call. = FALSE)
-  destfile <- file.path(datapath, basename(url))
+  }
+  
   writeBin(req$content, destfile)
+
   return(destfile)
 }
 
 progress_fun <- function(down, up) {
   total <- down[[1]]
   now <- down[[2]]
-  pct <- if(length(total) && total > 0){
-    paste0("(", round(now/total * 100), "%)")
+  pct <- if (length(total) && total > 0) {
+    paste0("(", round(now / total * 100), "%)")
   } else {
     ""
   }
-  if(now > 10000)
+  if (now > 10000) {
     cat("\r Downloaded:", sprintf("%.2f", now / 2^20), "MB ", pct)
+  }
   TRUE
 }
 
-warn_on_linux <- function(){
-  if(identical(.Platform$OS.type, "unix") && !identical(Sys.info()[["sysname"]], "Darwin")){
+warn_on_linux <- function() {
+  if (identical(.Platform$OS.type, "unix") && !identical(Sys.info()[["sysname"]], "Darwin")) {
     warning("On Linux you should install training data via yum/apt. Please check the manual page.", call. = FALSE)
   }
 }

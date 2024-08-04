@@ -1,3 +1,4 @@
+chinese
 config
 contrib
 EPEL
@@ -16,10 +17,12 @@ Magick
 Nederlands
 ocr
 opensource
+ORCID
 pdftools
 png
 rmarkdown
 spanish
+Sepulveda
 tessdata
 toc
 utrecht

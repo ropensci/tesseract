@@ -1,3 +1,9 @@
+5.3.0
+  - The C++ parts were refactored to use cpp11 instead of Rcpp, and therefore
+    it now allows to use vendoring.
+  - Gives the option to download and use the best (but slower) trained models.
+  - Drops support for Tesseract < 5.0.0.
+
 5.2.1
   - Fix shell script for cross compilation
 
