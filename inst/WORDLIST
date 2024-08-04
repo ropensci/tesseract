@@ -1,4 +1,5 @@
 config
+contrib
 EPEL
 github
 greyscale
@@ -21,6 +22,7 @@ rmarkdown
 spanish
 tessdata
 toc
+utrecht
 VignetteEncoding
 VignetteEngine
 VignetteIndexEntry
