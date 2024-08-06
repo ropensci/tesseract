@@ -28,7 +28,7 @@
 #' @references [tesseract wiki: training data](https://tesseract-ocr.github.io/tessdoc/Data-Files)
 #' @examples \dontrun{
 #' if(is.na(match("fra", tesseract_info()$available)))
-#'   tesseract_download("fra", model = "best")
+#'   tesseract_download("fra", model = 'best')
 #' french <- tesseract("fra")
 #' file <- system.file("examples", "french.png", package = "tesseract")
 #' text <- ocr(file, engine = french)
@@ -43,6 +43,7 @@ tesseract_download <- function(lang, datapath = NULL, model = c("fast", "best"),
   }
   datapath <- normalizePath(datapath, mustWork = TRUE)
   version <- tesseract_version_major()
+
   if(version < 4){
     repo <- "tessdata"
     release <- "3.04.00"
@@ -50,7 +51,15 @@ tesseract_download <- function(lang, datapath = NULL, model = c("fast", "best"),
     repo <- paste0("tessdata_", model)
     release <- "4.1.0"
   }
-  url <- sprintf('https://github.com/tesseract-ocr/%s/raw/%s/%s.traineddata', repo, release, lang)
+
+  url <- sprintf("https://github.com/tesseract-ocr/%s/raw/%s/%s.traineddata", repo, release, lang)
+
+  destfile <- file.path(datapath, basename(url))
+
+  if (file.exists(destfile)) {
+    message(paste("Training data already exists. Overwriting", destfile))
+  }
+
   req <- curl::curl_fetch_memory(url, curl::new_handle(
     progressfunction = progress_fun,
     noprogress = !isTRUE(progress)
@@ -59,7 +68,7 @@ tesseract_download <- function(lang, datapath = NULL, model = c("fast", "best"),
     cat("\n")
   if(req$status_code != 200)
     stop("Download failed: HTTP ", req$status_code, call. = FALSE)
-  destfile <- file.path(datapath, basename(url))
+
   writeBin(req$content, destfile)
   return(destfile)
 }

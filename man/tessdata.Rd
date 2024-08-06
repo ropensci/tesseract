@@ -44,7 +44,7 @@ and stores it in a the path on disk given by the \code{TESSDATA_PREFIX} variable
 \examples{
 \dontrun{
 if(is.na(match("fra", tesseract_info()$available)))
-  tesseract_download("fra", model = "best")
+  tesseract_download("fra", model = 'best')
 french <- tesseract("fra")
 file <- system.file("examples", "french.png", package = "tesseract")
 text <- ocr(file, engine = french)
