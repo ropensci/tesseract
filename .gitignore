@@ -2,11 +2,9 @@
 *.so
 *.dll
 *.a
-*.txt
-*.pdf
-*.png
 *.webp
 *.jpeg
+vignettes/*.png
 .Rproj.user
 .Rhistory
 inst/tessdata

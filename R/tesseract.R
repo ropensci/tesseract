@@ -23,15 +23,15 @@
 tesseract <- local({
   store <- new.env()
   function(language = "eng", datapath = NULL, configs = NULL, options = NULL, cache = TRUE){
-    datapath <- as.character(datapath)
+    datapath <- normalizePath(as.character(datapath), mustWork = TRUE)
     language <- as.character(language)
     configs <- as.character(configs)
     options <- as.list(options)
-    if(isTRUE(cache)){
+    if(isTRUE(cache)) {
       key <- digest::digest(list(language, datapath, configs, options))
       if(is.null(store[[key]])){
         ptr <- tesseract_engine(datapath, language, configs, options)
-        assign(key, ptr, store);
+        assign(key, ptr, store)
       }
       store[[key]]
     } else {
@@ -43,7 +43,7 @@ tesseract <- local({
 #' @export
 #' @rdname tesseract
 #' @param filter only list parameters containing a particular string
-#' @examples tesseract_params('debug')
+#' @examples tesseract_params("debug")
 tesseract_params <- function(filter = ""){
   tmp <- print_params(tempfile())
   on.exit(unlink(tmp))
