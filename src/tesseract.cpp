@@ -1,9 +1,19 @@
-#include <list>
-
 #include "tesseract_types.h"
-// #include <iostream>
+
+#if TESSERACT_MAJOR_VERSION < 5
+#include <tesseract/genericvector.h>
+#else
+#define STRING std::string
+#define GenericVector std::vector
+#endif
+
+#include <list>
 #include <string>
 #include <vector>
+
+[[cpp11::register]] int tesseract_major_version() {
+  return TESSERACT_MAJOR_VERSION;
+}
 
 using namespace cpp11;
 
@@ -23,9 +33,11 @@ static tesseract::TessBaseAPI *make_analyze_api() {
   return out;
 }
 
-[[cpp11::register]] TessPtr tesseract_engine_internal(
-    cpp11::strings datapath, cpp11::strings language, cpp11::strings confpaths,
-    cpp11::strings opt_names, cpp11::strings opt_values) {
+[[cpp11::register]] TessPtr tesseract_engine_internal(strings datapath,
+                                                      strings language,
+                                                      strings confpaths,
+                                                      strings opt_names,
+                                                      strings opt_values) {
   std::vector<std::string> config_strings;
   std::vector<char *> configs;
   std::string path_str, lang_str;
@@ -45,16 +57,17 @@ static tesseract::TessBaseAPI *make_analyze_api() {
     configs.push_back(&config_strings.back()[0]);
   }
 
-  std::vector<std::string> params;
-  std::vector<std::string> values;
-  for (int i = 0; i < opt_names.size(); i++) {
-    params.push_back(std::string(opt_names[i]).c_str());
-    values.push_back(std::string(opt_values[i]).c_str());
-  }
-
   tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
+
+
+  GenericVector<STRING> params, values;
+  for (int i = 0; i < opt_names.size(); i++) {
+    params.push_back(STRING(std::string(opt_names[i]).c_str()));
+    values.push_back(STRING(std::string(opt_values[i]).c_str()));
+  }
   int err = api->Init(path, lang, tesseract::OEM_DEFAULT, configs.data(),
                       configs.size(), &params, &values, false);
+
   if (err) {
     delete api;
     throw std::runtime_error(
@@ -62,6 +75,7 @@ static tesseract::TessBaseAPI *make_analyze_api() {
         (lang ? lang : "eng") +
         ". Please consult manual for: ?tesseract_download");
   }
+
   TessPtr ptr(api);
   // cpp11 does not provide an attr method for external_pointers
   // ptr.attr("class") = writable::strings({"tesseract"});
@@ -84,9 +98,9 @@ tesseract::TessBaseAPI *get_engine(TessPtr engine) {
 }
 
 [[cpp11::register]] logicals validate_params(strings params) {
-  std::string str;
   tesseract::TessBaseAPI *api = make_analyze_api();
   writable::logicals out(params.size());
+  STRING str;
   for (int i = 0; i < params.size(); i++)
     out[i] = api->GetVariableAsString(std::string(params.at(i)).c_str(), &str);
   api->End();
@@ -96,12 +110,18 @@ tesseract::TessBaseAPI *get_engine(TessPtr engine) {
 
 [[cpp11::register]] list engine_info_internal(TessPtr ptr) {
   tesseract::TessBaseAPI *api = get_engine(ptr);
-  std::vector<std::string> langs;
+  GenericVector<STRING> langs;
   api->GetAvailableLanguagesAsVector(&langs);
   writable::strings available;
+#if TESSERACT_MAJOR_VERSION >= 5
   for (const auto &lang : langs) {
     available.push_back(lang);
   }
+#else
+  for (int i = 0; i < langs.size(); i++) {
+    available.push_back(langs.get(i).c_str());
+  }
+#endif
   langs.clear();
   api->GetLoadedLanguagesAsVector(&langs);
   writable::strings loaded;
@@ -122,13 +142,16 @@ tesseract::TessBaseAPI *get_engine(TessPtr engine) {
   return writable::strings({filename});
 }
 
-[[cpp11::register]] cpp11::writable::strings get_param_values(
-    TessPtr api, cpp11::strings params) {
+[[cpp11::register]] strings get_param_values(TessPtr api, strings params) {
   std::vector<std::string> values;
   for (int i = 0; i < params.size(); ++i) {
-    std::string str;
+    STRING str;
     if (api->GetVariableAsString(std::string(params.at(i)).c_str(), &str)) {
+#if TESSERACT_MAJOR_VERSION >= 5
       values.push_back(str);
+#else
+      values.push_back(str.string());
+#endif
     } else {
       values.push_back("");
     }

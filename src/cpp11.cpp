@@ -6,6 +6,13 @@
 #include <R_ext/Visibility.h>
 
 // tesseract.cpp
+int tesseract_major_version();
+extern "C" SEXP _tesseract_tesseract_major_version() {
+  BEGIN_CPP11
+    return cpp11::as_sexp(tesseract_major_version());
+  END_CPP11
+}
+// tesseract.cpp
 list tesseract_config();
 extern "C" SEXP _tesseract_tesseract_config() {
   BEGIN_CPP11
@@ -13,10 +20,10 @@ extern "C" SEXP _tesseract_tesseract_config() {
   END_CPP11
 }
 // tesseract.cpp
-TessPtr tesseract_engine_internal(cpp11::strings datapath, cpp11::strings language, cpp11::strings confpaths, cpp11::strings opt_names, cpp11::strings opt_values);
+TessPtr tesseract_engine_internal(strings datapath, strings language, strings confpaths, strings opt_names, strings opt_values);
 extern "C" SEXP _tesseract_tesseract_engine_internal(SEXP datapath, SEXP language, SEXP confpaths, SEXP opt_names, SEXP opt_values) {
   BEGIN_CPP11
-    return cpp11::as_sexp(tesseract_engine_internal(cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(datapath), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(language), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(confpaths), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(opt_names), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(opt_values)));
+    return cpp11::as_sexp(tesseract_engine_internal(cpp11::as_cpp<cpp11::decay_t<strings>>(datapath), cpp11::as_cpp<cpp11::decay_t<strings>>(language), cpp11::as_cpp<cpp11::decay_t<strings>>(confpaths), cpp11::as_cpp<cpp11::decay_t<strings>>(opt_names), cpp11::as_cpp<cpp11::decay_t<strings>>(opt_values)));
   END_CPP11
 }
 // tesseract.cpp
@@ -48,10 +55,10 @@ extern "C" SEXP _tesseract_print_params(SEXP filename) {
   END_CPP11
 }
 // tesseract.cpp
-cpp11::writable::strings get_param_values(TessPtr api, cpp11::strings params);
+strings get_param_values(TessPtr api, strings params);
 extern "C" SEXP _tesseract_get_param_values(SEXP api, SEXP params) {
   BEGIN_CPP11
-    return cpp11::as_sexp(get_param_values(cpp11::as_cpp<cpp11::decay_t<TessPtr>>(api), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(params)));
+    return cpp11::as_sexp(get_param_values(cpp11::as_cpp<cpp11::decay_t<TessPtr>>(api), cpp11::as_cpp<cpp11::decay_t<strings>>(params)));
   END_CPP11
 }
 // tesseract.cpp
@@ -95,6 +102,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_tesseract_tesseract_config",              (DL_FUNC) &_tesseract_tesseract_config,              0},
     {"_tesseract_tesseract_engine_internal",     (DL_FUNC) &_tesseract_tesseract_engine_internal,     5},
     {"_tesseract_tesseract_engine_set_variable", (DL_FUNC) &_tesseract_tesseract_engine_set_variable, 3},
+    {"_tesseract_tesseract_major_version",       (DL_FUNC) &_tesseract_tesseract_major_version,       0},
     {"_tesseract_validate_params",               (DL_FUNC) &_tesseract_validate_params,               1},
     {NULL, NULL, 0}
 };

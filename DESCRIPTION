@@ -18,7 +18,7 @@ License: Apache License 2.0
 URL: https://docs.ropensci.org/tesseract/ (website) 
     https://github.com/ropensci/tesseract (devel)
 BugReports: https://github.com/ropensci/tesseract/issues
-SystemRequirements: Tesseract >= 5.0.0 (libtesseract-dev / tesseract-devel) and
+SystemRequirements: Tesseract >= 4.0.0 (libtesseract-dev / tesseract-devel) and
     Leptonica (libleptonica-dev / leptonica-devel). On Debian you need to
     install the English and other languages training data separately
     (e.g. tesseract-ocr-eng or tesseract-ocr-spa).
