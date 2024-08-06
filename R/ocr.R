@@ -2,7 +2,7 @@
 #'
 #' Extract text from an image. Requires that you have training data for the language you
 #' are reading. Works best for images with high contrast, little noise and horizontal text.
-#' See [tesseract wiki](https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality) and
+#' See [tesseract wiki](https://github.com/tesseract-ocr/tessdoc) and
 #' our package vignette for image preprocessing tips.
 #'
 #' The `ocr()` function returns plain text by default, or hOCR text if hOCR is set to `TRUE`.
@@ -18,13 +18,14 @@
 #' @rdname ocr
 #' @references [Tesseract: Improving Quality](https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality)
 #' @examples # Simple example
-#' text <- ocr("https://jeroen.github.io/images/testocr.png")
+#' file <- system.file("examples", "testocr.png", package = "tesseract")
+#' text <- ocr(file)
 #' cat(text)
 #'
-#' xml <- ocr("https://jeroen.github.io/images/testocr.png", HOCR = TRUE)
+#' xml <- ocr(file, HOCR = TRUE)
 #' cat(xml)
 #'
-#' df <- ocr_data("https://jeroen.github.io/images/testocr.png")
+#' df <- ocr_data(file)
 #' print(df)
 #'
 #' \donttest{
@@ -33,7 +34,7 @@
 #' orig <- pdftools::pdf_text("R-intro.pdf")[1]
 #'
 #' # Render pdf to png image
-#' img_file <- pdftools::pdf_convert("R-intro.pdf", format = 'tiff', pages = 1, dpi = 400)
+#' img_file <- pdftools::pdf_convert("R-intro.pdf", format = "tiff", pages = 1, dpi = 400)
 #' unlink("R-intro.pdf")
 #'
 #' # Extract text from png image
