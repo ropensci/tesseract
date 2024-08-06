@@ -30,7 +30,8 @@
 #' if(is.na(match("fra", tesseract_info()$available)))
 #'   tesseract_download("fra", model = 'best')
 #' french <- tesseract("fra")
-#' text <- ocr("https://jeroen.github.io/images/french_text.png", engine = french)
+#' file <- system.file("examples", "french.png", package = "tesseract")
+#' text <- ocr(file, engine = french)
 #' cat(text)
 #' }
 tesseract_download <- function(lang, datapath = NULL, model = c("fast", "best"), progress = interactive()) {

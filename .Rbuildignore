@@ -2,10 +2,8 @@
 ^\.Rproj\.user$
 ^src/Makevars$
 ^windows
-\.pdf$
-\.png$
+^vignettes/.*\.png$
 \.webp$
-\.jpeg$
 \.o$
 \.dll$
 ^\.travis\.yml$

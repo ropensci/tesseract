@@ -46,7 +46,7 @@ or find parameters. Note that that some parameters are only supported in certain
 of libtesseract, and that invalid parameters can sometimes cause libtesseract to crash.
 }
 \examples{
-tesseract_params('debug')
+tesseract_params("debug")
 }
 \seealso{
 Other tesseract: 
