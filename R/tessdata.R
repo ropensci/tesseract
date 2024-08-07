@@ -28,19 +28,21 @@
 #' @references [tesseract wiki: training data](https://tesseract-ocr.github.io/tessdoc/Data-Files)
 #' @examples \dontrun{
 #' if(is.na(match("fra", tesseract_info()$available)))
-#'   tesseract_download("fra", model = "best")
+#'   tesseract_download("fra", model = 'best')
 #' french <- tesseract("fra")
 #' text <- ocr("https://jeroen.github.io/images/french_text.png", engine = french)
 #' cat(text)
+#' }
 tesseract_download <- function(lang, datapath = NULL, model = c("fast", "best"), progress = interactive()) {
   stopifnot(is.character(lang))
   model <- match.arg(model)
-  if(!length(datapath)) {
+  if(!length(datapath)){
     warn_on_linux()
     datapath <- tesseract_info()$datapath
   }
   datapath <- normalizePath(datapath, mustWork = TRUE)
   version <- tesseract_version_major()
+
   if(version < 4){
     repo <- "tessdata"
     release <- "3.04.00"
