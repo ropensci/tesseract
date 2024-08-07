@@ -50,24 +50,86 @@ tesseract_download <- function(lang, datapath = NULL, model = c("fast", "best"),
     repo <- paste0("tessdata_", model)
     release <- "4.1.0"
   }
-
   url <- sprintf("https://github.com/tesseract-ocr/%s/raw/%s/%s.traineddata", repo, release, lang)
+  download_helper(url, datapath, progress)
+}
 
+#' Tesseract Contributed Training Data
+#'
+#' Helper function to download training data from the contributed
+#' [tessdata_contrib](https://github.com/tesseract-ocr/tessdata_contrib) repository.
+#'
+#' @export
+#' @aliases tessdata
+#' @rdname tessdata
+#' @family tesseract
+#' @seealso [tesseract_download]
+#' @param lang three letter code for language, see [tessdata](https://github.com/tesseract-ocr/tessdata) repository.
+#' @param datapath destination directory where to download store the file
+#' @param model either `fast` or `best` is currently supported. The latter downloads
+#' more accurate (but slower) trained models for Tesseract 4.0 or higher
+#' @param progress print progress while downloading
+#' @references [tesseract wiki: training data](https://tesseract-ocr.github.io/tessdoc/Data-Files)
+#' @examples \dontrun{
+#' if(is.na(match("grc_hist", tesseract_info()$available)))
+#'   tesseract_download("grc_hist", model = "best")
+#' grc_hist <- tesseract("grc_hist")
+#' # The example image is in the PR about the documentation
+tesseract_contributed_download <- function(lang, datapath = NULL, model = c("fast", "best"), progress = interactive()) {
+  stopifnot(is.character(lang))
+  if (!any(lang %in% c("grc_hist", "akk"))) {
+    stop("The only available contributed models are Akkadian and Polytonic Greek (for now).", call. = FALSE)
+  }
+  model <- match.arg(model)
+  if (!length(datapath)) {
+    warn_on_linux()
+    datapath <- tesseract_info()$datapath
+  }
+  datapath <- normalizePath(datapath, mustWork = TRUE)
+  version <- tesseract_version_major()
+
+  if (lang == "grc_hist" && version < 4) {
+    stop("The Polytonic Greek model is only available for Tesseract 4.0 or higher.", call. = FALSE)
+  }
+
+  if (lang == "grc_hist") {
+    if (model == "fast") {
+      warning("The Polytonic Greek model is only available in 'best' quality.", call. = FALSE)
+    }
+    release <- "grc_hist/best"
+  }
+
+  if (lang == "akk" && version < 4) {
+    release <- "akk/legacy"
+  } else if (lang == "akk" && model == "best") {
+    release <- "akk/best"
+  } else if (lang == "akk" && model == "fast") {
+    release <- "akk/fast"
+  }
+
+  url <- sprintf("https://github.com/tesseract-ocr/tessdata_contrib/raw/main/%s/%s.traineddata", release, lang)
+  print(url)
+
+  download_helper(url, datapath, progress)
+}
+
+download_helper <- function(url, datapath, progress) {
   destfile <- file.path(datapath, basename(url))
 
   if (file.exists(destfile)) {
-    message(paste("Training data already exists. Overwriting", destfile))
+    message("The training data already exists. Skipping download.")
+    return(destfile)
   }
 
   req <- curl::curl_fetch_memory(url, curl::new_handle(
     progressfunction = progress_fun,
     noprogress = !isTRUE(progress)
   ))
+
   if(progress)
     cat("\n")
   if(req$status_code != 200)
     stop("Download failed: HTTP ", req$status_code, call. = FALSE)
-
   writeBin(req$content, destfile)
   return(destfile)
 }
