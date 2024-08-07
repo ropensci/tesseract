@@ -22,8 +22,8 @@
 #' @param cache speed things up by caching engines
 tesseract <- local({
   store <- new.env()
-  function(language = "eng", datapath = NULL, configs = NULL, options = NULL, cache = TRUE) {
-    datapath <- as.character(datapath)
+  function(language = "eng", datapath = NULL, configs = NULL, options = NULL, cache = TRUE){
+    datapath <- normalizePath(as.character(datapath), mustWork = TRUE)
     language <- as.character(language)
     configs <- as.character(configs)
     options <- as.list(options)

@@ -113,7 +113,6 @@ tesseract::TessBaseAPI *get_engine(TessPtr engine) {
     "loaded"_nm = loaded,
     "available"_nm = available
   });
-}
 
 [[cpp11::register]] strings print_params(std::string filename) {
   tesseract::TessBaseAPI *api = make_analyze_api();

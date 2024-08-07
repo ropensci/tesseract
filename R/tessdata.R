@@ -27,9 +27,8 @@
 #' @param progress print progress while downloading
 #' @references [tesseract wiki: training data](https://tesseract-ocr.github.io/tessdoc/Data-Files)
 #' @examples \dontrun{
-#' if (is.na(match("fra", tesseract_info()$available))) {
-#'   tesseract_download("fra", model = "best")
-#' }
+#' if(is.na(match("fra", tesseract_info()$available)))
+#'   tesseract_download("fra", model = 'best')
 #' french <- tesseract("fra")
 #' file <- system.file("examples", "french.png", package = "tesseract")
 #' text <- ocr(file, engine = french)
