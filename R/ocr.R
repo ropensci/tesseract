@@ -10,7 +10,6 @@
 #' each word in the text.
 #'
 #' @export
-#' @useDynLib tesseract
 #' @family tesseract
 #' @param image file path, url, or raw vector to image (png, tiff, jpeg, etc)
 #' @param engine a tesseract engine created with [tesseract()]. Alternatively a
@@ -18,7 +17,6 @@
 #' @param HOCR if `TRUE` return results as HOCR xml instead of plain text
 #' @rdname ocr
 #' @references [Tesseract: Improving Quality](https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality)
-#' @importFrom Rcpp sourceCpp
 #' @examples # Simple example
 #' text <- ocr("https://jeroen.github.io/images/testocr.png")
 #' cat(text)
@@ -48,7 +46,7 @@
 ocr <- function(image, engine = tesseract("eng"), HOCR = FALSE) {
   if(is.character(engine))
     engine <- tesseract(engine)
-  stopifnot(inherits(engine, "tesseract"))
+  stopifnot(inherits(engine, "externalptr"))
   if(inherits(image, "magick-image")){
     vapply(image, function(x){
       tmp <- tempfile(fileext = ".png")
@@ -71,7 +69,7 @@ ocr <- function(image, engine = tesseract("eng"), HOCR = FALSE) {
 ocr_data <- function(image, engine = tesseract("eng")) {
   if(is.character(engine))
     engine <- tesseract(engine)
-  stopifnot(inherits(engine, "tesseract"))
+  stopifnot(inherits(engine, "externalptr"))
   df_list <- if(inherits(image, "magick-image")){
     lapply(image, function(x){
       tmp <- tempfile(fileext = ".png")
