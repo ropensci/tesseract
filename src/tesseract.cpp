@@ -17,9 +17,26 @@
 
 using namespace cpp11;
 
+/* libtesseract 4.0 insisted that the engine is initiated in 'C' locale.
+ * We do this as exemplified in the example code in the libc manual:
+ * https://www.gnu.org/software/libc/manual/html_node/Setting-the-Locale.html
+ * Full discussion: https://github.com/tesseract-ocr/tesseract/issues/1670
+ */
+#if TESSERACT_MAJOR_VERSION == 4 && TESSERACT_MINOR_VERSION == 0
+#define TESSERACT40
+#endif
+
 static tesseract::TessBaseAPI *make_analyze_api() {
+#ifdef TESSERACT40
+  char *old_ctype = strdup(setlocale(LC_ALL, NULL));
+  setlocale(LC_ALL, "C");
+#endif
   tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
   api->InitForAnalysePage();
+#ifdef TESSERACT40
+  setlocale(LC_ALL, old_ctype);
+  free(old_ctype);
+#endif
   return api;
 }
 
@@ -57,8 +74,12 @@ static tesseract::TessBaseAPI *make_analyze_api() {
     configs.push_back(&config_strings.back()[0]);
   }
 
-  tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
+#ifdef TESSERACT40
+  char *old_ctype = strdup(setlocale(LC_ALL, NULL));
+  setlocale(LC_ALL, "C");
+#endif
 
+  tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
 
   GenericVector<STRING> params, values;
   for (int i = 0; i < opt_names.size(); i++) {
@@ -67,6 +88,11 @@ static tesseract::TessBaseAPI *make_analyze_api() {
   }
   int err = api->Init(path, lang, tesseract::OEM_DEFAULT, configs.data(),
                       configs.size(), &params, &values, false);
+
+#ifdef TESSERACT40
+  setlocale(LC_ALL, old_ctype);
+  free(old_ctype);
+#endif
 
   if (err) {
     delete api;
