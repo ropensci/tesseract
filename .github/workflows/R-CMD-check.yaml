@@ -41,6 +41,27 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: rcmdcheck
+
+      - uses: r-lib/actions/check-r-package@v2
+        with:
+          args: 'c("--no-manual", "--as-cran", "--run-donttest")'
+
+      - name: Install Tesseract 5
+        if: runner.os == 'Linux'
+        run: |
+          sudo add-apt-repository -y ppa:alex-p/tesseract-ocr5
+          sudo apt-get update
+          sudo apt-get install -y libtesseract-dev tesseract-ocr tesseract-ocr-eng
+
+      - name: "Test Tesseract 5, Ubuntu 20,04 previously tested Tesseract 4"
+        if: runner.os == 'Linux'
+        uses: r-lib/actions/check-r-package@v2
+        with:
+          args: 'c("--no-manual", "--as-cran", "--run-donttest")'
+
       - name: Install Tesseract 5
         if: matrix.config.os == 'ubuntu-20.04' && matrix.config.tesseract_version == '5'
         run: |
@@ -48,10 +69,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libtesseract-dev tesseract-ocr tesseract-ocr-eng
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: rcmdcheck
-
-      - uses: r-lib/actions/check-r-package@v2
+      - name: "Test Tesseract 5, Ubuntu 20,04 previously tested Tesseract 4"
+        if: runner.os == 'Linux'
+        uses: r-lib/actions/check-r-package@v2
         with:
           args: 'c("--no-manual", "--as-cran", "--run-donttest")'
