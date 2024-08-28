@@ -4,7 +4,7 @@ on:
   push:
   pull_request:
 
-name: R-CMD-check
+name: tesseract-5-ubuntu-20
 
 jobs:
   R-CMD-check:
