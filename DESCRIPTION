@@ -9,7 +9,10 @@ Authors@R: c(person("Jeroen", "Ooms",
              person("Mauricio", "Vargas Sepulveda",
                     role = "aut", 
                     email = "m.sepulveda@mail.utoronto.ca", 
-                    comment = c(ORCID = "0000-0003-1017-7574")))
+                    comment = c(ORCID = "0000-0003-1017-7574")),
+             person("Munk School of Global Affairs and Public Policy",
+                    role = "fnd")
+            )
 Description: Bindings to 'Tesseract': 
      a powerful optical character recognition (OCR) engine that supports over
      100 languages. The engine is highly configurable in order to tune the
