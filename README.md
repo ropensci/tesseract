@@ -1,23 +1,32 @@
-# tesseract
 
-> Bindings to [Tesseract-OCR](https://opensource.google/projects/tesseract): 
-  a powerful optical character recognition (OCR) engine that supports over 100 languages.
-  The engine is highly configurable in order to tune the detection algorithms and
-  obtain the best possible results.
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
-[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/tesseract)](https://cran.r-project.org/package=tesseract)
-[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/tesseract)](https://cran.r-project.org/package=tesseract)
+# cpp11tesseract <img src="man/figures/logo.svg" align="right" height="139" alt="" />
 
- - Upstream Tesseract-OCR documentation: https://tesseract-ocr.github.io/tessdoc/
- - Introduction: https://docs.ropensci.org/tesseract/articles/intro.html
- - Reference: https://docs.ropensci.org/tesseract/reference/ocr.html
+> Bindings to
+> [Tesseract-OCR](https://opensource.google/projects/tesseract): a
+> powerful optical character recognition (OCR) engine that supports over
+> 100 languages. The engine is highly configurable in order to tune the
+> detection algorithms and obtain the best possible results.
+
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/tesseract)](https://cran.r-project.org/package=tesseract)
+[![CRAN RStudio mirror
+downloads](http://cranlogs.r-pkg.org/badges/tesseract)](https://cran.r-project.org/package=tesseract)
+
+  - Upstream Tesseract-OCR documentation:
+    <https://tesseract-ocr.github.io/tessdoc/>
+  - Introduction:
+    <https://docs.ropensci.org/tesseract/articles/intro.html>
+  - Reference: <https://docs.ropensci.org/tesseract/reference/ocr.html>
 
 ## Hello World
 
 Simple example
 
-```r
+``` r
 # Simple example
 text <- ocr("https://jeroen.github.io/images/testocr.png")
 cat(text)
@@ -29,7 +38,7 @@ cat(xml)
 
 Roundtrip test: render PDF to image and OCR it back to text
 
-```r
+``` r
 # Full roundtrip test: render PDF to image and OCR it back to text
 curl::curl_download("https://cran.r-project.org/doc/manuals/r-release/R-intro.pdf", "R-intro.pdf")
 orig <- pdftools::pdf_text("R-intro.pdf")[1]
@@ -45,70 +54,76 @@ cat(text)
 
 ## Installation
 
-On Windows and MacOS the package binary package can be installed from CRAN:
+On Windows and MacOS the package binary package can be installed from
+CRAN:
 
-```r
+``` r
 install.packages("tesseract")
 ```
 
-Installation from source on Linux or OSX requires the `Tesseract` library (see below).
+Installation from source on Linux or OSX requires the `Tesseract`
+library (see below).
 
 ### Install from source
 
- On __Debian__ or __Ubuntu__ install [libtesseract-dev](https://packages.debian.org/testing/libtesseract-dev) and
-[libleptonica-dev](https://packages.debian.org/testing/libleptonica-dev). Also install [tesseract-ocr-eng](https://packages.debian.org/testing/tesseract-ocr-eng) to run examples.
+On **Debian** or **Ubuntu** install
+[libtesseract-dev](https://packages.debian.org/testing/libtesseract-dev)
+and
+[libleptonica-dev](https://packages.debian.org/testing/libleptonica-dev).
+Also install
+[tesseract-ocr-eng](https://packages.debian.org/testing/tesseract-ocr-eng)
+to run examples.
 
-```
-sudo apt-get install -y libtesseract-dev libleptonica-dev tesseract-ocr-eng
-```
+    sudo apt-get install -y libtesseract-dev libleptonica-dev tesseract-ocr-eng
 
-On __Ubuntu__ you can optionally use [this PPA](https://launchpad.net/~alex-p/+archive/ubuntu/tesseract-ocr-devel) to get the latest version of Tesseract:
+On **Ubuntu** you can optionally use [this
+PPA](https://launchpad.net/~alex-p/+archive/ubuntu/tesseract-ocr-devel)
+to get the latest version of Tesseract:
 
-```
-sudo add-apt-repository ppa:alex-p/tesseract-ocr-devel
-sudo apt-get install -y libtesseract-dev tesseract-ocr-eng
-```
+    sudo add-apt-repository ppa:alex-p/tesseract-ocr-devel
+    sudo apt-get install -y libtesseract-dev tesseract-ocr-eng
 
-On __Fedora__ we need [tesseract-devel](https://src.fedoraproject.org/rpms/tesseract) and
+On **Fedora** we need
+[tesseract-devel](https://src.fedoraproject.org/rpms/tesseract) and
 [leptonica-devel](https://src.fedoraproject.org/rpms/leptonica)
 
-```
-sudo yum install tesseract-devel leptonica-devel
-````
+    sudo yum install tesseract-devel leptonica-devel
 
-On __RHEL__ and __CentOS__ we need [tesseract-devel](https://src.fedoraproject.org/rpms/tesseract) and
-[leptonica-devel](https://src.fedoraproject.org/rpms/leptonica) from EPEL
+On **RHEL** and **CentOS** we need
+[tesseract-devel](https://src.fedoraproject.org/rpms/tesseract) and
+[leptonica-devel](https://src.fedoraproject.org/rpms/leptonica) from
+EPEL
 
-```
-sudo yum install epel-release
-sudo yum install tesseract-devel leptonica-devel
-````
+    sudo yum install epel-release
+    sudo yum install tesseract-devel leptonica-devel
 
+On **OS-X** use
+[tesseract](https://github.com/Homebrew/homebrew-core/blob/master/Formula/tesseract.rb)
+from Homebrew:
 
-On __OS-X__ use [tesseract](https://github.com/Homebrew/homebrew-core/blob/master/Formula/tesseract.rb) from Homebrew:
+    brew install tesseract
 
-```
-brew install tesseract
-```
+Tesseract uses training data to perform OCR. Most systems default to
+English training data. To improve OCR results for other languages you
+can to install the appropriate training data. On Windows and OSX you can
+do this in R using `tesseract_download()`:
 
-Tesseract uses training data to perform OCR. Most systems default to English
-training data. To improve OCR results for other languages you can to install the
-appropriate training data. On Windows and OSX you can do this in R using 
-`tesseract_download()`:
-
-
-```r
+``` r
 tesseract_download('fra')
 ```
 
-On Linux you need to install the appropriate training data from your distribution. 
-For example to install the spanish training data:
+On Linux you need to install the appropriate training data from your
+distribution. For example to install the spanish training data:
 
-  - [tesseract-ocr-spa](https://packages.debian.org/testing/tesseract-ocr-spa) (Debian, Ubuntu)
-  - [tesseract-langpack-spa](https://src.fedoraproject.org/rpms/tesseract-langpack) (Fedora, EPEL)
+  - [tesseract-ocr-spa](https://packages.debian.org/testing/tesseract-ocr-spa)
+    (Debian, Ubuntu)
+  - [tesseract-langpack-spa](https://src.fedoraproject.org/rpms/tesseract-langpack)
+    (Fedora, EPEL)
 
-Alternatively you can manually download training data from [github](https://github.com/tesseract-ocr/tessdata)
-and store it in a path on disk that you pass in the `datapath` parameter or set a default path via the
-`TESSDATA_PREFIX` environment variable. Note that the Tesseract 4 and Tesseract 3 use different 
-training data format. Make sure to download training data from the branch that matches your libtesseract version.
-
+Alternatively you can manually download training data from
+[github](https://github.com/tesseract-ocr/tessdata) and store it in a
+path on disk that you pass in the `datapath` parameter or set a default
+path via the `TESSDATA_PREFIX` environment variable. Note that the
+Tesseract 4 and Tesseract 3 use different training data format. Make
+sure to download training data from the branch that matches your
+libtesseract version.

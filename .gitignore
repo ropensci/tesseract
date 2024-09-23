@@ -12,3 +12,4 @@ windows
 src/Makevars
 configure.log
 \.vscode
+README.html

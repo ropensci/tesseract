@@ -30,7 +30,7 @@
 #' if(is.na(match("fra", tesseract_info()$available)))
 #'   tesseract_download("fra", model = "best")
 #' french <- tesseract("fra")
-#' file <- system.file("examples", "french.png", package = "tesseract")
+#' file <- system.file("examples", "french.png", package = "cpp11tesseract")
 #' text <- ocr(file, engine = french)
 #' cat(text)
 #' }

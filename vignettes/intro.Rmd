@@ -34,17 +34,17 @@ OCR is the process of finding and recognizing text inside images, for example fr
 ![test](../man/figures/testocr.png)
 
 ```{r}
-library(tesseract)
+library(cpp11tesseract)
 file <- system.file("examples", "testocr.png", package = "cpp11tesseract")
 eng <- tesseract("eng")
-text <- tesseract::ocr(file, engine = eng)
+text <- ocr(file, engine = eng)
 cat(text)
 ```
 
 Not bad! The `ocr_data()` function returns all words in the image along with a bounding box and confidence rate.
 
 ```{r}
-results <- tesseract::ocr_data(file, engine = eng)
+results <- ocr_data(file, engine = eng)
 results
 ```
 
@@ -70,7 +70,7 @@ tesseract_download("chi_sim")
 ```{r eval = has_chi_sim}
 # Now load the dictionary
 (simplified_chinese <- tesseract("chi_sim"))
-file <- system.file("examples", "chinese.png", package = "tesseract")
+file <- system.file("examples", "chinese.png", package = "cpp11tesseract")
 text <- ocr(file, engine = simplified_chinese)
 cat(text)
 ```
@@ -79,7 +79,7 @@ Compare with the copy and paste from the Wikipedia.
 
 ```{r}
 text2 <- readLines(
-  system.file("examples", "chinese.txt", package = "tesseract")
+  system.file("examples", "chinese.txt", package = "cpp11tesseract")
 )
 
 cat(text2)
@@ -106,7 +106,7 @@ Below is an example OCR scan. The code converts it to black-and-white and resize
 
 ```{r}
 library(magick)
-file <- system.file("examples", "bowers.jpg", package = "tesseract")
+file <- system.file("examples", "bowers.jpg", package = "cpp11tesseract")
 input <- image_read(file)
 
 text <- input %>%
@@ -154,7 +154,7 @@ The whitelist parameter works for all versions of Tesseract engine 3 and also en
 ![receipt](../man/figures/receipt.png)
 
 ```{r}
-file <- system.file("examples", "receipt.png", package = "tesseract")
+file <- system.file("examples", "receipt.png", package = "cpp11tesseract")
 numbers <- tesseract(options = list(tessedit_char_whitelist = "$.0123456789"))
 cat(ocr(file, engine = numbers))
 ```
@@ -172,7 +172,7 @@ cat(ocr(file, engine = numbers2))
 In order to improve the OCR results, Tesseract has two variants of models that can be used. The `tesseract_download()` can download the 'best' (but slower) model, which increases the accuracy. The 'fast' (but less accurate) model is the default.
 
 ```{r, eval = FALSE}
-file <- system.file("examples", "chinese.png", package = "tesseract")
+file <- system.file("examples", "chinese.png", package = "cpp11tesseract")
 
 # download the best model (vertical script download is to avoid a warning)
 dir <- tempdir()
@@ -194,7 +194,7 @@ The `tesseract_contributed_download()` function can download contributed models.
 ![polytonicgreek](../man/figures/polytonicgreek.png)
 
 ```{r, eval = FALSE}
-file <- system.file("examples", "polytonicgreek.png", package = "tesseract")
+file <- system.file("examples", "polytonicgreek.png", package = "cpp11tesseract")
 
 # download the best models
 dir <- tempdir()
@@ -243,7 +243,7 @@ Here is the first element of the list returned by Textract:
 Here is Tesseract's output:
 
 ```{r}
-file <- system.file("examples", "tealbook.png", package = "tesseract")
+file <- system.file("examples", "tealbook.png", package = "cpp11tesseract")
 text <- ocr(file)
 
 cat(text)
