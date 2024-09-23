@@ -124,7 +124,7 @@ cat(text)
 If your images are stored in PDF files they first need to be converted to a proper image format. We can do this in R using the `pdf_convert` function from the pdftools package. Use a high DPI to keep quality of the image.
 
 ```{r, eval=require(pdftools)}
-file <- system.file("examples", "ocrscan.pdf", package = "tesseract")
+file <- system.file("examples", "ocrscan.pdf", package = "cpp11tesseract")
 pngfile <- pdftools::pdf_convert(file, dpi = 600)
 text <- ocr(pngfile)
 cat(text)
