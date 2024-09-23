@@ -17,7 +17,7 @@ vignette: >
 ```{r, echo = FALSE, message = FALSE}
 library(tibble)
 #knitr::opts_chunk$set(comment = "")
-has_nld <- "nld" %in% tesseract::tesseract_info()$available
+has_nld <- "nld" %in% cpp11tesseract::tesseract_info()$available
 if(identical(Sys.info()[['user']], 'jeroen')) stopifnot(has_nld)
 if(grepl('tesseract.Rcheck', getwd())){
   Sys.sleep(10) #workaround for CPU time check
@@ -35,16 +35,16 @@ OCR is the process of finding and recognizing text inside images, for example fr
 ![test](https://jeroen.github.io/images/testocr.png){data-external=1}
 
 ```{r}
-library(tesseract)
+library(cpp11tesseract)
 eng <- tesseract("eng")
-text <- tesseract::ocr("http://jeroen.github.io/images/testocr.png", engine = eng)
+text <- cpp11tesseract::ocr("http://jeroen.github.io/images/testocr.png", engine = eng)
 cat(text)
 ```
 
 Not bad! The `ocr_data()` function returns all words in the image along with a bounding box and confidence rate.
 
 ```{r}
-results <- tesseract::ocr_data("http://jeroen.github.io/images/testocr.png", engine = eng)
+results <- cpp11tesseract::ocr_data("http://jeroen.github.io/images/testocr.png", engine = eng)
 results
 ```
 
@@ -106,7 +106,7 @@ text <- input %>%
   image_convert(type = 'Grayscale') %>%
   image_trim(fuzz = 40) %>%
   image_write(format = 'png', density = '300x300') %>%
-  tesseract::ocr() 
+  cpp11tesseract::ocr() 
 
 cat(text)
 ```
@@ -118,7 +118,7 @@ If your images are stored in PDF files they first need to be converted to a prop
 
 ```{r, eval=require(pdftools)}
 pngfile <- pdftools::pdf_convert('https://jeroen.github.io/images/ocrscan.pdf', dpi = 600)
-text <- tesseract::ocr(pngfile)
+text <- cpp11tesseract::ocr(pngfile)
 cat(text)
 ```
 
@@ -135,7 +135,7 @@ tesseract_params('colour')
 Do note that some of the control parameters have changed between Tesseract engine 3 and 4.
 
 ```{r}
-tesseract::tesseract_info()['version']
+cpp11tesseract::tesseract_info()['version']
 ```
 
 ### Whitelist / Blacklist characters

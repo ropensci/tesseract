@@ -1,4 +1,4 @@
-Package: tesseract
+Package: cpp11tesseract
 Type: Package
 Title: Open Source OCR Engine
 Version: 5.3.0
@@ -32,7 +32,7 @@ Imports:
     digest
 LinkingTo: 
     cpp11
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.1
 Roxygen: list(markdown = TRUE)
 Suggests:
     magick (>= 1.7),

@@ -6,6 +6,6 @@
 #' languages. The engine is highly configurable in order to tune the detection
 #' algorithms and obtain the best possible results.
 #'
-#' @name tesseract-package
-#' @useDynLib tesseract, .registration = TRUE
+#' @name cpp11tesseract-package
+#' @useDynLib cpp11tesseract, .registration = TRUE
 "_PACKAGE"

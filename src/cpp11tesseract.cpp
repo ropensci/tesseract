@@ -1,4 +1,4 @@
-#include "tesseract_types.h"
+#include "cpp11tesseract_types.h"
 
 #if TESSERACT_MAJOR_VERSION < 5
 #include <tesseract/genericvector.h>
