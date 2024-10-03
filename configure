@@ -1,4 +1,4 @@
-# Anticonf (tm) script by Jeroen Ooms (2022)
+# Adapted from the script by Jeroen Ooms (2024)
 # This script will query 'pkg-config' for the required cflags and ldflags.
 # If pkg-config is unavailable or does not find the library, try setting
 # INCLUDE_DIR and LIB_DIR manually via e.g:
@@ -19,6 +19,7 @@ if [ $? -eq 0 ]; then
   PKGCONFIG_CFLAGS=`pkg-config --cflags --silence-errors ${PKG_CONFIG_NAME}`
   PKGCONFIG_LIBS=`pkg-config --libs ${PKG_CONFIG_NAME}`
 fi
+
 # Note that cflags may be empty in case of success
 if [ "$INCLUDE_DIR" ] || [ "$LIB_DIR" ]; then
   echo "Found INCLUDE_DIR and/or LIB_DIR!"
@@ -32,11 +33,12 @@ elif [ `uname` = "Darwin" ]; then
   test ! "$CI" && brew --version 2>/dev/null
   if [ $? -eq 0 ]; then
     BREWDIR=`brew --prefix`
-    PKG_CFLAGS="-I$BREWDIR/include/tesseract -I$BREWDIR/include/leptonica"
+    echo "BREWDIR: $BREWDIR"
+    PKG_CFLAGS="-I$BREWDIR/include -I$BREWDIR/include/leptonica"
     PKG_LIBS="-L$BREWDIR/lib $PKG_LIBS"
   else
-    curl -sfL "https://autobrew.github.io/scripts/tesseract" > autobrew
-    . ./autobrew
+    echo "Homebrew not found. Please install Homebrew and try again."
+    exit 1
   fi
 fi
 
@@ -44,14 +46,37 @@ fi
 echo "Using PKG_CFLAGS=$PKG_CFLAGS"
 echo "Using PKG_LIBS=$PKG_LIBS"
 
+# Verify include paths
+echo "Verifying include paths..."
+if [ -d "$BREWDIR/include/leptonica" ]; then
+  echo "Directory $BREWDIR/include/leptonica exists"
+  ls -l $BREWDIR/include/leptonica
+else
+  echo "Directory $BREWDIR/include/leptonica does not exist"
+fi
+
+if [ -d "$BREWDIR/include/tesseract" ]; then
+  echo "Directory $BREWDIR/include/tesseract exists"
+  ls -l $BREWDIR/include/tesseract
+else
+  echo "Directory $BREWDIR/include/tesseract does not exist"
+fi
+
+# Check for the existence of the required header file
+if [ -f "$BREWDIR/include/leptonica/allheaders.h" ]; then
+  echo "Header file $BREWDIR/include/leptonica/allheaders.h exists"
+else
+  echo "Header file $BREWDIR/include/leptonica/allheaders.h does not exist"
+fi
+
 # Tesseract 4 enforces C++11 in the headers but R does not have CXX11CPP
 CPPFLAGS=`${R_HOME}/bin/R CMD config CPPFLAGS`
 CXX11STD=`${R_HOME}/bin/R CMD config CXX11STD`
 if [ $? -eq 0 ]; then
-CXX11=`${R_HOME}/bin/R CMD config CXX11`
-CXX11CPP="$CXX11 -E $CXX11STD"
+  CXX11=`${R_HOME}/bin/R CMD config CXX11`
+  CXX11CPP="$CXX11 -E $CXX11STD"
 else
-CXX11CPP=`${R_HOME}/bin/R CMD config CXXCPP`
+  CXX11CPP=`${R_HOME}/bin/R CMD config CXXCPP`
 fi
 
 # Test configuration
