@@ -9,8 +9,8 @@ Description: Bindings to 'Tesseract':
      The engine is highly configurable in order to tune the detection algorithms and
      obtain the best possible results.
 License: Apache License 2.0
-URL: https://docs.ropensci.org/tesseract/ (website) 
-    https://github.com/ropensci/tesseract (devel)
+URL: https://docs.ropensci.org/tesseract/
+    https://ropensci.r-universe.dev/tesseract
 BugReports: https://github.com/ropensci/tesseract/issues
 SystemRequirements: Tesseract >= 3.03 (libtesseract-dev / tesseract-devel) and
     Leptonica (libleptonica-dev / leptonica-devel). On Debian you need to install
