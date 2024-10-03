@@ -1,5 +1,5 @@
 RWINLIB = ../windows/tesseract
-PKG_CPPFLAGS = -I${RWINLIB}/include
+PKG_CPPFLAGS = -I${RWINLIB}/include -I${RWINLIB}/include/leptonica
 
 PKG_LIBS = \
 	-L${RWINLIB}/lib${subst gcc,,${COMPILED_BY}}${R_ARCH} \

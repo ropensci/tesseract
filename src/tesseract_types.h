@@ -1,5 +1,5 @@
 #include <tesseract/baseapi.h>
-#include <leptonica/allheaders.h>
+#include <allheaders.h>
 
 #define R_NO_REMAP
 #define STRICT_R_HEADERS
