@@ -20,12 +20,15 @@ jobs:
         config:
           - {os: macos-13,        r: 'release'}
           - {os: macos-14,        r: 'release'}
-          - {os: windows-latest , r: 'release'}
+          - {os: macos-15,        r: 'next'}
           - {os: windows-latest , r: '4.1'}
+          - {os: windows-latest , r: '4.2'}
+          - {os: windows-latest , r: '4.3'}
+          - {os: windows-latest , r: '4.4'}
+          - {os: windows-latest , r: 'devel'}
           - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-24.04,    r: 'release'}
           - {os: ubuntu-22.04,    r: 'release'}
-          - {os: ubuntu-20.04,    r: 'release'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -48,3 +51,5 @@ jobs:
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
+        env:
+          MAKEFLAGS: -j4

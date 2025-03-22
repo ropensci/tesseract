@@ -1,9 +1,9 @@
 PKG_CPPFLAGS=@cflags@
 PKG_LIBS=@libs@
 
-PKG_CXXFLAGS=$(C_VISIBILITY)
+PKG_CXXFLAGS=$(CXX_VISIBILITY)
 
-all: clean
+all: $(SHLIB) cleanup
 
-clean:
-	rm -f $(SHLIB) $(OBJECTS)
+cleanup: $(SHLIB)
+	@rm -Rf ../.deps

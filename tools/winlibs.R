@@ -1,5 +1,5 @@
-if(!file.exists("../windows/tesseract/include/tesseract/baseapi.h")){
-  unlink("../windows", recursive = TRUE)
+if(!file.exists('tesseract.o') && !file.exists("../.deps/tesseract/include/tesseract/baseapi.h")){
+  unlink("../.deps", recursive = TRUE)
   url <- if(grepl("aarch", R.version$platform)){
     "https://github.com/r-windows/bundles/releases/download/tesseract-5.3.2/tesseract-ocr-5.3.2-clang-aarch64.tar.xz"
   } else if(grepl("clang", Sys.getenv('R_COMPILED_BY'))){
@@ -10,24 +10,17 @@ if(!file.exists("../windows/tesseract/include/tesseract/baseapi.h")){
     "https://github.com/rwinlib/tesseract/archive/v5.3.2.tar.gz"
   }
   download.file(url, basename(url), quiet = TRUE)
-  dir.create("../windows", showWarnings = FALSE)
-  untar(basename(url), exdir = "../windows", tar = 'internal')
+  dir.create("../.deps", showWarnings = FALSE)
+  untar(basename(url), exdir = "../.deps", tar = 'internal')
   unlink(basename(url))
-  setwd("../windows")
+  setwd("../.deps")
   file.rename(list.files(), 'tesseract')
-}
 
-# Also download the english training data
-dir.create("../windows/tessdata", showWarnings = FALSE)
-if(!file.exists("../windows/tessdata/eng.traineddata")){
-  message("Downloading eng.traineddata...")
+  # Copy training data
+  file.copy('tesseract/share/tessdata', '../inst/', recursive = TRUE)
   download.file("https://github.com/tesseract-ocr/tessdata_fast/raw/4.1.0/eng.traineddata",
-                "../windows/tessdata/eng.traineddata", mode = "wb", quiet = TRUE)
-}
-
-# This is base training data for Orientation and Script Detection
-if(!file.exists("../windows/tessdata/osd.traineddata")){
-  message("Downloading osd.traineddata...")
+                "../inst/tessdata/eng.traineddata", mode = "wb", quiet = TRUE)
   download.file("https://github.com/tesseract-ocr/tessdata_fast/raw/4.1.0/osd.traineddata",
-                "../windows/tessdata/osd.traineddata", mode = "wb", quiet = TRUE)
+                "../inst/tessdata/osd.traineddata", mode = "wb", quiet = TRUE)
+  invisible()
 }

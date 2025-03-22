@@ -1,20 +1,20 @@
-RWINLIB = ../windows/tesseract
-PKG_CPPFLAGS = -I${RWINLIB}/include -I${RWINLIB}/include/leptonica
+RWINLIB = ../.deps/tesseract
+PKG_CPPFLAGS = -I$(RWINLIB)/include -I$(RWINLIB)/include/leptonica
 
 PKG_LIBS = \
-	-L${RWINLIB}/lib${subst gcc,,${COMPILED_BY}}${R_ARCH} \
-	-L${RWINLIB}/lib \
+	-L$(RWINLIB)/lib${subst gcc,,${COMPILED_BY}}${R_ARCH} \
+	-L$(RWINLIB)/lib \
 	-ltesseract -lleptonica \
 	-ltiff -lopenjp2 -lwebp -lsharpyuv -ljpeg -lgif -lpng16 -lz \
 	-lws2_32
 
-all: clean winlibs
+all: $(SHLIB) cleanup
 
-winlibs:
-	mkdir -p ../inst
-	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R" ${VERSION}
-	cp -Rf ../windows/tessdata ../inst/
-	cp -Rf ${RWINLIB}/share/tessdata ../inst/
+# Needed for parallel make
+$(OBJECTS): | $(RWINLIB)
 
-clean:
-	rm -Rf $(OBJECTS) $(SHLIB)
+$(RWINLIB):
+	@"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R"
+
+cleanup: $(SHLIB)
+	@rm -Rf $(RWINLIB)
