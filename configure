@@ -44,19 +44,13 @@ fi
 echo "Using PKG_CFLAGS=$PKG_CFLAGS"
 echo "Using PKG_LIBS=$PKG_LIBS"
 
-# Tesseract 4 enforces C++11 in the headers but R does not have CXX11CPP
+# Find compiler
+CXX=`${R_HOME}/bin/R CMD config CXX`
 CPPFLAGS=`${R_HOME}/bin/R CMD config CPPFLAGS`
-CXX11STD=`${R_HOME}/bin/R CMD config CXX11STD`
-if [ $? -eq 0 ]; then
-CXX11=`${R_HOME}/bin/R CMD config CXX11`
-CXX11CPP="$CXX11 -E $CXX11STD"
-else
-CXX11CPP=`${R_HOME}/bin/R CMD config CXXCPP`
-fi
 
 # Test configuration
 echo "Using CXX11CPP: ${CXX11CPP}"
-${CXX11CPP} ${CPPFLAGS} ${PKG_CFLAGS} tools/test.cpp >/dev/null 2>configure.log
+${CXX} -E ${CPPFLAGS} ${PKG_CFLAGS} tools/test.cpp >/dev/null 2>configure.log
 
 # Customize the error
 if [ $? -ne 0 ]; then
