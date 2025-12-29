@@ -49,7 +49,7 @@ CXX=`${R_HOME}/bin/R CMD config CXX`
 CPPFLAGS=`${R_HOME}/bin/R CMD config CPPFLAGS`
 
 # Test configuration
-echo "Using CXX11CPP: ${CXX11CPP}"
+echo "Using CXX: ${CXX}"
 ${CXX} -E ${CPPFLAGS} ${PKG_CFLAGS} tools/test.cpp >/dev/null 2>configure.log
 
 # Customize the error
