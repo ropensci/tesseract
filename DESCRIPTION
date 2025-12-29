@@ -1,7 +1,7 @@
 Package: tesseract
 Type: Package
 Title: Open Source OCR Engine
-Version: 5.2.3
+Version: 5.2.4
 Authors@R: person("Jeroen", "Ooms", role = c("aut", "cre"), email = "jeroenooms@gmail.com",
     comment = c(ORCID = "0000-0002-4035-0289"))
 Description: Bindings to 'Tesseract': 
