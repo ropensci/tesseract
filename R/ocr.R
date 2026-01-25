@@ -19,7 +19,7 @@
 #' @rdname ocr
 #' @references [Tesseract: Improving Quality](https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality)
 #' @importFrom Rcpp sourceCpp
-#' @examples # Simple example
+#' @examples \donttest{
 #' text <- ocr("https://jeroen.github.io/images/testocr.png")
 #' cat(text)
 #'
@@ -29,7 +29,6 @@
 #' df <- ocr_data("https://jeroen.github.io/images/testocr.png")
 #' print(df)
 #'
-#' \donttest{
 #' # Full roundtrip test: render PDF to image and OCR it back to text
 #' curl::curl_download("https://cran.r-project.org/doc/manuals/r-release/R-intro.pdf", "R-intro.pdf")
 #' orig <- pdftools::pdf_text("R-intro.pdf")[1]

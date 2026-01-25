@@ -1,3 +1,6 @@
+5.2.5
+  - Wrap examples in donttest for cran policies
+
 5.2.4
   - Do not use CXX11 anymore in configure script (fixes R-4.6)
 
