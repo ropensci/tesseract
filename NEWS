@@ -1,3 +1,6 @@
+5.3.0
+  - MacOS: update to libtesseract 5.5.3
+
 5.2.5
   - Wrap examples in donttest for cran policies
 
