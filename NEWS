@@ -1,3 +1,6 @@
+5.3.1
+  - Workaround for false positive with MacOS sanitizers
+
 5.3.0
   - MacOS: update to libtesseract 5.5.3
 
