@@ -114,11 +114,11 @@ Rcpp::List engine_info_internal(TessPtr ptr){
   Rcpp::CharacterVector available = Rcpp::CharacterVector::create();
   for (size_t i = 0; i < langs.size(); i++)
     available.push_back(langs.getorat(i).c_str());
-  langs.clear();
-  api->GetLoadedLanguagesAsVector(&langs);
+  GenericVector<STRING> loaded_langs;
+  api->GetLoadedLanguagesAsVector(&loaded_langs);
   Rcpp::CharacterVector loaded = Rcpp::CharacterVector::create();
-  for (size_t i = 0; i < langs.size(); i++)
-    loaded.push_back(langs.getorat(i).c_str());
+  for (size_t i = 0; i < loaded_langs.size(); i++)
+    loaded.push_back(loaded_langs.getorat(i).c_str());
   return Rcpp::List::create(
     Rcpp::_["datapath"] = api->GetDatapath(),
     Rcpp::_["loaded"] = loaded,
